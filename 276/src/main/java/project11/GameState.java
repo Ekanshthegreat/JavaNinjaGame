@@ -8,16 +8,16 @@ import java.util.ArrayList;
  * Represents the game state, including player and enemy positions.
  */
 public class GameState {
-    private int playerX;
-    private int playerY;
-    private ArrayList<Enemy> enemies;
+    // private Player player; // player character
+    // private ArrayList<Enemy> enemies; // active enemies
+    // private GameObject[][] gameObjects; // board data
+    private int difficulty; // game difficulty
 
-    private final ReentrantLock lock = new ReentrantLock();
+    // private final ReentrantLock lock = new ReentrantLock();
 
     public GameState() {
-        this.playerX = 0;
-        this.playerY = 0;
-        this.enemies = new ArrayList<>();
+        // this.player = new Player();
+        // this.enemies = new ArrayList<>();
     }
 
 }

@@ -3,26 +3,28 @@ package project11;
 /**
  * BaseThread class that defines the structure of a thread
  */
-public abstract class BaseThread implements Runnable {
-    protected volatile boolean running = true;
+public class BaseThread implements Runnable {
     private int SLEEP_TIME = 1000;
+    private GameState gameState; 
+    private Thread thread;
 
-    public void stopThread() {
-        running = false;
+    public BaseThread() {
+        this.gameState = new GameState();
+        this.thread = new Thread(this);
+        this.thread.start();
     }
 
-    public abstract void tick();
-
-    @Override
+    /**
+     * Core game Loop
+     */
     public void run() {
-        while (running) {
-            tick();
+        while(thread != null) {
             try {
                 Thread.sleep(SLEEP_TIME);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                System.out.println("Thread interrupted: " + e.getMessage());
+                e.printStackTrace();
             }
+            System.out.println("Game thread is running");
         }
     }
 }
