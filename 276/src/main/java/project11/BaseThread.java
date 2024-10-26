@@ -25,6 +25,7 @@ public class BaseThread implements Runnable {
                 e.printStackTrace();
             }
             System.out.println("Game thread is running");
+
         }
     }
 }
