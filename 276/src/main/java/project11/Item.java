@@ -20,4 +20,6 @@ public abstract class Item extends GameObject {
         this.y = y;
         this.solid = false; 
     }
+
+    public abstract void pickup();
 }
