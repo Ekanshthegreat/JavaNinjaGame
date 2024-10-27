@@ -8,6 +8,9 @@ package project11;
  */
 
 public abstract class Item extends GameObject {
+
+    private boolean pickedUp = false;
+    
     /**
      * Constructor for the Item class.
      * Solid is set to false.
@@ -21,5 +24,19 @@ public abstract class Item extends GameObject {
         this.solid = false; 
     }
 
-    public abstract void pickup();
+    /**
+     * Method to be called when the item is picked up.
+     *
+     * @return true if the item is picked up, false otherwise.
+     */
+    public boolean isPicked() {
+        return pickedUp;
+    }
+
+    /**
+     * Method to be called when the item is picked up.
+     */
+    public  void pickup(){
+        pickedUp = true;
+    }
 }

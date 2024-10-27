@@ -20,6 +20,15 @@ public class Key extends Item {
     }
 
     /**
+     * Method to be called when the key is picked up.
+     */
+    @Override
+    public void pickup() {
+        super.pickup();
+        System.out.println("Key picked up at: " + x + ", " + y);
+    }
+
+    /**
      * Renders the key.
      */
     public void render() {
