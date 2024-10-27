@@ -14,9 +14,9 @@ public class GameState {
     private int difficulty; // game difficulty
 
     // replace with player stuff later
-    private int playerX = 100;
-    private int playerY = 100;
     private static final int MOVE_DISTANCE = 16 * 3;
+    private int playerX = 0;
+    private int playerY = 0;
 
     // private final ReentrantLock lock = new ReentrantLock();
 
