@@ -18,4 +18,12 @@ public abstract class GameObject {
     public boolean isSolid() {
         return solid;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }
