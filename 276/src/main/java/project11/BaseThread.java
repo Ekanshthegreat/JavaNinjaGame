@@ -1,31 +1,61 @@
 package project11;
 
-/**
- * BaseThread class that defines the structure of a thread
- */
 public class BaseThread implements Runnable {
-    private int SLEEP_TIME = 1000;
+    private static final int TOTAL_CYCLE_TIME = 1000; // 1 second
+    private static final int INPUT_TIME = 500;        // 500ms input phase
+
     private GameState gameState; 
+    private GamePanel gamePanel;
+    private KeyHandler keyHandler;
     private Thread thread;
 
-    public BaseThread() {
-        this.gameState = new GameState();
+    public BaseThread(GamePanel gamePanel, KeyHandler keyHandler) {
+        this.gamePanel = gamePanel;
+        this.gameState = gamePanel.gameState;
+        this.keyHandler = keyHandler;
         this.thread = new Thread(this);
         this.thread.start();
     }
 
-    /**
-     * Core game Loop
-     */
     public void run() {
-        while(thread != null) {
-            try {
-                Thread.sleep(SLEEP_TIME);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Game thread is running");
+        while (thread != null) {
+            long startTime = System.currentTimeMillis();
 
+            // Handle input phase (first 500ms)
+            handleInput();
+
+            // Wait until the input phase is over
+            long elapsed = System.currentTimeMillis() - startTime;
+            if (elapsed < INPUT_TIME) {
+                try {
+                    Thread.sleep(INPUT_TIME - elapsed);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Render the game state
+            render();
+
+            // Wait for the remainder of the cycle
+            elapsed = System.currentTimeMillis() - startTime;
+            if (elapsed < TOTAL_CYCLE_TIME) {
+                try {
+                    Thread.sleep(TOTAL_CYCLE_TIME - elapsed);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("Game currently running");
         }
+    }
+
+    private void handleInput() {
+        gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
+        keyHandler.resetInput(); // Reset input for the next cycle
+    }
+
+    private void render() {
+        gamePanel.render();
     }
 }
