@@ -7,10 +7,12 @@ public class Main{
     public static void main(String[] args) {
         System.out.println("Test!");
 
-        // Create the window
-        Window window = new Window();
+        GameState gameState = new GameState();
+        KeyHandler keyHandler = new KeyHandler();
+        GamePanel gamePanel = new GamePanel(gameState, keyHandler);
 
-        BaseThread gameThread = new BaseThread();
+        Window window = new Window(gamePanel);
+        BaseThread gameThread = new BaseThread(gamePanel, keyHandler);
 
     }
 }
