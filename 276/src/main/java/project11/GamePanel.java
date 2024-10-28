@@ -37,7 +37,7 @@ public class GamePanel extends JPanel {
     // Load sprites from the resources folder
     private void loadSprite() {
         try {
-            ninjaSprite = ImageIO.read(getClass().getResource("/project11/sprites/Ninja.png"));
+            ninjaSprite = ImageIO.read(getClass().getResource("/project11/sprites/Samurai.png"));
             groundSprite = ImageIO.read(getClass().getResource("/project11/sprites/Ground.png"));
         } catch (IOException e) {
             e.printStackTrace();
