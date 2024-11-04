@@ -18,7 +18,7 @@ public class Barrier extends GameObject {
     private void loadSprite() {
         if (wallSprite == null) {
             try {
-                wallSprite = ImageIO.read(getClass().getResource("/project11/sprites/wall.png"));
+                wallSprite = ImageIO.read(getClass().getResource("/project11/sprites/Wall.png"));
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error: Could not load wall sprite.");

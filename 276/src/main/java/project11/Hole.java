@@ -18,7 +18,7 @@ public class Hole extends GameObject {
     private void loadSprite() {
         if (holeSprite == null) {
             try {
-                holeSprite = ImageIO.read(getClass().getResource("/project11/sprites/hole.png"));
+                holeSprite = ImageIO.read(getClass().getResource("/project11/sprites/Hole.png"));
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error: Could not load hole sprite.");
