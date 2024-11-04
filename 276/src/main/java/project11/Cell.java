@@ -1,25 +1,32 @@
 package project11;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cell {
-    private GameObject[] gameObjects; // Array to hold multiple game objects
-    private boolean occupied;
+    private List<GameObject> gameObjects; // Array of GameObjects in this cell
 
-    public Cell(GameObject[] defaultGameObjects) {
-        this.gameObjects = defaultGameObjects;
-        this.occupied = checkOccupied();
+    public Cell() {
+        this.gameObjects = new ArrayList<>();
     }
 
+    // Check if any GameObject occupies this cell
     public boolean isOccupied() {
-        return occupied;
+        return !gameObjects.isEmpty();
     }
 
-    // Helper method to check if any GameObject in this cell is solid, making it "occupied"
-    private boolean checkOccupied() {
-        for (GameObject obj : gameObjects) {
-            if (obj.isSolid()) {
-                return true;
-            }
-        }
-        return false;
+    // Add a GameObject to this cell
+    public void addGameObject(GameObject obj) {
+        gameObjects.add(obj);
+    }
+
+    // Remove a GameObject from this cell
+    public void removeGameObject(GameObject obj) {
+        gameObjects.remove(obj);
+    }
+
+    // Get the list of GameObjects in this cell
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
     }
 }

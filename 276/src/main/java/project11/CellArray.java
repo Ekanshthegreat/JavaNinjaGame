@@ -3,25 +3,21 @@ package project11;
 public class CellArray {
     private Cell[][] cells;
 
+    // Initialize the cell array with given dimensions
     public CellArray(int width, int height) {
         cells = new Cell[width][height];
-        initializeCells();
-    }
-
-    // Initializes each cell with default or empty GameObjects
-    private void initializeCells() {
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[i].length; j++) {
-                cells[i][j] = new Cell(new GameObject[]{}); // Initialize empty cells by default
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                cells[x][y] = new Cell(); // Initialize each cell
             }
         }
     }
 
+    // Get a specific cell at position (x, y)
     public Cell getCell(int x, int y) {
-        if (x >= 0 && x < cells.length && y >= 0 && y < cells[0].length) {
-            return cells[x][y];
-        } else {
-            throw new IndexOutOfBoundsException("Invalid cell coordinates: (" + x + ", " + y + ")");
+        if (x < 0 || y < 0 || x >= cells.length || y >= cells[0].length) {
+            throw new IndexOutOfBoundsException("Cell position out of bounds");
         }
+        return cells[x][y];
     }
 }
