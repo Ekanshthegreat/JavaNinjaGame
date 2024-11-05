@@ -102,7 +102,7 @@ public class MazeBuilder {
             x = (int)(Math.random() * cols);
             y = (int)(Math.random() * rows);
             if (maze[y][x].typeId==1) {
-                maze[y][x] = factory.createObject("key", x, y);
+                maze[y][x] = factory.createObject("mandatoryitem", x, y);
                 keyCount++;
             }
         }
