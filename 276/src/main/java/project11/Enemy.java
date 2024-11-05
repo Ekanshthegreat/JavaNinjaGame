@@ -1,6 +1,6 @@
 package project11;
 
-public abstract class Enemy extends GameObject implements Movable {
+public abstract class Enemy extends GameObject {
     protected int damage;
 
     public Enemy(int x, int y, int damage, int typeId) {
