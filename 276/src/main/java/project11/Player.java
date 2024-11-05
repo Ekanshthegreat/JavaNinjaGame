@@ -1,8 +1,12 @@
 package project11;
 
-public class Player {
+public class Player extends GameObject{
     // Player attributes like position, score, etc.
     private int score;
+
+    public Player(int x, int y, int typeId) {
+        super(x, y, true, typeId);
+    }
 
     public void pickupItem(Pickupable item) {
         item.onPickup(); // Call onPickup to handle the item pickup logic
