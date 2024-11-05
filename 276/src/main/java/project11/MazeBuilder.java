@@ -45,10 +45,10 @@ public class MazeBuilder {
 
     
     private GameObject[][] buildMaze() {
-        // Initialize all cells as walls (0)
+        // Initialize all cells as barriers (0)
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                maze[i][j] = factory.createObject("wall", j, i);
+                maze[i][j] = factory.createObject("barrier", j, i);
             }
         }
 
@@ -74,7 +74,7 @@ public class MazeBuilder {
 
             // Check if the new cell is within bounds and not visited
             if (newX >= 0 && newX < rows && newY >= 0 && newY < cols && !visited[newX][newY]) {
-                // Clear the wall between the current cell and the new cell
+                // Clear the barrier between the current cell and the new cell
                 maze[x + dir[0]][y + dir[1]] = null;
                 dfs(newX, newY);  // Recursively visit the new cell
             }
@@ -99,8 +99,8 @@ public class MazeBuilder {
         int x,y;
         // Randomly choose null to be keys
         while (keyCount <= maxKeys) {
-            x = (int)(Math.random() * cols + 1);
-            y= (int)(Math.random() * rows + 1);
+            x = (int)(Math.random() * cols);
+            y = (int)(Math.random() * rows);
             if (maze[y][x] == null) {
                 maze[y][x] = factory.createObject("key", x, y);
                 keyCount++;
@@ -110,17 +110,17 @@ public class MazeBuilder {
 
 
     private void generateHoles(){
-        // Randomly choose inner walls to be holes
+        // Randomly choose inner barriers to be holes
         int holeCount = 0;
 
         while (holeCount < maxHoles) {
-            // Choose y avoiding the outer walls
-            int y = (int)(Math.random() * rows + 1);
-            // Choose x avoiding the outer walls
-            int x = (int)(Math.random() * cols + 1);
+            // Choose y avoiding the outer barriers
+            int y = (int)(Math.random() * rows);
+            // Choose x avoiding the outer barriers
+            int x = (int)(Math.random() * cols);
 
 
-            if (maze[y][x] != null && maze[y][x].typeId == 6) { // Assuming typeId 6 indicates a wall
+            if (maze[y][x] != null && maze[y][x].typeId == 6) { // Assuming typeId 6 indicates a barrier
                 maze[y][x] = factory.createObject("hole", x, y);
                 holeCount++;
             }
@@ -128,14 +128,14 @@ public class MazeBuilder {
     }
 
     private void generateBushes(){
-        // Randomly choose inner walls to be bushes
+        // Randomly choose inner barriers to be bushes
         int bushCount = 0;
 
         while (bushCount < maxBushes) {
-            // Choose y avoiding the outer walls
-            int y = (int)(Math.random() * rows) + 1;
-            // Choose x avoiding the outer walls
-            int x = (int)(Math.random() * cols) + 1;
+            // Choose y avoiding the outer barriers
+            int y = (int)(Math.random() * rows);
+            // Choose x avoiding the outer barriers
+            int x = (int)(Math.random() * cols);
 
             if (maze[y][x] != null && maze[y][x].typeId == 6) { 
                 maze[y][x] = factory.createObject("bush", x, y);
