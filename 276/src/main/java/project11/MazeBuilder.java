@@ -36,7 +36,7 @@ public class MazeBuilder {
      */
     public void buildMaze(GameObject[][] maze) {
         this.maze = maze;
-        buildMaze();
+        generateBarriers();
         generateBushes();
         generateHoles();
         generateItems();
@@ -44,7 +44,7 @@ public class MazeBuilder {
     }
 
     
-    private GameObject[][] buildMaze() {
+    private GameObject[][] generateBarriers() {
         // Initialize all cells as barriers (0)
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -57,6 +57,21 @@ public class MazeBuilder {
         int startY = random.nextInt(cols);
         dfs(startX - startX % 2, startY - startY % 2);  // Adjust to even index for symmetry
 
+        // Set the outermost cells as ground
+        for (int i = 0; i < rows; i++) {
+            maze[i][0] = factory.createObject("ground", 0, i);
+            maze[i][cols - 1] = factory.createObject("ground", cols - 1, i);
+        }
+
+        //check for empty spots(null) and fill with ground
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                if (maze[j][i] == null) {
+                    maze[j][i] = factory.createObject("ground", i, j);
+                }
+            }
+        }
+        
         return maze;
     }
 
@@ -98,7 +113,7 @@ public class MazeBuilder {
         int keyCount = 0;
         int x,y;
         // Randomly choose ground to be keys
-        while (keyCount <= maxKeys) {
+        while (keyCount < maxKeys) {
             x = (int)(Math.random() * cols);
             y = (int)(Math.random() * rows);
             if (maze[y][x].typeId==1) {
