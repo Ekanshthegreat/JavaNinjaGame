@@ -63,5 +63,13 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         renderer.render(g, gameState.getGameObjects());
+
+        // Draw the player's score in the data tiles area
+        int score = gameState.getPlayer().getScore(); // Get the player's score
+        int tileSize = GamePanel.getTileSize();
+        
+        // Set the color and font for the score display
+        g.setColor(Color.white); // Set text color to white
+        g.drawString("Score: " + score, 10, tileSize); // Draw score in the data area
     }
 }
