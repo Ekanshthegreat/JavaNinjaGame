@@ -1,25 +1,22 @@
 package project11;
 
-public abstract class Item {
-    protected int x; // X position
-    protected int y; // Y position
+public abstract class Item extends GameObject {
     protected int score; // Score associated with the item
     protected boolean isSpawned; // Indicates if the item is spawned
 
     // Constructor
-    public Item(int x, int y, int score) {
-        this.x = x;
-        this.y = y;
+    public Item(int x, int y, int score, boolean isSolid, int typeId) {
+        super(x, y, isSolid, 0); // Assuming typeId is not needed or can be set to a default value
         this.score = score;
         this.isSpawned = true; // Assume items are spawned upon creation
     }
 
     public int getX() {
-        return x;
+        return x; // Inherited from GameObject
     }
 
     public int getY() {
-        return y;
+        return y; // Inherited from GameObject
     }
 
     public int getScore() {

@@ -4,14 +4,23 @@ public class GameObjectFactory {
 
     public GameObject createObject(String type, int x, int y) {
         switch (type.toLowerCase()) {
-            case "bush":
-                return new Bush(x, y, false, 1); // typeId 1 for Bush
-            case "barrier":
-                return new Barrier(x, y, true, 2); // typeId 2 for Barrier
             case "hole":
-                return new Hole(x, y, 5, 3); // typeId 3 for Hole with initial damage
+                return new Hole(x, y, 10, 7);
+            case "barrier":
+                return new Barrier(x, y, true, 6); // typeId for Barrier
             case "samurai":
-                return new Samurai(x, y, 10, 4); // typeId 4 for Samurai with initial damage
+                return new Samurai(x, y, 10, 4); // typeId for Samurai with initial damage
+            case "player":
+                return new Player(x, y, 1); // Creating a Player
+            
+            // Creating a mandatory item
+            case "mandatoryitem":
+                return new MandatoryItem(x, y, 10, false, 15); // Example values for score and isSpawned
+            
+            // Creating a bonus item
+            case "bonusitem":
+                return new BonusItem(x, y, 10,false, 16); 
+            
             default:
                 throw new IllegalArgumentException("Unknown GameObject type: " + type);
         }
