@@ -5,6 +5,9 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
+/**
+ * Draws the game objects to the screen
+ */
 public class Renderer {
     private Image groundSprite, holeSprite, jumpingShoesSprite, ninjaSprite, samuraiSprite, spawnSprite, wallSprite;
 
@@ -26,15 +29,17 @@ public class Renderer {
         int tileSize = GamePanel.getTileSize();
         
         // Offsets for border and data tiles
-        int xOffset = GamePanel.getBorderTiles() * tileSize; // Offset for left border
-        int yOffset = GamePanel.getDataTiles() * tileSize; // Offset for data space only
+        int xOffset = GamePanel.getBorderTiles() * tileSize;
+        int yOffset = GamePanel.getDataTiles() * tileSize;
     
+        // Draw every GameObject in the gameObjects array
         for (int row = 0; row < gameObjects.length; row++) {
             for (int col = 0; col < gameObjects[row].length; col++) {
                 GameObject obj = gameObjects[row][col];
                 if (obj != null) {
-                    int x = col * tileSize + xOffset; // Apply xOffset
-                    int y = row * tileSize + yOffset + GamePanel.getBorderTiles() * tileSize; // Apply yOffset + border adjustment
+                    // Apply offset
+                    int x = col * tileSize + xOffset;
+                    int y = row * tileSize + yOffset + GamePanel.getBorderTiles() * tileSize;
     
                     switch (obj.getTypeId()) {
                         case 1: g.drawImage(groundSprite, x, y, tileSize, tileSize, null); break;

@@ -8,11 +8,9 @@ import java.util.ArrayList;
  * Represents the game state, including player and enemy positions.
  */
 public class GameState {
-    private Player player; // player character
-    private ArrayList<Enemy> enemies; // active enemies
-    private GameObject[][] gameObjects; // board data
-
-    // private final ReentrantLock lock = new ReentrantLock();
+    private Player player;
+    private ArrayList<Enemy> enemies; // All active enemies
+    private GameObject[][] gameObjects; // All game objects in the game
 
     public GameState() {;
         int width = GamePanel.getPlayColumns();
@@ -29,6 +27,8 @@ public class GameState {
                 this.gameObjects[y][x] = new Ground(x,y);
             }
         }
+
+        // Spawn player
         this.gameObjects[height/2][0] = player;
     }
 
@@ -46,7 +46,7 @@ public class GameState {
         GameObject targetObject = gameObjects[newY][newX];
         if (targetObject != null && targetObject.isSolid()) {
             System.out.println("Can't move because there's a wall");
-            return; // Do not move if there's a solid object
+            return; // does nothing if there is a wall
         }
 
         // Update the gameObjects array
