@@ -1,29 +1,56 @@
 package project11;
 
 public abstract class GameObject {
-    protected int x;
-    protected int y;
-    protected boolean solid;
+    protected int x;       // X coordinate on the grid
+    protected int y;       // Y coordinate on the grid
+    protected boolean solid; // Indicates if the object is solid (blocks movement)
+    protected int typeId;   // Unique identifier for the type of GameObject
 
-    public GameObject(int x, int y, boolean solid) {
+    // Constructor to initialize the GameObject
+    public GameObject(int x, int y, boolean solid, int typeId) {
         this.x = x;
         this.y = y;
         this.solid = solid;
+        this.typeId = typeId;
     }
-
-    // Abstract method for rendering the object
-    public abstract void render();
 
     // Method to check if the object is solid
     public boolean isSolid() {
         return solid;
     }
 
+<<<<<<< HEAD
+=======
+    // Getter for typeId
+    public int getTypeId() {
+        return typeId;
+    }
+
+    // Getter for X coordinate
+>>>>>>> 0a52b81062d875465d93c429be4c54728380d21d
     public int getX() {
         return x;
     }
 
+<<<<<<< HEAD
     public int getY() {
         return y;
     }
 }
+=======
+    // Getter for Y coordinate
+    public int getY() {
+        return y;
+    }
+
+    // Setter for X coordinate
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    // Setter for Y coordinate
+    public void setY(int y) {
+        this.y = y;
+    }
+}
+>>>>>>> 0a52b81062d875465d93c429be4c54728380d21d
