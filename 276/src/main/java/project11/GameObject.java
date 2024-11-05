@@ -19,16 +19,25 @@ public abstract class GameObject {
         return solid;
     }
 
+<<<<<<< HEAD
+=======
     // Getter for typeId
     public int getTypeId() {
         return typeId;
     }
 
     // Getter for X coordinate
+>>>>>>> 0a52b81062d875465d93c429be4c54728380d21d
     public int getX() {
         return x;
     }
 
+<<<<<<< HEAD
+    public int getY() {
+        return y;
+    }
+}
+=======
     // Getter for Y coordinate
     public int getY() {
         return y;
@@ -44,3 +53,4 @@ public abstract class GameObject {
         this.y = y;
     }
 }
+>>>>>>> 0a52b81062d875465d93c429be4c54728380d21d
