@@ -6,13 +6,11 @@ import java.util.Random;
 public class EnemyGenerator {
     private ArrayList<Enemy> enemies;
     private Player player;
-    private EnemyAI enemyAI;
     private Random random;
 
     public EnemyGenerator(Player player) {
         this.enemies = new ArrayList<>();
         this.player = player;
-        this.enemyAI = new EnemyAI(player);
         this.random = new Random();
     }
 
@@ -26,7 +24,7 @@ public class EnemyGenerator {
 
     public void updateEnemies() {
         for (Enemy enemy : enemies) {
-            enemyAI.moveTowardsPlayer(enemy); // Move each enemy towards the player
+            enemy.moveTowardsPlayer(player); // Move each enemy towards the player
         }
     }
 

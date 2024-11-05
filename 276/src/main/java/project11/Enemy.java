@@ -29,4 +29,23 @@ public abstract class Enemy extends GameObject {
     public int getDamage() {
         return damage;
     }
+
+    // Method to move the enemy towards the player
+    public void moveTowardsPlayer(Player player) {
+        int playerX = player.getX();
+        int playerY = player.getY();
+
+        // Move enemy towards player
+        if (this.x < playerX) {
+            this.x++; // Move right
+        } else if (this.x > playerX) {
+            this.x--; // Move left
+        }
+
+        if (this.y < playerY) {
+            this.y++; // Move down
+        } else if (this.y > playerY) {
+            this.y--; // Move up
+        }
+    }
 }

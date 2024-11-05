@@ -19,7 +19,7 @@ public class GameObjectFactory {
             
             // Creating a bonus item
             case "bonusitem":
-                return new BonusItem(x, y, 10,false, 16); 
+                return new BonusItem(x, y, 10, false, 16); // Example values for score and isSpawned
             
             default:
                 throw new IllegalArgumentException("Unknown GameObject type: " + type);
