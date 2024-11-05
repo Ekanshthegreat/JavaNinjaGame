@@ -2,29 +2,68 @@ package project11;
 
 import java.awt.Color;
 import java.awt.Dimension;
-
+import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
-    // Define tile sizes
-    final int tile = 16; // 16x16 tile
-    final int scale = 3;
-    final int tileSize = tile * scale;
 
-    // Define game size
-    final int maxColumn = 16;
-    final int maxRow = 12;
-    final int screenWidth = tileSize * maxColumn;
-    final int screenHeight = tileSize * maxRow;
+    private static final int TILE_SIZE = 16 * 3;
+    private static final int PLAY_COLUMNS = 10;
+    private static final int PLAY_ROWS = 8;
 
-    Thread gameThread;
-
-    /**
-     * Create a game panel.
-     */
-    public GamePanel() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLACK);
-        this.setDoubleBuffered(true);
+    public static int getTileSize() {
+        return TILE_SIZE;
     }
+
+    public static int getPlayColumns() {
+        return PLAY_COLUMNS;
+    }
+
+    public static int getPlayRows() {
+        return PLAY_ROWS;
+    }
+
+    private static final int BORDER_TILES = 1;   // 1 tile black rim
+    private static final int DATA_TILES = 2;     // 2 tile space at the top for game data
+
+    public static int getBorderTiles() {
+        return BORDER_TILES;
+    }
+
+    public static int getDataTiles() {
+        return DATA_TILES;
+    }
+
+
+    protected GameState gameState;
+
+    private Renderer renderer;
+
+    public GamePanel(GameState gameState, KeyHandler keyHandler) {
+        this.gameState = gameState;
+        this.renderer = new Renderer();
+        
+        // Set dimensions based on tile size, borders, and data space
+        int width = (PLAY_COLUMNS + 2*BORDER_TILES) * TILE_SIZE; // Only the columns for width
+        int height = (PLAY_ROWS + 2*BORDER_TILES + DATA_TILES) * TILE_SIZE; // Full height including borders and data
+    
+        this.setPreferredSize(new Dimension(width, height));
+        this.setBackground(Color.black);
+        this.setDoubleBuffered(true);
+        this.addKeyListener(keyHandler);
+        this.setFocusable(true);
+    }
+    
+
+    public void render() {
+        repaint();
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        renderer.render(g, gameState.getGameObjects());
+    }
+
+    
 }
