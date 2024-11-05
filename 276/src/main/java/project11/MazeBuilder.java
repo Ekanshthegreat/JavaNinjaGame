@@ -99,8 +99,8 @@ public class MazeBuilder {
         int x,y;
         // Randomly choose null to be keys
         while (keyCount <= maxKeys) {
-            x = (int)(Math.random() * cols + 1);
-            y= (int)(Math.random() * rows + 1);
+            x = (int)(Math.random() * cols);
+            y = (int)(Math.random() * rows);
             if (maze[y][x] == null) {
                 maze[y][x] = factory.createObject("key", x, y);
                 keyCount++;
@@ -115,9 +115,9 @@ public class MazeBuilder {
 
         while (holeCount < maxHoles) {
             // Choose y avoiding the outer walls
-            int y = (int)(Math.random() * rows + 1);
+            int y = (int)(Math.random() * rows);
             // Choose x avoiding the outer walls
-            int x = (int)(Math.random() * cols + 1);
+            int x = (int)(Math.random() * cols);
 
 
             if (maze[y][x] != null && maze[y][x].typeId == 6) { // Assuming typeId 6 indicates a wall
@@ -133,9 +133,9 @@ public class MazeBuilder {
 
         while (bushCount < maxBushes) {
             // Choose y avoiding the outer walls
-            int y = (int)(Math.random() * rows) + 1;
+            int y = (int)(Math.random() * rows);
             // Choose x avoiding the outer walls
-            int x = (int)(Math.random() * cols) + 1;
+            int x = (int)(Math.random() * cols);
 
             if (maze[y][x] != null && maze[y][x].typeId == 6) { 
                 maze[y][x] = factory.createObject("bush", x, y);
