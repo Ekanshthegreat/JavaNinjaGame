@@ -1,5 +1,8 @@
 package project11;
 
+/**
+ * BaseThread class to handle the game loop.
+ */
 public class BaseThread implements Runnable {
     private static final int TOTAL_CYCLE_TIME = 1000; // 1 second
     private static final int INPUT_TIME = 500;        // 500ms input phase

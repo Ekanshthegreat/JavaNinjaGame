@@ -3,6 +3,9 @@ package project11;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Handles key input for the game
+ */
 public class KeyHandler implements KeyListener {
     public boolean up, down, left, right;
 
