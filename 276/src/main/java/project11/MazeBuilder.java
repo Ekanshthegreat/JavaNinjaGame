@@ -61,7 +61,7 @@ public class MazeBuilder {
     }
 
     private void dfs(int x, int y) {
-        maze[x][y] = null;  // Set current cell as a path
+        maze[x][y] = factory.createObject("ground", x, y);  // Set current cell as a path
         visited[x][y] = true;
 
         // Define movement directions (up, down, left, right)
@@ -75,7 +75,7 @@ public class MazeBuilder {
             // Check if the new cell is within bounds and not visited
             if (newX >= 0 && newX < rows && newY >= 0 && newY < cols && !visited[newX][newY]) {
                 // Clear the barrier between the current cell and the new cell
-                maze[x + dir[0]][y + dir[1]] = null;
+                maze[x + dir[0]][y + dir[1]] = factory.createObject("ground", x + dir[0], y + dir[1]);
                 dfs(newX, newY);  // Recursively visit the new cell
             }
         }
@@ -94,15 +94,15 @@ public class MazeBuilder {
 
 
     private void generateItems(){
-        //Randomly choose null spots to be keys
+        //Randomly choose ground spots to be keys
         int keyCount = 0;
         int x,y;
-        // Randomly choose null to be keys
+        // Randomly choose ground to be keys
         while (keyCount <= maxKeys) {
             x = (int)(Math.random() * cols);
             y = (int)(Math.random() * rows);
-            if (maze[y][x] == null) {
-                maze[y][x] = factory.createObject("key", x, y);
+            if (maze[y][x].typeId==1) {
+                maze[y][x] = factory.createObject("mandatoryitem", x, y);
                 keyCount++;
             }
         }
