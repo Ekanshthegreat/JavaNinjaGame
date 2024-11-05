@@ -3,18 +3,13 @@ package project11;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import javax.swing.JPanel;
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 
 public class GamePanel extends JPanel {
 
     private static final int TILE_SIZE = 16 * 3;
-    private static final int PLAY_COLUMNS = 20;
-    private static final int PLAY_ROWS = 16;
+    private static final int PLAY_COLUMNS = 10;
+    private static final int PLAY_ROWS = 8;
 
     public static int getTileSize() {
         return TILE_SIZE;
@@ -41,8 +36,6 @@ public class GamePanel extends JPanel {
 
 
     protected GameState gameState;
-    private Image ninjaSprite;
-    private Image groundSprite;
 
     private Renderer renderer;
 
@@ -52,7 +45,7 @@ public class GamePanel extends JPanel {
         
         // Set dimensions based on tile size, borders, and data space
         int width = (PLAY_COLUMNS + 2*BORDER_TILES) * TILE_SIZE; // Only the columns for width
-        int height = (PLAY_ROWS + BORDER_TILES + DATA_TILES) * TILE_SIZE; // Full height including borders and data
+        int height = (PLAY_ROWS + 2*BORDER_TILES + DATA_TILES) * TILE_SIZE; // Full height including borders and data
     
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.black);
