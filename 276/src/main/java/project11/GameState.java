@@ -1,7 +1,5 @@
 package project11;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 import java.util.ArrayList;
 
 /**
@@ -11,29 +9,64 @@ public class GameState {
     private Player player;
     private ArrayList<Enemy> enemies; // All active enemies
     private GameObject[][] gameObjects; // All game objects in the game
-    private MazeBuilder MazeBuilder;
-    private GameObjectFactory GameObjectFactory = new GameObjectFactory();
+    private GameObjectFactory gameObjectFactory = new GameObjectFactory();
+    private EnemyGenerator enemyGenerator; // Reference to EnemyGenerator
 
-    public GameState() {;
+    public GameState() {
         int width = GamePanel.getPlayColumns();
         int height = GamePanel.getPlayRows();
-        this.player = new Player(0, height/2, 5);
+        this.player = new Player(0, height / 2, 5);
         this.enemies = new ArrayList<>();
-        
-        // Initialize gameObjects array with desired dimensions
         this.gameObjects = new GameObject[height][width];
-        
+        this.enemyGenerator = new EnemyGenerator(player); // Initialize enemy generator
+
         // Populate gameObjects array
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                this.gameObjects[y][x] = new Ground(x,y);
+                this.gameObjects[y][x] = new Ground(x, y);
             }
         }
-        // this.MazeBuilder = new MazeBuilder(GameObjectFactory);
-        // MazeBuilder.buildMaze(gameObjects);
 
         // Spawn player
-        this.gameObjects[height/2][0] = player;
+        this.gameObjects[height / 2][0] = player;
+
+        // Initialize items and enemies
+        initializeItemsAndEnemies();
+    }
+
+    private void initializeItemsAndEnemies() {
+        int maxX = gameObjects[0].length; // Maximum x boundary
+        int maxY = gameObjects.length;    // Maximum y boundary
+
+        // Add three mandatory items
+        for (int i = 0; i < 3; i++) {
+            int x = Math.min(i + 2, maxX - 1);
+            int y = Math.min(i + 2, maxY - 1);
+            Item item = (Item) gameObjectFactory.createObject("mandatoryItem", x, y);
+            gameObjects[y][x] = item;
+        }
+
+        // Add one bonus item
+        int bonusX = Math.min(5, maxX - 1);
+        int bonusY = Math.min(5, maxY - 1);
+        Item bonusItem = (Item) gameObjectFactory.createObject("bonusItem", bonusX, bonusY);
+        gameObjects[bonusY][bonusX] = bonusItem;
+
+        // Add five holes
+        for (int i = 0; i < 5; i++) {
+            int x = Math.min(i + 3, maxX - 1);
+            int y = Math.min(i + 1, maxY - 1);
+            GameObject hole = gameObjectFactory.createObject("hole", x, y);
+            gameObjects[y][x] = hole;
+        }
+
+        // Add two initial enemies using EnemyGenerator
+        for (int i = 0; i < 2; i++) {
+            Enemy enemy = enemyGenerator.createEnemy();
+            int x = Math.min(enemy.getX(), maxX - 1);
+            int y = Math.min(enemy.getY(), maxY - 1);
+            gameObjects[y][x] = enemy;
+        }
     }
 
     // Update player position based on input
@@ -58,6 +91,9 @@ public class GameState {
         player.setX(newX);
         player.setY(newY);
         gameObjects[player.getY()][player.getX()] = player; // Set new position
+
+        // Update enemy positions
+        enemyGenerator.updateEnemies();
     }
 
     public Player getPlayer() {
@@ -67,5 +103,4 @@ public class GameState {
     public GameObject[][] getGameObjects() {
         return gameObjects;
     }
-
 }
