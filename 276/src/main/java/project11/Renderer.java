@@ -24,14 +24,18 @@ public class Renderer {
 
     public void render(Graphics g, GameObject[][] gameObjects) {
         int tileSize = GamePanel.getTileSize();
-
+        
+        // Offsets for border and data tiles
+        int xOffset = GamePanel.getBorderTiles() * tileSize; // Offset for left border
+        int yOffset = GamePanel.getDataTiles() * tileSize; // Offset for data space only
+    
         for (int row = 0; row < gameObjects.length; row++) {
             for (int col = 0; col < gameObjects[row].length; col++) {
                 GameObject obj = gameObjects[row][col];
                 if (obj != null) {
-                    int x = col * tileSize;
-                    int y = row * tileSize;
-
+                    int x = col * tileSize + xOffset; // Apply xOffset
+                    int y = row * tileSize + yOffset + GamePanel.getBorderTiles() * tileSize; // Apply yOffset + border adjustment
+    
                     switch (obj.getTypeId()) {
                         case 1: g.drawImage(groundSprite, x, y, tileSize, tileSize, null); break;
                         case 2: g.drawImage(holeSprite, x, y, tileSize, tileSize, null); break;
@@ -46,4 +50,5 @@ public class Renderer {
             }
         }
     }
+    
 }

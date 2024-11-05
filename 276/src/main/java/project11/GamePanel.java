@@ -31,6 +31,15 @@ public class GamePanel extends JPanel {
     private static final int BORDER_TILES = 1;   // 1 tile black rim
     private static final int DATA_TILES = 2;     // 2 tile space at the top for game data
 
+    public static int getBorderTiles() {
+        return BORDER_TILES;
+    }
+
+    public static int getDataTiles() {
+        return DATA_TILES;
+    }
+
+
     protected GameState gameState;
     private Image ninjaSprite;
     private Image groundSprite;
@@ -40,16 +49,18 @@ public class GamePanel extends JPanel {
     public GamePanel(GameState gameState, KeyHandler keyHandler) {
         this.gameState = gameState;
         this.renderer = new Renderer();
-        // remaining setup code
-        int width = (PLAY_COLUMNS + 2 * BORDER_TILES) * TILE_SIZE;
-        int height = (PLAY_ROWS + BORDER_TILES + DATA_TILES) * TILE_SIZE;
+        
+        // Set dimensions based on tile size, borders, and data space
+        int width = (PLAY_COLUMNS + 2*BORDER_TILES) * TILE_SIZE; // Only the columns for width
+        int height = (PLAY_ROWS + BORDER_TILES + DATA_TILES) * TILE_SIZE; // Full height including borders and data
+    
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
-
     }
+    
 
     public void render() {
         repaint();
