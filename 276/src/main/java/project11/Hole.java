@@ -1,23 +1,13 @@
 package project11;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import javax.imageio.ImageIO;
-import java.io.IOException;
+public class Hole extends Enemy {
 
-public class Hole extends GameObject {
-    private static Image holeSprite;
-
-    public Hole(int x, int y, boolean solid, int typeId) {
-        super(x, y, solid, typeId);
+    public Hole(int x, int y, int damage, int typeId) {
+        super(x, y, damage, typeId); // Pass values to the superclass constructor
     }
 
-    
-
-    
-
     @Override
-    public boolean isSolid() {
-        return false;
+    public void setDifficulty(int difficulty) {
+        this.damage = damage * difficulty; // Adjust damage based on difficulty
     }
 }

@@ -1,34 +1,13 @@
 package project11;
 
-public class Samurai extends Enemy implements Movable {
-    private int positionX;
-    private int positionY;
+public class Samurai extends Enemy {
 
-    public Samurai(int damage) {
-        super(damage);
-        this.positionX = 0;
-        this.positionY = 0;
+    public Samurai(int x, int y, int damage, int typeId) {
+        super(x, y, damage, typeId); // Pass values to the superclass constructor
     }
 
     @Override
     public void setDifficulty(int difficulty) {
-        this.damage = difficulty * 2;  // Example logic, adjust as needed
-    }
-
-    @Override
-    public void move(int x, int y) {
-        this.positionX = x;
-        this.positionY = y;
-        System.out.println("Samurai moved to position (" + x + ", " + y + ")");
-    }
-
-    public int getPositionX() {
-        return positionX;
-    }
-
-    public int getPositionY() {
-        return positionY;
+        this.damage = damage * difficulty; // Adjust damage based on difficulty
     }
 }
-
-
