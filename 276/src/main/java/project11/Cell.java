@@ -4,29 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cell {
-    private List<GameObject> gameObjects; // Array of GameObjects in this cell
+    private List<GameObject> gameObjects;
+    private GameObject primaryObject;
 
     public Cell() {
         this.gameObjects = new ArrayList<>();
     }
 
-    // Check if any GameObject occupies this cell
     public boolean isOccupied() {
-        return !gameObjects.isEmpty();
+        return primaryObject != null && primaryObject.isSolid();
     }
 
-    // Add a GameObject to this cell
     public void addGameObject(GameObject obj) {
         gameObjects.add(obj);
+        if (primaryObject == null || !primaryObject.isSolid()) {
+            primaryObject = obj;
+        }
     }
 
-    // Remove a GameObject from this cell
     public void removeGameObject(GameObject obj) {
         gameObjects.remove(obj);
+        if (primaryObject == obj) {
+            primaryObject = gameObjects.isEmpty() ? null : gameObjects.get(0);
+        }
     }
 
-    // Get the list of GameObjects in this cell
-    public List<GameObject> getGameObjects() {
-        return gameObjects;
+    public GameObject getPrimaryObject() {
+        return primaryObject;
+    }
+
+    public void setPrimaryObject(GameObject obj) {
+        primaryObject = obj;
+        if (!gameObjects.contains(obj)) {
+            gameObjects.add(obj);
+        }
     }
 }

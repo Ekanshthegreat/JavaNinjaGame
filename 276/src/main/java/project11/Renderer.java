@@ -10,8 +10,15 @@ import java.io.IOException;
  */
 public class Renderer {
     private Image groundSprite, holeSprite, jumpingShoesSprite, ninjaSprite, samuraiSprite, spawnSprite, wallSprite;
+    private Image keySprite, chestSprite; // New images for Key and Chest
+    private int tileSize; // Dynamically set tile size
 
-    public Renderer() {
+    public Renderer(int tileSize) { // Pass tileSize from GamePanel
+        this.tileSize = tileSize;
+        loadSprites();
+    }
+
+    private void loadSprites() {
         try {
             groundSprite = ImageIO.read(getClass().getResource("/project11/sprites/Ground.png"));
             holeSprite = ImageIO.read(getClass().getResource("/project11/sprites/Hole.png"));
@@ -20,27 +27,24 @@ public class Renderer {
             samuraiSprite = ImageIO.read(getClass().getResource("/project11/sprites/Samurai.png"));
             spawnSprite = ImageIO.read(getClass().getResource("/project11/sprites/spawn.png"));
             wallSprite = ImageIO.read(getClass().getResource("/project11/sprites/Wall.png"));
+            keySprite = ImageIO.read(getClass().getResource("/project11/sprites/Key.png"));
+            chestSprite = ImageIO.read(getClass().getResource("/project11/sprites/Chest.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void render(Graphics g, GameObject[][] gameObjects) {
-        int tileSize = GamePanel.getTileSize();
-        
-        // Offsets for border and data tiles
         int xOffset = GamePanel.getBorderTiles() * tileSize;
-        int yOffset = GamePanel.getDataTiles() * tileSize;
+        int yOffset = GamePanel.getDataTiles() * tileSize + GamePanel.getBorderTiles() * tileSize;
     
-        // Draw every GameObject in the gameObjects array
         for (int row = 0; row < gameObjects.length; row++) {
             for (int col = 0; col < gameObjects[row].length; col++) {
                 GameObject obj = gameObjects[row][col];
                 if (obj != null) {
-                    // Apply offset
                     int x = col * tileSize + xOffset;
-                    int y = row * tileSize + yOffset + GamePanel.getBorderTiles() * tileSize;
-    
+                    int y = row * tileSize + yOffset;
+
                     switch (obj.getTypeId()) {
                         case 1: g.drawImage(groundSprite, x, y, tileSize, tileSize, null); break;
                         case 2: g.drawImage(holeSprite, x, y, tileSize, tileSize, null); break;
@@ -49,11 +53,20 @@ public class Renderer {
                         case 5: g.drawImage(ninjaSprite, x, y, tileSize, tileSize, null); break;
                         case 6: g.drawImage(spawnSprite, x, y, tileSize, tileSize, null); break;
                         case 7: g.drawImage(wallSprite, x, y, tileSize, tileSize, null); break;
+                        case 8: g.drawImage(keySprite, x, y, tileSize, tileSize, null); break;
+                        case 9: g.drawImage(chestSprite, x, y, tileSize, tileSize, null); break;
                         default: break;
                     }
                 }
             }
         }
     }
-    
+
+    public Image getWallSprite() {
+        return wallSprite;
+    }
+
+    public Image getGroundSprite() {
+        return groundSprite;
+    }
 }

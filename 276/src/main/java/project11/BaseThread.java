@@ -1,13 +1,10 @@
 package project11;
 
-/**
- * BaseThread class to handle the game loop.
- */
 public class BaseThread implements Runnable {
     private static final int TOTAL_CYCLE_TIME = 1000; // 1 second
     private static final int INPUT_TIME = 500;        // 500ms input phase
 
-    private GameState gameState; 
+    private GameState gameState;
     private GamePanel gamePanel;
     private KeyHandler keyHandler;
     private Thread thread;
@@ -54,8 +51,9 @@ public class BaseThread implements Runnable {
     }
 
     private void handleInput() {
+        System.out.println("Input state - Up: " + keyHandler.up + ", Down: " + keyHandler.down + ", Left: " + keyHandler.left + ", Right: " + keyHandler.right);
         gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
-        keyHandler.resetInput(); // Reset input for the next cycle
+        keyHandler.resetInput(); 
     }
 
     private void render() {
