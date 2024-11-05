@@ -11,6 +11,8 @@ public class GameState {
     private Player player;
     private ArrayList<Enemy> enemies; // All active enemies
     private GameObject[][] gameObjects; // All game objects in the game
+    private MazeBuilder MazeBuilder;
+    private GameObjectFactory GameObjectFactory = new GameObjectFactory();
 
     public GameState() {;
         int width = GamePanel.getPlayColumns();
@@ -27,6 +29,8 @@ public class GameState {
                 this.gameObjects[y][x] = new Ground(x,y);
             }
         }
+        // this.MazeBuilder = new MazeBuilder(GameObjectFactory);
+        // MazeBuilder.buildMaze(gameObjects);
 
         // Spawn player
         this.gameObjects[height/2][0] = player;
