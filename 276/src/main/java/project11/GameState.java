@@ -9,36 +9,52 @@ import java.util.ArrayList;
  */
 public class GameState {
     private Player player; // player character
-    // private ArrayList<Enemy> enemies; // active enemies
+    private ArrayList<Enemy> enemies; // active enemies
     private GameObject[][] gameObjects; // board data
-    private int difficulty; // game difficulty
-
-    // replace with player stuff later
-    private static final int MOVE_DISTANCE = 16 * 3;
-    private int playerX = 0;
-    private int playerY = 0;
 
     // private final ReentrantLock lock = new ReentrantLock();
 
-    public GameState() {
-        // this.player = new Player();
-        // this.enemies = new ArrayList<>();
+    public GameState() {;
+        int width = GamePanel.getPlayColumns();
+        int height = GamePanel.getPlayRows();
+        this.player = new Player(0, height/2, 5);
+        this.enemies = new ArrayList<>();
+        
+        // Initialize gameObjects array with desired dimensions
+        this.gameObjects = new GameObject[height][width];
+        
+        // Populate `gameObjects` with initial objects or leave empty for now
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                this.gameObjects[y][x] = new Ground(x,y); // Example object; replace as needed
+            }
+        }
+        this.gameObjects[height/2][0] = player;
     }
 
     // Update player position based on input
     public void movePlayer(boolean up, boolean down, boolean left, boolean right) {
-        if (up) playerY -= MOVE_DISTANCE;
-        if (down) playerY += MOVE_DISTANCE;
-        if (left) playerX -= MOVE_DISTANCE;
-        if (right) playerX += MOVE_DISTANCE;
+        int newX = player.getX();
+        int newY = player.getY();
+
+        if (up && newY > 0) newY--;
+        if (down && newY < GamePanel.getPlayRows() - 1) newY++;
+        if (left && newX > 0) newX--;
+        if (right && newX < GamePanel.getPlayColumns() - 1) newX++;
+
+        // Update the gameObjects array
+        gameObjects[player.getY()][player.getX()] = new Ground(player.getX(), player.getY()); // Clear old position
+        player.setX(newX);
+        player.setY(newY);
+        gameObjects[player.getY()][player.getX()] = player; // Set new position
     }
 
-    public int getPlayerX() {
-        return playerX;
+    public Player getPlayer() {
+        return player;
     }
 
-    public int getPlayerY() {
-        return playerY;
+    public GameObject[][] getGameObjects() {
+        return gameObjects;
     }
 
 }

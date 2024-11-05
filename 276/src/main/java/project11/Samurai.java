@@ -1,34 +1,28 @@
 package project11;
 
-public class Samurai extends Enemy implements Movable {
-    private int positionX;
-    private int positionY;
-
-    public Samurai(int damage) {
-        super(damage);
-        this.positionX = 0;
-        this.positionY = 0;
+public class Samurai extends Enemy {
+    public Samurai(int x, int y, int damage, int typeId) {
+        super(x, y, damage, typeId);
     }
 
     @Override
     public void setDifficulty(int difficulty) {
-        this.damage = difficulty * 2;  // Example logic, adjust as needed
+        // Adjust damage or other properties based on difficulty
+        this.damage += difficulty; // Example adjustment
     }
 
     @Override
-    public void move(int x, int y) {
-        this.positionX = x;
-        this.positionY = y;
-        System.out.println("Samurai moved to position (" + x + ", " + y + ")");
-    }
-
-    public int getPositionX() {
-        return positionX;
-    }
-
-    public int getPositionY() {
-        return positionY;
+    public void move(int targetX, int targetY) {
+        // AI logic to move towards the target (player)
+        if (targetX > this.x) {
+            this.x++; // Move right
+        } else if (targetX < this.x) {
+            this.x--; // Move left
+        }
+        if (targetY > this.y) {
+            this.y++; // Move down
+        } else if (targetY < this.y) {
+            this.y--; // Move up
+        }
     }
 }
-
-
