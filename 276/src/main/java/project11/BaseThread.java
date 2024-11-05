@@ -51,8 +51,9 @@ public class BaseThread implements Runnable {
     }
 
     private void handleInput() {
+        System.out.println("Input state - Up: " + keyHandler.up + ", Down: " + keyHandler.down + ", Left: " + keyHandler.left + ", Right: " + keyHandler.right);
         gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
-        keyHandler.resetInput(); // Reset input for the next cycle
+        keyHandler.resetInput(); 
     }
 
     private void render() {
