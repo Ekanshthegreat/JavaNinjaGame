@@ -76,7 +76,6 @@ public class GameState {
         GameObject targetObject = gameBoard[newY][newX];
         if (targetObject != null) {
             int typeId = targetObject.getTypeId();
-            System.out.println("type id=" + typeId);
 
             if (typeId == 2) { // Hole
                 player.takeDamage(10);
@@ -92,7 +91,15 @@ public class GameState {
                 System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + totalItems);
                 gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
             } else if (typeId == 9) { // chest
-                
+                if (collectedItems >= totalItems) {
+                    System.out.println("Congratulations! You've collected all mandatory items and reached the chest.");
+                    System.out.println("Final Score: " + player.getScore());
+                    System.out.println("You win!");
+                    System.exit(0); // Close the game
+                } else {
+                    System.out.println("You need to collect all mandatory items before reaching the chest.");
+                    // gameBoard[newY][newX] = new End(player.getX(), player.getY(), false, 1);
+                }
             } else if (targetObject.isSolid()) {
                 System.out.println("Player encountered a solid object!");
                 return; // Prevent moving into solid object

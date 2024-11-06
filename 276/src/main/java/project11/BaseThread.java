@@ -48,12 +48,12 @@ public class BaseThread implements Runnable {
                     e.printStackTrace();
                 }
             }
-            System.out.println("Game currently running");
+            // System.out.println("Game currently running");
         }
     }
 
     private void handleInput() {
-        System.out.println("Input state - Up: " + keyHandler.up + ", Down: " + keyHandler.down + ", Left: " + keyHandler.left + ", Right: " + keyHandler.right);
+        // System.out.println("Input state - Up: " + keyHandler.up + ", Down: " + keyHandler.down + ", Left: " + keyHandler.left + ", Right: " + keyHandler.right);
         gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
         keyHandler.resetInput(); 
     }
