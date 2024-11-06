@@ -6,7 +6,7 @@ import java.util.Random;
 public class GameState {
     private Player player;
     private ArrayList<Enemy> enemies;
-    private GameObject[][] gameBoard; // Directly store GameObjects in a 2D array
+    private GameObject[][] gameBoard;
     private GameObjectFactory gameObjectFactory = new GameObjectFactory();
     private EnemyGenerator enemyGenerator;
     private MazeBuilder mazeBuilder;
@@ -14,8 +14,7 @@ public class GameState {
 
     private int collectedItems = 0;
     private int bonusItem = 0;
-    private final int totalItems = 3; // Assuming three mandatory items for the player to collect
-    // hold chest coordinates
+    private final int totalItems = 3;
     private int chestX = 0;
     private int chestY = 0;
 
@@ -29,7 +28,7 @@ public class GameState {
         this.mazeBuilder = new MazeBuilder(gameObjectFactory);
 
         initializeMaze();
-        gameBoard[height / 2][0] = player; // Place player at start position
+        gameBoard[height / 2][0] = player;
         initializeItemsAndEnemies();
     }
 
@@ -42,7 +41,7 @@ public class GameState {
                 GameObject obj = mazeGrid[y][x];
                 if (obj != null) {
                     gameBoard[y][x] = obj;
-                    if (obj.getTypeId() == 9) { // Store the chest position
+                    if (obj.getTypeId() == 9) {
                         chestX = x;
                         chestY = y;
                     }
@@ -62,8 +61,11 @@ public class GameState {
                 x = random.nextInt(maxX);
                 y = random.nextInt(maxY);
             } while (isOccupied(x, y));
+            enemy.setX(x);
+            enemy.setY(y);
             gameBoard[y][x] = enemy;
-            enemies.add(enemy); // Add enemy to the list for movement tracking
+            enemies.add(enemy);
+            System.out.println("Placed enemy within bounds at (" + x + ", " + y + ")");
         }
     }
 
@@ -74,58 +76,62 @@ public class GameState {
     public void movePlayer(boolean up, boolean down, boolean left, boolean right) {
         int newX = player.getX();
         int newY = player.getY();
-        
+
         if (up && newY > 0) newY--;
         if (down && newY < gameBoard.length - 1) newY++;
         if (left && newX > 0) newX--;
         if (right && newX < gameBoard[0].length - 1) newX++;
-        
+
         GameObject targetObject = gameBoard[newY][newX];
-        if (targetObject != null) {
-            int typeId = targetObject.getTypeId();
-
-            if (typeId == 2) { // Hole
-                player.takeDamage(10);
-                System.out.println("Stepped on a hole! Health: " + player.getScore());
-            } else if (typeId == 8) { // Mandatory Item
-                collectedItems++;
-                player.increaseScore(((MandatoryItem) targetObject).getScore());
-                System.out.println("Collected item! Items collected: " + collectedItems + "/" + totalItems);
-                gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
-            } else if (typeId == 3) { // bonus item
-                bonusItem++;
-                player.increaseScore(((BonusItem) targetObject).getScore());
-                System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + totalItems);
-                gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
-            } else if (typeId == 9) { // chest
-                if (collectedItems >= totalItems) {
-                    System.out.println("Congratulations! You've collected all mandatory items and reached the chest.");
-                    System.out.println("Final Score: " + player.getScore());
-                    System.out.println("You win!");
-                    System.exit(0); // Close the game
-                } else {
-                    System.out.println("You need to collect all mandatory items before reaching the chest.");
-                }
-            } else if (targetObject.isSolid()) {
-                System.out.println("Can't walk through walls!");
-                return; // Prevent moving into solid object
-            }
+        if (targetObject != null && targetObject.isSolid()) {
+            System.out.println("Can't move through solid object at (" + newX + ", " + newY + ")");
+            return;
         }
 
-        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);; // Clear player's current position
-        
-        if (collectedItems < totalItems) {
-            gameBoard[chestY][chestX] = new End(chestX, chestY, false, 9);
-        }
-
-        if(player.getScore() <= 0){
-            System.out.println("Score went below 0, you lost!");
-            System.exit(0); // Close the game
-        }
-
+        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);
         player.setX(newX);
         player.setY(newY);
-        gameBoard[newY][newX] = player; // Update player's new position
+        gameBoard[newY][newX] = player;
+        System.out.println("Player moved to (" + player.getX() + ", " + player.getY() + ")");
+    }
+
+    public void updateEnemies() {
+        int maxX = gameBoard[0].length - 1;
+        int maxY = gameBoard.length - 1;
+
+        System.out.println("Updating enemy movements");
+
+        for (Enemy enemy : enemies) {
+            int oldX = enemy.getX();
+            int oldY = enemy.getY();
+
+            // Clear enemy's current position
+            if (isWithinBounds(oldX, oldY)) {
+                gameBoard[oldY][oldX] = null;
+            }
+
+            // Move enemy towards player while avoiding walls
+            enemy.moveTowardsPlayer(player);
+            int newX = Math.max(0, Math.min(enemy.getX(), maxX));
+            int newY = Math.max(0, Math.min(enemy.getY(), maxY));
+
+            // Only move if the target cell is grass (or any other non-solid object)
+            if (gameBoard[newY][newX] == null || !gameBoard[newY][newX].isSolid()) {
+                enemy.setX(newX);
+                enemy.setY(newY);
+                gameBoard[newY][newX] = enemy;
+            } else {
+                // Restore enemy's original position if target cell is blocked
+                enemy.setX(oldX);
+                enemy.setY(oldY);
+                gameBoard[oldY][oldX] = enemy;
+                System.out.println("Blocked enemy movement at (" + newX + ", " + newY + ")");
+            }
+        }
+    }
+
+    private boolean isWithinBounds(int x, int y) {
+        return x >= 0 && x < gameBoard[0].length && y >= 0 && y < gameBoard.length;
     }
 
     public int getScore() {
@@ -140,40 +146,11 @@ public class GameState {
         return totalItems;
     }
 
-    public int getBonusItem(){
+    public int getBonusItem() {
         return bonusItem;
     }
 
-    public void updateEnemies() {
-        int maxX = gameBoard[0].length - 1;
-        int maxY = gameBoard.length - 1;
-    
-        for (Enemy enemy : enemies) {
-            // Clear enemy's current position
-            gameBoard[enemy.getY()][enemy.getX()] = null;
-    
-            // Move the enemy towards the player
-            enemy.moveTowardsPlayer(player);
-    
-            // Ensure the enemy's new position is within bounds
-            int newX = Math.max(0, Math.min(enemy.getX(), maxX));
-            int newY = Math.max(0, Math.min(enemy.getY(), maxY));
-    
-            // Update the enemy's coordinates to stay within bounds
-            enemy.setX(newX);
-            enemy.setY(newY);
-    
-            // Place the enemy at its new position
-            if (gameBoard[newY][newX] == null || !gameBoard[newY][newX].isSolid()) {
-                gameBoard[newY][newX] = enemy;
-            } else {
-                // If the new position is occupied by a solid object, reset enemy to original position
-                gameBoard[enemy.getY()][enemy.getX()] = enemy;
-            }
-        }
-    }
-
     public GameObject[][] getGameObjects() {
-        return gameBoard; // Return the entire board with GameObjects
+        return gameBoard;
     }
 }

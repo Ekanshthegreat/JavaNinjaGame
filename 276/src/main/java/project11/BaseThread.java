@@ -21,6 +21,7 @@ public class BaseThread implements Runnable {
         while (thread != null) {
             long startTime = System.currentTimeMillis();
 
+            // Handle player input
             handleInput();
 
             // Wait until the input phase is over
@@ -33,13 +34,13 @@ public class BaseThread implements Runnable {
                 }
             }
 
-            // Move enemies accordint go the player's position
-            // moveEnemies();
+            // Move enemies based on player's position and game rules
+            moveEnemies();
 
             // Render the game state
             render();
 
-            // Wait for the remainder of the cycle
+            // Wait for the remainder of the cycle to maintain game loop timing
             elapsed = System.currentTimeMillis() - startTime;
             if (elapsed < TOTAL_CYCLE_TIME) {
                 try {
@@ -48,18 +49,20 @@ public class BaseThread implements Runnable {
                     e.printStackTrace();
                 }
             }
-            // System.out.println("Game currently running");
+            // Uncomment for debugging
+            System.out.println("Game currently running");
         }
     }
 
     private void handleInput() {
-        // System.out.println("Input state - Up: " + keyHandler.up + ", Down: " + keyHandler.down + ", Left: " + keyHandler.left + ", Right: " + keyHandler.right);
+        System.out.println("Input state - Up: " + keyHandler.up + ", Down: " + keyHandler.down + ", Left: " + keyHandler.left + ", Right: " + keyHandler.right);
         gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
         keyHandler.resetInput(); 
     }
 
-    private void moveEnemies(){
-        gameState.updateEnemies();
+    private void moveEnemies() {
+        System.out.println("Updating enemy movements");
+        gameState.updateEnemies(); // Update enemies based on player's position and game rules
     }
 
     private void render() {
