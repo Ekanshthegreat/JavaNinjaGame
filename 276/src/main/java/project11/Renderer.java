@@ -51,8 +51,8 @@ public class Renderer {
                         case 3: g.drawImage(jumpingShoesSprite, x, y, tileSize, tileSize, null); break;
                         case 4: g.drawImage(samuraiSprite, x, y, tileSize, tileSize, null); break;
                         case 5: g.drawImage(ninjaSprite, x, y, tileSize, tileSize, null); break;
-                        case 6: g.drawImage(spawnSprite, x, y, tileSize, tileSize, null); break;
-                        case 7: g.drawImage(wallSprite, x, y, tileSize, tileSize, null); break;
+                        case 6: g.drawImage(wallSprite, x, y, tileSize, tileSize, null); break;
+                        case 7: g.drawImage(spawnSprite, x, y, tileSize, tileSize, null); break;
                         case 8: g.drawImage(keySprite, x, y, tileSize, tileSize, null); break;
                         case 9: g.drawImage(chestSprite, x, y, tileSize, tileSize, null); break;
                         default: break;

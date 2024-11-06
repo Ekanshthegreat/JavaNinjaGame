@@ -3,7 +3,7 @@ package project11;
 public class GameObjectFactory {
 
     public GameObject createObject(String type, int x, int y) {
-        switch (type.toLowerCase()) {
+        switch (type) {
             case "ground":
                 return new Ground(x, y, false, 1); // typeId 1 for Ground
             
@@ -22,7 +22,7 @@ public class GameObjectFactory {
             case "barrier":
                 return new Barrier(x, y, true, 6); // typeId 6 for Barrier
             
-            // 7 wall
+            // 7 spawn
 
             case "mandatoryitem":
                 return new MandatoryItem(x, y, 10, false, 8); // typeId 8 for Mandatory Item (Key)

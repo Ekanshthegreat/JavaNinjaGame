@@ -21,7 +21,6 @@ public class BaseThread implements Runnable {
         while (thread != null) {
             long startTime = System.currentTimeMillis();
 
-            // Handle input phase (first 500ms)
             handleInput();
 
             // Wait until the input phase is over

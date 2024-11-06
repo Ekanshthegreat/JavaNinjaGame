@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
 
-    private static final int TILE_SIZE = 24; // Set smaller TILE_SIZE for more cells
+    private static final int TILE_SIZE = 32; // Set smaller TILE_SIZE for more cells
     private static final int PLAY_COLUMNS = 15; // Wider game area
     private static final int PLAY_ROWS = 10; // Taller game area
 

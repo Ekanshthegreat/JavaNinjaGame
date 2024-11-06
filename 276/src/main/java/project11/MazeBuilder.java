@@ -11,7 +11,7 @@ public class MazeBuilder {
     private Random random = new Random();
     private boolean[][] visited;
 
-    private int maxHoles = 5;
+    private int maxHoles = 10;
     private int maxKeys = 3;
 
     public MazeBuilder(GameObjectFactory factory) {

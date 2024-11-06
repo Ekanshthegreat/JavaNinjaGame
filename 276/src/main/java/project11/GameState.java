@@ -19,7 +19,7 @@ public class GameState {
         int width = GamePanel.getPlayColumns();
         int height = GamePanel.getPlayRows();
         this.player = new Player(0, height / 2, 5);
-        this.enemies = new ArrayList<>();
+        this.enemies = new ArrayList<Enemy>();
         this.cellArray = new CellArray(width, height);
         this.enemyGenerator = new EnemyGenerator(player);
         this.mazeBuilder = new MazeBuilder(gameObjectFactory);
@@ -47,15 +47,17 @@ public class GameState {
         int maxX = cellArray.getWidth();
         int maxY = cellArray.getHeight();
     
-        for (int i = 0; i < totalItems; i++) {
-            placeObjectRandomly("mandatoryitem", maxX, maxY);
-        }
+        // this code doesnt even run
+
+        // for (int i = 0; i < totalItems; i++) {
+        //     placeObjectRandomly("mandatoryitem", maxX, maxY);
+        // }
         
-        placeObjectRandomly("bonusitem", maxX, maxY);
+        // placeObjectRandomly("bonusitem", maxX, maxY);
     
-        for (int i = 0; i < 5; i++) {
-            placeObjectRandomly("hole", maxX, maxY);
-        }
+        // for (int i = 0; i < 5; i++) {
+        //     placeObjectRandomly("hole", maxX, maxY);
+        // }
     
         for (int i = 0; i < 2; i++) {
             Enemy enemy = enemyGenerator.createEnemy();
@@ -76,7 +78,7 @@ public class GameState {
         } while (cellArray.getCell(x, y).isOccupied());
 
         GameObject obj = gameObjectFactory.createObject(objectType, x, y);
-        cellArray.setGameObject(x, y, obj);
+        // cellArray.setGameObject(x, y, obj); // dont need this, it makes double the amount of holes and they dont work properly
     }
 
     public void movePlayer(boolean up, boolean down, boolean left, boolean right) {
@@ -92,6 +94,7 @@ public class GameState {
         Cell targetCell = cellArray.getCell(newX, newY);
         if (targetCell.isOccupied()) {
             GameObject obj = targetCell.getPrimaryObject();
+            System.out.println("type id=" + obj.getTypeId());
     
             // check object types
             if (obj.typeId == 2) { // Hole
