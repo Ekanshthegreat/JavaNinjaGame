@@ -182,28 +182,45 @@ public class GameState {
         int maxY = gameBoard.length - 1;
     
         for (Enemy enemy : enemies) {
-            // Clear enemy's current position
-            gameBoard[enemy.getY()][enemy.getX()] = null;
+            if (enemy instanceof Samurai) {
+                Samurai samurai = (Samurai) enemy;
     
-            // Move the enemy towards the player
-            enemy.moveTowardsPlayer(player);
+                // Check if Samurai reached the player
+                if (samurai.getX() == player.getX() && samurai.getY() == player.getY()) {
+                    samurai.attackPlayer(player, this);
+                    continue;
+                }
     
-            // Ensure the enemy's new position is within bounds
-            int newX = Math.max(0, Math.min(enemy.getX(), maxX));
-            int newY = Math.max(0, Math.min(enemy.getY(), maxY));
+                int oldX = samurai.getX();
+                int oldY = samurai.getY();
     
-            // Update the enemy's coordinates to stay within bounds
-            enemy.setX(newX);
-            enemy.setY(newY);
+                // Move Samurai, avoiding walls
+                samurai.moveTowardsPlayerAvoidingWalls(player, gameBoard);
     
-            // Place the enemy at its new position
-            if (gameBoard[newY][newX] == null || !gameBoard[newY][newX].isSolid()) {
-                gameBoard[newY][newX] = enemy;
-            } else {
-                // If the new position is occupied by a solid object, reset enemy to original position
-                gameBoard[enemy.getY()][enemy.getX()] = enemy;
+                // Place ground at the previous position
+                gameBoard[oldY][oldX] = new Ground(oldX, oldY, false, 1);
+    
+                // Place Samurai at the new position
+                gameBoard[samurai.getY()][samurai.getX()] = samurai;
             }
         }
     }
+    
 
+    /**
+     * Remove an enemy from the game board and enemy list
+     */
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+        gameBoard[enemy.getY()][enemy.getX()] = null;
+    }
+
+    /**
+     * Set a cell to ground
+     */
+    public void setGround(int x, int y) {
+        gameBoard[y][x] = new Ground(x, y, false, 1);
+    }
 }
+
+

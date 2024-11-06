@@ -1,24 +1,15 @@
 package project11;
 
-/**
- * Thread class for running a single thread 
- */
 public class BaseThread implements Runnable {
-    // Time constants
-    private static final int TOTAL_CYCLE_TIME = 1000;
-    private static final int INPUT_TIME = 500;
+    private static final int TOTAL_CYCLE_TIME = 600; // Increase cycle time to slow down movement
+    private static final int INPUT_TIME = 250;
 
-    // Local variables
     private GameState gameState;
     private GamePanel gamePanel;
     private KeyHandler keyHandler;
     private Thread thread;
+    private int enemyMoveCycle = 0; // Track cycles to control enemy movement frequency
 
-    /**
-     * Initializes Thread with passed objects
-     * @param gamePanel GamePanel object
-     * @param keyHandler KeyHandler object
-     */
     public BaseThread(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.gameState = gamePanel.gameState;
@@ -27,14 +18,10 @@ public class BaseThread implements Runnable {
         this.thread.start();
     }
 
-    /**
-     * Thread constantly runs the run() function
-     */
     public void run() {
         while (thread != null) {
             long startTime = System.currentTimeMillis();
 
-            // Take input for INPUT_TIME
             handleInput();
 
             // Wait until the input phase is over
@@ -47,13 +34,14 @@ public class BaseThread implements Runnable {
                 }
             }
 
-            // Move enemies according go the player's position
-            // moveEnemies();
+            // Move enemies only every few cycles to slow them down
+            if (enemyMoveCycle % 2 == 0) { // Move enemies every other cycle
+                moveEnemies();
+            }
+            enemyMoveCycle++;
 
-            // Render the game state
             render();
 
-            // Sleep for remainder 
             elapsed = System.currentTimeMillis() - startTime;
             if (elapsed < TOTAL_CYCLE_TIME) {
                 try {
@@ -65,24 +53,15 @@ public class BaseThread implements Runnable {
         }
     }
 
-    /**
-     * Handle input local function
-     */
     private void handleInput() {
         gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
         keyHandler.resetInput(); 
     }
 
-    /**
-     * Handle enemy movement local function
-     */
-    private void moveEnemies(){
+    private void moveEnemies() {
         gameState.updateEnemies();
     }
-    
-    /**
-     * Handle rendering local function
-     */
+
     private void render() {
         gamePanel.render();
     }
