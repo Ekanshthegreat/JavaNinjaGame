@@ -1,8 +1,18 @@
 package project11;
 
+/**
+ * Player class to extend GameObject
+ */
 public class Player extends GameObject {
-    private int score = 50; // default score
+    // Default score value
+    private int score = 50;
 
+    /**
+     * Make a player which extends GameObject
+     * @param x X Coordinate of player
+     * @param y Y Coordinate of player
+     * @param typeId Holds player id
+     */
     public Player(int x, int y, int typeId) {
         super(x, y, true, typeId);
     }
@@ -12,9 +22,10 @@ public class Player extends GameObject {
     }
 
     public void takeDamage(int damage) {
-        score -= damage; // Deduct from score instead of health
+        score -= damage;
+         // Ensure score doesn't drop below zero
         if (score < 0) {
-            score = 0; // Ensure score doesn't drop below zero
+            score = 0;
         }
     }
 

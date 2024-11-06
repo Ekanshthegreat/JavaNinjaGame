@@ -3,10 +3,14 @@ package project11;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * GameState to hold current state of game, most of game logic is held here for GameObject[][] array
+ */
 public class GameState {
+    // Local Variables
     private Player player;
     private ArrayList<Enemy> enemies;
-    private GameObject[][] gameBoard; // Directly store GameObjects in a 2D array
+    private GameObject[][] gameBoard;
     private GameObjectFactory gameObjectFactory = new GameObjectFactory();
     private EnemyGenerator enemyGenerator;
     private MazeBuilder mazeBuilder;
@@ -14,11 +18,13 @@ public class GameState {
 
     private int collectedItems = 0;
     private int bonusItem = 0;
-    private final int totalItems = 3; // Assuming three mandatory items for the player to collect
-    // hold chest coordinates
+    private final int totalItems = 3;
     private int chestX = 0;
     private int chestY = 0;
 
+    /**
+     * GameState Constructor
+     */
     public GameState() {
         int width = GamePanel.getPlayColumns();
         int height = GamePanel.getPlayRows();
@@ -33,6 +39,9 @@ public class GameState {
         initializeItemsAndEnemies();
     }
 
+    /**
+     * Maze Constructor
+     */
     private void initializeMaze() {
         GameObject[][] mazeGrid = new GameObject[gameBoard.length][gameBoard[0].length];
         mazeBuilder.buildMaze(mazeGrid);
@@ -42,7 +51,7 @@ public class GameState {
                 GameObject obj = mazeGrid[y][x];
                 if (obj != null) {
                     gameBoard[y][x] = obj;
-                    if (obj.getTypeId() == 9) { // Store the chest position
+                    if (obj.getTypeId() == 9) { // Store the chest position for redrawing later
                         chestX = x;
                         chestY = y;
                     }
@@ -51,6 +60,9 @@ public class GameState {
         }
     }
 
+    /**
+     * Items and Enemies Constructor
+     */
     private void initializeItemsAndEnemies() {
         int maxX = gameBoard[0].length;
         int maxY = gameBoard.length;
@@ -71,15 +83,25 @@ public class GameState {
         return gameBoard[y][x] != null && gameBoard[y][x].isSolid();
     }
 
+    /**
+     * Move Player function, deals with most object interactions
+     * @param up Boolean for direction
+     * @param down Boolean for direction
+     * @param left Boolean for direction
+     * @param right Boolean for direction
+     */
     public void movePlayer(boolean up, boolean down, boolean left, boolean right) {
+        // Current position
         int newX = player.getX();
         int newY = player.getY();
         
+        // Update new position
         if (up && newY > 0) newY--;
         if (down && newY < gameBoard.length - 1) newY++;
         if (left && newX > 0) newX--;
         if (right && newX < gameBoard[0].length - 1) newX++;
         
+        // Check all object moving into interactions
         GameObject targetObject = gameBoard[newY][newX];
         if (targetObject != null) {
             int typeId = targetObject.getTypeId();
@@ -92,12 +114,12 @@ public class GameState {
                 player.increaseScore(((MandatoryItem) targetObject).getScore());
                 System.out.println("Collected item! Items collected: " + collectedItems + "/" + totalItems);
                 gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
-            } else if (typeId == 3) { // bonus item
+            } else if (typeId == 3) { // Bonus item
                 bonusItem++;
                 player.increaseScore(((BonusItem) targetObject).getScore());
                 System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + totalItems);
                 gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
-            } else if (typeId == 9) { // chest
+            } else if (typeId == 9) { // Chest/End
                 if (collectedItems >= totalItems) {
                     System.out.println("Congratulations! You've collected all mandatory items and reached the chest.");
                     System.out.println("Final Score: " + player.getScore());
@@ -112,38 +134,46 @@ public class GameState {
             }
         }
 
-        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);; // Clear player's current position
+        // Clear player's current position
+        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);
         
+        // Redraw Chest/End if player walked over with not enough keys
         if (collectedItems < totalItems) {
             gameBoard[chestY][chestX] = new End(chestX, chestY, false, 9);
         }
 
+        // Close game if score ever goes below 0
         if(player.getScore() <= 0){
             System.out.println("Score went below 0, you lost!");
             System.exit(0); // Close the game
         }
 
+        // Set new Player position
         player.setX(newX);
         player.setY(newY);
-        gameBoard[newY][newX] = player; // Update player's new position
+        gameBoard[newY][newX] = player;
     }
 
+    // Getters
     public int getScore() {
         return player.getScore();
     }
-
     public int getCollectedItems() {
         return collectedItems;
     }
-
     public int getTotalItems() {
         return totalItems;
     }
-
     public int getBonusItem(){
         return bonusItem;
     }
+    public GameObject[][] getGameObjects() {
+        return gameBoard; // Return the entire board with GameObjects
+    }
 
+    /**
+     * Update all enemy position function
+     */
     public void updateEnemies() {
         int maxX = gameBoard[0].length - 1;
         int maxY = gameBoard.length - 1;
@@ -173,7 +203,4 @@ public class GameState {
         }
     }
 
-    public GameObject[][] getGameObjects() {
-        return gameBoard; // Return the entire board with GameObjects
-    }
 }

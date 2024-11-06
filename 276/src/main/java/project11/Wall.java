@@ -1,9 +1,16 @@
 package project11;
 
+/**
+ * Wall class to extend GameObject
+ */
 public class Wall extends GameObject {
-    // Constructor for a wall tile, setting its position and typeId
+    /**
+     * Make a Wall which extends GameObject
+     * @param x X Coordinate of wall
+     * @param y Y Coordinate of wall
+     */
     public Wall(int x, int y) {
-        super(x, y, true, 6); // '2' as typeId for wall; adjust if needed
+        super(x, y, true, 6);
     }
 
 }

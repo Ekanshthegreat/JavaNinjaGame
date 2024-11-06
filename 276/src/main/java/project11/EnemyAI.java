@@ -1,5 +1,8 @@
 package project11;
 
+/**
+ * Enemy AI class for Enemy
+ */
 public class EnemyAI {
     private Player player;
 
@@ -7,7 +10,10 @@ public class EnemyAI {
         this.player = player;
     }
 
-    // Method to move the enemy towards the player
+    /**
+     * Calculate the enemy movement
+     * @param enemy Enemy object
+     */
     public void moveTowardsPlayer(Enemy enemy) {
         int enemyX = enemy.getX();
         int enemyY = enemy.getY();
