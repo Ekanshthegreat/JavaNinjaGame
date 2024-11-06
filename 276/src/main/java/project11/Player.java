@@ -5,7 +5,7 @@ package project11;
  */
 public class Player extends GameObject {
     // Default score value
-    private int score = 50;
+    private int score = 30;
 
     /**
      * Make a player which extends GameObject
