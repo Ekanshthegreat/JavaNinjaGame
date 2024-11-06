@@ -2,12 +2,17 @@ package project11;
 
 import java.util.Random;
 
+/**
+ * Class for generating all random positions of walls, items, and enemies
+ */
 public class MazeBuilder {
+    // Local Variables
     private GameObject[][] maze;
     private GameObjectFactory factory;
     private int rows = GamePanel.getPlayRows();
     private int cols = GamePanel.getPlayColumns();
 
+    // Getters
     protected int getRows(){
         return rows;
     }
@@ -22,20 +27,31 @@ public class MazeBuilder {
     private int maxHoles = 10;
     private int maxKeys = 3;
 
+    /**
+     * MazeBuilder constructor
+     * @param factory GameFactory Object, for creating new objects
+     */
     public MazeBuilder(GameObjectFactory factory) {
         this.factory = factory;
         this.visited = new boolean[rows][cols];
     }
 
+    /**
+     * BuildMaze calls all generate functions
+     * @param maze 2D array of all GameObjects
+     */
     public void buildMaze(GameObject[][] maze) {
         this.maze = maze;
-        // Initializes the maze with barriers, paths, items.
         generateBarriers();    
         generateHoles();
         generateEnd();
         generateItems();
     }
 
+    /**
+     * Add maze walls game
+     * @return Updated 2D array with walls
+     */
     private GameObject[][] generateBarriers() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -97,6 +113,9 @@ public class MazeBuilder {
         }
     }
 
+    /**
+     * Add items to maze
+     */
     private void generateItems() {
         int keyCount = 0;
         int bonusItemCount = 0;
@@ -115,6 +134,9 @@ public class MazeBuilder {
         }
     }
 
+    /**
+     * Add holes to maze
+     */
     private void generateHoles() {
         int holeCount = 0;
         while (holeCount < maxHoles) {
@@ -127,11 +149,13 @@ public class MazeBuilder {
         }
     }
 
+    /**
+     * Add end square to maze
+     */
     private void generateEnd() {
         int x = cols - 1;
         int y = rows/2;
         maze[y][x] = factory.createObject("end", x, y);
     }
 
-    
 }

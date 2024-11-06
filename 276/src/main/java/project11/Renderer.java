@@ -2,22 +2,31 @@ package project11;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.imageio.ImageIO;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Draws the game objects to the screen
  */
 public class Renderer {
+    // Local Variables
     private Image groundSprite, holeSprite, jumpingShoesSprite, ninjaSprite, samuraiSprite, spawnSprite, wallSprite;
-    private Image keySprite, chestSprite; // New images for Key and Chest
-    private int tileSize; // Dynamically set tile size
+    private Image keySprite, chestSprite;
+    private int tileSize;
 
-    public Renderer(int tileSize) { // Pass tileSize from GamePanel
+    /**
+     * Load all sprites
+     * @param tileSize Size of each Tile
+     */
+    public Renderer(int tileSize) {
         this.tileSize = tileSize;
         loadSprites();
     }
 
+    /**
+     * Load all sprites from 'sprite' folder
+     */
     private void loadSprites() {
         try {
             groundSprite = ImageIO.read(getClass().getResource("/project11/sprites/Ground.png"));
@@ -34,6 +43,11 @@ public class Renderer {
         }
     }
 
+    /**
+     * Draws all GameObjects on call
+     * @param g Graphics object
+     * @param gameObjects Current game objects to be drawn
+     */
     public void render(Graphics g, GameObject[][] gameObjects) {
         int xOffset = GamePanel.getBorderTiles() * tileSize;
         int yOffset = GamePanel.getDataTiles() * tileSize + GamePanel.getBorderTiles() * tileSize;

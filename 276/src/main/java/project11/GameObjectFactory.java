@@ -1,5 +1,8 @@
 package project11;
 
+/**
+ * Factory for making all types of GameObjects
+ */
 public class GameObjectFactory {
 
     public GameObject createObject(String type, int x, int y) {
@@ -22,13 +25,13 @@ public class GameObjectFactory {
             case "barrier":
                 return new Barrier(x, y, true, 6); // typeId 6 for Barrier
             
-            // 7 spawn
+            // 7 spawn, ended up not using
 
             case "mandatoryitem":
                 return new MandatoryItem(x, y, 10, false, 8); // typeId 8 for Mandatory Item (Key)
             
             case "end":
-                return new End(x, y, false, 9);
+                return new End(x, y, false, 9); // typeId 9 for End tile
             
             default:
                 throw new IllegalArgumentException("Unknown GameObject type: " + type);

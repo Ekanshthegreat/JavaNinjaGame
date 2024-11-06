@@ -1,21 +1,29 @@
 package project11;
 
-import java.awt.Graphics;
-
+/**
+ * Barrier class to extend GameObject
+ */
 public class Barrier extends GameObject {
     
+    /**
+     * Make a barrier which extends GameObject
+     * @param x X Coordinate of barrier
+     * @param y Y Coordinate of barrier
+     * @param solid If the object is solid
+     * @param typeId Holds barrier id
+     */
     public Barrier(int x, int y, boolean solid, int typeId) {
         super(x, y, solid, typeId);
         this.solid = true; // Barrier is solid by default
     }
 
+    /**
+     * Return if the object is solid
+     * @return If the object is solid
+     */
     @Override
     public boolean isSolid() {
         return solid;
     }
 
-    // Render the Barrier using the provided graphics object and Renderer class
-    // public void render(Graphics g, Renderer renderer, int tileSize) {
-    //     g.drawImage(renderer.getWallSprite(), x * tileSize, y * tileSize, tileSize, tileSize, null);
-    // }
 }
