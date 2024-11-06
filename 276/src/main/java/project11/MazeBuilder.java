@@ -2,30 +2,56 @@ package project11;
 
 import java.util.Random;
 
+/**
+ * Class for generating all random positions of walls, items, and enemies
+ */
 public class MazeBuilder {
+    // Local Variables
     private GameObject[][] maze;
     private GameObjectFactory factory;
-    private int rows = 15;
-    private int cols = 20;
+    private int rows = GamePanel.getPlayRows();
+    private int cols = GamePanel.getPlayColumns();
+
+    // Getters
+    protected int getRows(){
+        return rows;
+    }
+    protected int getCols(){
+        return cols;
+    }
 
     private Random random = new Random();
     private boolean[][] visited;
 
-    private int maxHoles = 5;
+    private int maxBonusItems = 1;
+    private int maxHoles = 10;
     private int maxKeys = 3;
 
+    /**
+     * MazeBuilder constructor
+     * @param factory GameFactory Object, for creating new objects
+     */
     public MazeBuilder(GameObjectFactory factory) {
         this.factory = factory;
         this.visited = new boolean[rows][cols];
     }
 
+    /**
+     * BuildMaze calls all generate functions
+     * @param maze 2D array of all GameObjects
+     */
     public void buildMaze(GameObject[][] maze) {
         this.maze = maze;
-        generateBarriers();    // Initializes the maze with barriers and paths
+        generateBarriers();    
         generateHoles();
+        generateEnd();
         generateItems();
     }
 
+    /**
+     * Add maze walls game
+     * @return Updated 2D array with walls
+     */
     private GameObject[][] generateBarriers() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -87,29 +113,49 @@ public class MazeBuilder {
         }
     }
 
+    /**
+     * Add items to maze
+     */
     private void generateItems() {
         int keyCount = 0;
-        while (keyCount < maxKeys) {
+        int bonusItemCount = 0;
+        while (keyCount < maxKeys || bonusItemCount < maxBonusItems) {
             int x = random.nextInt(cols);
             int y = random.nextInt(rows);
             if (maze[y][x] != null && maze[y][x].getTypeId() == 1) { // Check for ground
-                maze[y][x] = factory.createObject("mandatoryitem", x, y);
-                keyCount++;
+                if (keyCount < maxKeys) {
+                    maze[y][x] = factory.createObject("mandatoryitem", x, y);
+                    keyCount++;
+                } else if (bonusItemCount < maxBonusItems) {
+                    maze[y][x] = factory.createObject("bonusitem", x, y);
+                    bonusItemCount++;
+                }
             }
         }
     }
 
+    /**
+     * Add holes to maze
+     */
     private void generateHoles() {
         int holeCount = 0;
         while (holeCount < maxHoles) {
             int x = random.nextInt(cols);
             int y = random.nextInt(rows);
-            if (maze[y][x] != null && maze[y][x].getTypeId() == 6) { // Assuming barrier typeId is 6
+            if (maze[y][x] != null && maze[y][x].getTypeId() == 6) {
                 maze[y][x] = factory.createObject("hole", x, y);
                 holeCount++;
             }
         }
     }
 
-    
+    /**
+     * Add end square to maze
+     */
+    private void generateEnd() {
+        int x = cols - 1;
+        int y = rows/2;
+        maze[y][x] = factory.createObject("end", x, y);
+    }
+
 }

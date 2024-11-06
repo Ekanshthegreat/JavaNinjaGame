@@ -2,22 +2,31 @@ package project11;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.imageio.ImageIO;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Draws the game objects to the screen
  */
 public class Renderer {
+    // Local Variables
     private Image groundSprite, holeSprite, jumpingShoesSprite, ninjaSprite, samuraiSprite, spawnSprite, wallSprite;
-    private Image keySprite, chestSprite; // New images for Key and Chest
-    private int tileSize; // Dynamically set tile size
+    private Image keySprite, chestSprite;
+    private int tileSize;
 
-    public Renderer(int tileSize) { // Pass tileSize from GamePanel
+    /**
+     * Load all sprites
+     * @param tileSize Size of each Tile
+     */
+    public Renderer(int tileSize) {
         this.tileSize = tileSize;
         loadSprites();
     }
 
+    /**
+     * Load all sprites from 'sprite' folder
+     */
     private void loadSprites() {
         try {
             groundSprite = ImageIO.read(getClass().getResource("/project11/sprites/Ground.png"));
@@ -28,12 +37,17 @@ public class Renderer {
             spawnSprite = ImageIO.read(getClass().getResource("/project11/sprites/spawn.png"));
             wallSprite = ImageIO.read(getClass().getResource("/project11/sprites/Wall.png"));
             keySprite = ImageIO.read(getClass().getResource("/project11/sprites/Key.png"));
-            chestSprite = ImageIO.read(getClass().getResource("/project11/sprites/Chest.png"));
+            chestSprite = ImageIO.read(getClass().getResource("/project11/sprites/chest.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Draws all GameObjects on call
+     * @param g Graphics object
+     * @param gameObjects Current game objects to be drawn
+     */
     public void render(Graphics g, GameObject[][] gameObjects) {
         int xOffset = GamePanel.getBorderTiles() * tileSize;
         int yOffset = GamePanel.getDataTiles() * tileSize + GamePanel.getBorderTiles() * tileSize;
@@ -51,8 +65,8 @@ public class Renderer {
                         case 3: g.drawImage(jumpingShoesSprite, x, y, tileSize, tileSize, null); break;
                         case 4: g.drawImage(samuraiSprite, x, y, tileSize, tileSize, null); break;
                         case 5: g.drawImage(ninjaSprite, x, y, tileSize, tileSize, null); break;
-                        case 6: g.drawImage(spawnSprite, x, y, tileSize, tileSize, null); break;
-                        case 7: g.drawImage(wallSprite, x, y, tileSize, tileSize, null); break;
+                        case 6: g.drawImage(wallSprite, x, y, tileSize, tileSize, null); break;
+                        case 7: g.drawImage(spawnSprite, x, y, tileSize, tileSize, null); break;
                         case 8: g.drawImage(keySprite, x, y, tileSize, tileSize, null); break;
                         case 9: g.drawImage(chestSprite, x, y, tileSize, tileSize, null); break;
                         default: break;

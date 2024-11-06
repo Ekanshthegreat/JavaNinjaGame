@@ -1,16 +1,27 @@
 package project11;
 
+/**
+ * BonusItem class to extend Item
+ */
 public class BonusItem extends Item {
-    private int vaultValue; // Additional value for vaulting if necessary
 
+    /**
+     * Make a bonus item which extends Item
+     * @param x X Coordinate of item
+     * @param y Y Coordinate of item
+     * @param score How much the item is worth in points
+     * @param isSolid If the object is solid
+     * @param typeId Holds BonusItem id
+     */
     public BonusItem(int x, int y, int score, boolean isSolid, int typeId) {
-        super(x, y, score, isSolid, typeId); // Call the parent constructor
+        super(x, y, score, isSolid, typeId);
     }
 
+    /**
+     * onPickup function for picking up items.
+     */
     @Override
     public void onPickup() {
-        // Implement the pickup logic for bonus items
-        System.out.println("Picked up a Bonus Item with score: " + getScore() + " and vault value: " + vaultValue);
-        // Logic for what happens when the item is picked up (e.g., add score, add vault value, etc.)
+        System.out.println("Picked up a Bonus Item with score: " + getScore());
     }
 }
