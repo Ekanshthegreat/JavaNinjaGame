@@ -177,50 +177,77 @@ public class GameState {
     /**
      * Update all enemy position function
      */
+    /**
+     * Update all enemy positions and handle player contact
+     */
     public void updateEnemies() {
         int maxX = gameBoard[0].length - 1;
         int maxY = gameBoard.length - 1;
     
-        for (Enemy enemy : enemies) {
-            if (enemy instanceof Samurai) {
-                Samurai samurai = (Samurai) enemy;
-    
-                // Check if Samurai reached the player
-                if (samurai.getX() == player.getX() && samurai.getY() == player.getY()) {
-                    samurai.attackPlayer(player, this);
-                    continue;
+        for (Enemy enemy : new ArrayList<>(enemies)) {
+            // Check if the enemy is adjacent to the player
+            if (isAdjacentToPlayer(enemy)) {
+                if (enemy instanceof Samurai) {
+                    ((Samurai) enemy).attackPlayer(player, this);
                 }
-    
-                int oldX = samurai.getX();
-                int oldY = samurai.getY();
-    
-                // Move Samurai, avoiding walls
-                samurai.moveTowardsPlayerAvoidingWalls(player, gameBoard);
-    
-                // Place ground at the previous position
-                gameBoard[oldY][oldX] = new Ground(oldX, oldY, false, 1);
-    
-                // Place Samurai at the new position
-                gameBoard[samurai.getY()][samurai.getX()] = samurai;
+                continue; // Skip further movement if the enemy attacked the player
+            }
+
+            // Clear enemy's current position for movement
+            gameBoard[enemy.getY()][enemy.getX()] = new Ground(enemy.getX(), enemy.getY(), false, 1);
+
+            // Move the enemy towards the player, avoiding walls
+            if (enemy instanceof Samurai) {
+                ((Samurai) enemy).moveTowardsPlayerAvoidingWalls(player, gameBoard);
+            }
+
+            // Ensure enemy's new position is within bounds and update position
+            int newX = Math.max(0, Math.min(enemy.getX(), maxX));
+            int newY = Math.max(0, Math.min(enemy.getY(), maxY));
+            if (gameBoard[newY][newX] == null || !gameBoard[newY][newX].isSolid()) {
+                enemy.setX(newX);
+                enemy.setY(newY);
+                gameBoard[newY][newX] = enemy;
+            } else {
+                // Revert to the previous position if movement is blocked
+                gameBoard[enemy.getY()][enemy.getX()] = enemy;
             }
         }
     }
-    
 
     /**
-     * Remove an enemy from the game board and enemy list
+     * Check if an enemy is adjacent to the player.
      */
-    public void removeEnemy(Enemy enemy) {
-        enemies.remove(enemy);
-        gameBoard[enemy.getY()][enemy.getX()] = null;
+    private boolean isAdjacentToPlayer(Enemy enemy) {
+        int enemyX = enemy.getX();
+        int enemyY = enemy.getY();
+        int playerX = player.getX();
+        int playerY = player.getY();
+
+        // Check if the enemy is in any of the 4 neighboring tiles
+        return (Math.abs(enemyX - playerX) == 1 && enemyY == playerY) ||
+               (Math.abs(enemyY - playerY) == 1 && enemyX == playerX);
     }
 
-    /**
-     * Set a cell to ground
-     */
+    // Remaining methods for getScore(), getCollectedItems(), etc., remain unchanged.
+    
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+        setGround(enemy.getX(), enemy.getY());
+    }
+
     public void setGround(int x, int y) {
         gameBoard[y][x] = new Ground(x, y, false, 1);
     }
+
+    /**
+     * Remove an enemy and replace its position with Ground
+     */
+   
+
+    
+
+    
 }
 
 
