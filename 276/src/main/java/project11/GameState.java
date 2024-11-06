@@ -35,7 +35,7 @@ public class GameState {
         this.mazeBuilder = new MazeBuilder(gameObjectFactory);
 
         initializeMaze();
-        gameBoard[height / 2][0] = player; // Place player at start position
+        gameBoard[height / 2][0] = player;
         initializeItemsAndEnemies();
     }
 
@@ -74,8 +74,11 @@ public class GameState {
                 x = random.nextInt(maxX);
                 y = random.nextInt(maxY);
             } while (isOccupied(x, y));
+            enemy.setX(x);
+            enemy.setY(y);
             gameBoard[y][x] = enemy;
-            enemies.add(enemy); // Add enemy to the list for movement tracking
+            enemies.add(enemy);
+            System.out.println("Placed enemy within bounds at (" + x + ", " + y + ")");
         }
     }
 
