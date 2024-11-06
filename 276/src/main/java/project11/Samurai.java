@@ -27,6 +27,18 @@ public class Samurai extends Enemy {
     }
 
     /**
+     * Attack the player, deal damage, and remove the Samurai from the game
+     */
+    public void attackPlayer(Player player, GameState gameState) {
+        player.takeDamage(DAMAGE);
+        System.out.println("Samurai attacked player for " + DAMAGE + " damage!");
+
+        // Remove Samurai and replace with Ground
+        gameState.removeEnemy(this);
+        gameState.setGround(this.getX(), this.getY());
+    }
+
+    /**
      * Attempt to move towards the player, avoiding walls
      */
     public void moveTowardsPlayerAvoidingWalls(Player player, GameObject[][] gameBoard) {
@@ -62,14 +74,5 @@ public class Samurai extends Enemy {
         // Default to no movement if all attempts are blocked
         setX(oldX);
         setY(oldY);
-    }
-
-    public void attackPlayer(Player player, GameState gameState) {
-        player.takeDamage(DAMAGE);
-        System.out.println("Samurai attacked player for " + DAMAGE + " damage!");
-
-        // Remove Samurai and replace with Ground
-        gameState.removeEnemy(this);
-        gameState.setGround(x, y);
     }
 }
