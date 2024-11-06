@@ -34,7 +34,7 @@ public class BaseThread implements Runnable {
             }
 
             // Move enemies accordint go the player's position
-            // gameState.updateEnemies();
+            // moveEnemies();
 
             // Render the game state
             render();
@@ -56,6 +56,10 @@ public class BaseThread implements Runnable {
         // System.out.println("Input state - Up: " + keyHandler.up + ", Down: " + keyHandler.down + ", Left: " + keyHandler.left + ", Right: " + keyHandler.right);
         gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
         keyHandler.resetInput(); 
+    }
+
+    private void moveEnemies(){
+        gameState.updateEnemies();
     }
 
     private void render() {

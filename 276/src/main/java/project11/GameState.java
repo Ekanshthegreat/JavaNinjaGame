@@ -45,7 +45,6 @@ public class GameState {
                     if (obj.getTypeId() == 9) { // Store the chest position
                         chestX = x;
                         chestY = y;
-                        System.out.println("TESTESTESTS" + chestX + " " + chestY);
                     }
                 }
             }
@@ -106,7 +105,6 @@ public class GameState {
                     System.exit(0); // Close the game
                 } else {
                     System.out.println("You need to collect all mandatory items before reaching the chest.");
-                    // gameBoard[newY][newX] = new End(player.getX(), player.getY(), false, 1);
                 }
             } else if (targetObject.isSolid()) {
                 System.out.println("Can't walk through walls!");
@@ -117,7 +115,12 @@ public class GameState {
         gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);; // Clear player's current position
         
         if (collectedItems < totalItems) {
-            gameBoard[chestY][chestX] = new Chest(chestX, chestY, false, 9);
+            gameBoard[chestY][chestX] = new End(chestX, chestY, false, 9);
+        }
+
+        if(player.getScore() <= 0){
+            System.out.println("Score went below 0, you lost!");
+            System.exit(0); // Close the game
         }
 
         player.setX(newX);
@@ -141,27 +144,34 @@ public class GameState {
         return bonusItem;
     }
 
-   public void updateEnemies() {
-    for (Enemy enemy : enemies) {
-        // Clear enemy's current position
-        gameBoard[enemy.getY()][enemy.getX()] = null;
-        
-        // Move the enemy towards the player
-        enemy.moveTowardsPlayer(player);
-
-        // Ensure the enemy's new position is within bounds
-        int newX = Math.max(0, Math.min(enemy.getX(), gameBoard[0].length - 1));
-        int newY = Math.max(0, Math.min(enemy.getY(), gameBoard.length - 1));
-
-        // Update the enemy's coordinates to stay within bounds
-        enemy.setX(newX);
-        enemy.setY(newY);
-
-        // Set the enemy's new position on the board
-        gameBoard[newY][newX] = enemy;
+    public void updateEnemies() {
+        int maxX = gameBoard[0].length - 1;
+        int maxY = gameBoard.length - 1;
+    
+        for (Enemy enemy : enemies) {
+            // Clear enemy's current position
+            gameBoard[enemy.getY()][enemy.getX()] = null;
+    
+            // Move the enemy towards the player
+            enemy.moveTowardsPlayer(player);
+    
+            // Ensure the enemy's new position is within bounds
+            int newX = Math.max(0, Math.min(enemy.getX(), maxX));
+            int newY = Math.max(0, Math.min(enemy.getY(), maxY));
+    
+            // Update the enemy's coordinates to stay within bounds
+            enemy.setX(newX);
+            enemy.setY(newY);
+    
+            // Place the enemy at its new position
+            if (gameBoard[newY][newX] == null || !gameBoard[newY][newX].isSolid()) {
+                gameBoard[newY][newX] = enemy;
+            } else {
+                // If the new position is occupied by a solid object, reset enemy to original position
+                gameBoard[enemy.getY()][enemy.getX()] = enemy;
+            }
+        }
     }
-}
-
 
     public GameObject[][] getGameObjects() {
         return gameBoard; // Return the entire board with GameObjects

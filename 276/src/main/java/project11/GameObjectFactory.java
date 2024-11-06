@@ -27,7 +27,6 @@ public class GameObjectFactory {
             case "mandatoryitem":
                 return new MandatoryItem(x, y, 10, false, 8); // typeId 8 for Mandatory Item (Key)
             
-            // 9 chest
             case "end":
                 return new End(x, y, false, 9);
             
