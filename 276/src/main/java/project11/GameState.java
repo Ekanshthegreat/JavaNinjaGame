@@ -1,13 +1,14 @@
 package project11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
  * GameState to hold current state of game, most of game logic is held here for GameObject[][] array
  */
 public class GameState {
-    // Local Variables
     private Player player;
     private ArrayList<Enemy> enemies;
     private GameObject[][] gameBoard;
@@ -22,9 +23,9 @@ public class GameState {
     private int chestX = 0;
     private int chestY = 0;
 
-    /**
-     * GameState Constructor
-     */
+    // Track original objects under enemies to restore them later
+    private Map<String, GameObject> originalObjects = new HashMap<>();
+
     public GameState() {
         int width = GamePanel.getPlayColumns();
         int height = GamePanel.getPlayRows();
@@ -39,9 +40,6 @@ public class GameState {
         initializeItemsAndEnemies();
     }
 
-    /**
-     * Maze Constructor
-     */
     private void initializeMaze() {
         GameObject[][] mazeGrid = new GameObject[gameBoard.length][gameBoard[0].length];
         mazeBuilder.buildMaze(mazeGrid);
@@ -51,7 +49,7 @@ public class GameState {
                 GameObject obj = mazeGrid[y][x];
                 if (obj != null) {
                     gameBoard[y][x] = obj;
-                    if (obj.getTypeId() == 9) { // Store the chest position for redrawing later
+                    if (obj.getTypeId() == 9) { // Chest position
                         chestX = x;
                         chestY = y;
                     }
@@ -60,9 +58,6 @@ public class GameState {
         }
     }
 
-    /**
-     * Items and Enemies Constructor
-     */
     private void initializeItemsAndEnemies() {
         int maxX = gameBoard[0].length;
         int maxY = gameBoard.length;
@@ -76,9 +71,9 @@ public class GameState {
             } while (isOccupied(x, y));
             enemy.setX(x);
             enemy.setY(y);
+            saveOriginalObject(x, y, gameBoard[y][x]); // Store the initial underlying object
             gameBoard[y][x] = enemy;
             enemies.add(enemy);
-            System.out.println("Placed enemy within bounds at (" + x + ", " + y + ")");
         }
     }
 
@@ -86,13 +81,90 @@ public class GameState {
         return gameBoard[y][x] != null && gameBoard[y][x].isSolid();
     }
 
-    /**
-     * Move Player function, deals with most object interactions
-     * @param up Boolean for direction
-     * @param down Boolean for direction
-     * @param left Boolean for direction
-     * @param right Boolean for direction
-     */
+    private void saveOriginalObject(int x, int y, GameObject obj) {
+        String key = x + "," + y;
+        if (!originalObjects.containsKey(key)) {
+            originalObjects.put(key, obj); // Save the original object only if not already saved
+        }
+    }
+
+    public void updateEnemies() {
+        for (Enemy enemy : new ArrayList<>(enemies)) {
+            if (isAdjacentToPlayer(enemy)) {
+                if (enemy instanceof Samurai) {
+                    ((Samurai) enemy).attackPlayer(player, this);
+                }
+                continue;
+            }
+
+            int oldX = enemy.getX();
+            int oldY = enemy.getY();
+
+            // Restore the original object in the enemy's previous cell
+            restorePreviousCell(enemy, oldX, oldY);
+
+            if (enemy instanceof Samurai) {
+                ((Samurai) enemy).moveTowardsPlayerAvoidingWalls(player, gameBoard);
+            }
+
+            int newX = enemy.getX();
+            int newY = enemy.getY();
+
+            saveOriginalObject(newX, newY, gameBoard[newY][newX]); // Save the current target cell before moving
+            gameBoard[newY][newX] = enemy;
+        }
+    }
+
+    private void restorePreviousCell(Enemy enemy, int x, int y) {
+        String key = x + "," + y;
+        if (originalObjects.containsKey(key)) {
+            gameBoard[y][x] = originalObjects.get(key);
+        } else {
+            gameBoard[y][x] = new Ground(x, y, false, 1); // Default to ground if not found
+        }
+        originalObjects.remove(key);
+    }
+
+    private boolean isPassableObject(GameObject obj) {
+        return obj != null && (obj.getTypeId() == 1 || obj.getTypeId() == 2 || obj.getTypeId() == 3 || obj.getTypeId() == 8);
+    }
+
+    private boolean isAdjacentToPlayer(Enemy enemy) {
+        int enemyX = enemy.getX();
+        int enemyY = enemy.getY();
+        int playerX = player.getX();
+        int playerY = player.getY();
+
+        return (Math.abs(enemyX - playerX) == 1 && enemyY == playerY) ||
+               (Math.abs(enemyY - playerY) == 1 && enemyX == playerX);
+    }
+
+    public int getScore() {
+        return player.getScore();
+    }
+    public int getCollectedItems() {
+        return collectedItems;
+    }
+    public int getTotalItems() {
+        return totalItems;
+    }
+    public int getBonusItem() {
+        return bonusItem;
+    }
+    public GameObject[][] getGameObjects() {
+        return gameBoard;
+    }
+
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+        setGround(enemy.getX(), enemy.getY());
+        originalObjects.remove(enemy.getX() + "," + enemy.getY());
+    }
+
+    public void setGround(int x, int y) {
+        gameBoard[y][x] = new Ground(x, y, false, 1);
+    }
+
     public void movePlayer(boolean up, boolean down, boolean left, boolean right) {
         // Current position
         int newX = player.getX();
@@ -156,98 +228,4 @@ public class GameState {
         player.setY(newY);
         gameBoard[newY][newX] = player;
     }
-
-    // Getters
-    public int getScore() {
-        return player.getScore();
-    }
-    public int getCollectedItems() {
-        return collectedItems;
-    }
-    public int getTotalItems() {
-        return totalItems;
-    }
-    public int getBonusItem(){
-        return bonusItem;
-    }
-    public GameObject[][] getGameObjects() {
-        return gameBoard; // Return the entire board with GameObjects
-    }
-
-    /**
-     * Update all enemy position function
-     */
-    /**
-     * Update all enemy positions and handle player contact
-     */
-    public void updateEnemies() {
-        int maxX = gameBoard[0].length - 1;
-        int maxY = gameBoard.length - 1;
-    
-        for (Enemy enemy : new ArrayList<>(enemies)) {
-            // Check if the enemy is adjacent to the player
-            if (isAdjacentToPlayer(enemy)) {
-                if (enemy instanceof Samurai) {
-                    ((Samurai) enemy).attackPlayer(player, this);
-                }
-                continue; // Skip further movement if the enemy attacked the player
-            }
-
-            // Clear enemy's current position for movement
-            gameBoard[enemy.getY()][enemy.getX()] = new Ground(enemy.getX(), enemy.getY(), false, 1);
-
-            // Move the enemy towards the player, avoiding walls
-            if (enemy instanceof Samurai) {
-                ((Samurai) enemy).moveTowardsPlayerAvoidingWalls(player, gameBoard);
-            }
-
-            // Ensure enemy's new position is within bounds and update position
-            int newX = Math.max(0, Math.min(enemy.getX(), maxX));
-            int newY = Math.max(0, Math.min(enemy.getY(), maxY));
-            if (gameBoard[newY][newX] == null || !gameBoard[newY][newX].isSolid()) {
-                enemy.setX(newX);
-                enemy.setY(newY);
-                gameBoard[newY][newX] = enemy;
-            } else {
-                // Revert to the previous position if movement is blocked
-                gameBoard[enemy.getY()][enemy.getX()] = enemy;
-            }
-        }
-    }
-
-    /**
-     * Check if an enemy is adjacent to the player.
-     */
-    private boolean isAdjacentToPlayer(Enemy enemy) {
-        int enemyX = enemy.getX();
-        int enemyY = enemy.getY();
-        int playerX = player.getX();
-        int playerY = player.getY();
-
-        // Check if the enemy is in any of the 4 neighboring tiles
-        return (Math.abs(enemyX - playerX) == 1 && enemyY == playerY) ||
-               (Math.abs(enemyY - playerY) == 1 && enemyX == playerX);
-    }
-
-    // Remaining methods for getScore(), getCollectedItems(), etc., remain unchanged.
-    
-    public void removeEnemy(Enemy enemy) {
-        enemies.remove(enemy);
-        setGround(enemy.getX(), enemy.getY());
-    }
-
-    public void setGround(int x, int y) {
-        gameBoard[y][x] = new Ground(x, y, false, 1);
-    }
-
-    /**
-     * Remove an enemy and replace its position with Ground
-     */
-   
-
-    
-
-    
 }
-
-

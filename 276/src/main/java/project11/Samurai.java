@@ -9,6 +9,7 @@ public class Samurai extends Enemy {
 
     private static final int DAMAGE = 20;
     private Random random = new Random();
+    private String lastCellKey;
 
     /**
      * Make a Samurai which extends Enemy
@@ -46,33 +47,65 @@ public class Samurai extends Enemy {
         int targetY = player.getY();
         int oldX = this.getX();
         int oldY = this.getY();
-        
-        // Calculate initial direction towards the player
+
+        // Calculate direction towards the player
         int deltaX = Integer.compare(targetX, oldX);
         int deltaY = Integer.compare(targetY, oldY);
-        
-        // If the path towards the player is blocked, choose a new random direction
-        for (int attempts = 0; attempts < 4; attempts++) {
-            int newX = oldX + deltaX;
-            int newY = oldY + deltaY;
-            
-            // Check if the new position is within bounds and not blocked by a wall
-            if (newX >= 0 && newX < gameBoard[0].length && newY >= 0 && newY < gameBoard.length) {
-                GameObject targetCell = gameBoard[newY][newX];
-                if (targetCell == null || targetCell.getTypeId() == 1) { // Check if ground or empty
-                    setX(newX);
-                    setY(newY);
-                    return;
-                }
-            }
-            
-            // Randomly change direction if blocked
-            deltaX = random.nextInt(3) - 1; // -1, 0, or 1
-            deltaY = random.nextInt(3) - 1;
+
+        // Try moving directly towards the player first
+        if (tryMove(deltaX, deltaY, gameBoard)) return;
+
+        // If blocked, try other directions
+        int[][] alternateMoves = {
+            {deltaX, 0},   // Horizontal
+            {0, deltaY},   // Vertical
+            {-deltaX, deltaY}, // Opposite horizontal
+            {deltaX, -deltaY}  // Opposite vertical
+        };
+
+        for (int[] move : alternateMoves) {
+            if (tryMove(move[0], move[1], gameBoard)) return;
         }
-        
-        // Default to no movement if all attempts are blocked
-        setX(oldX);
-        setY(oldY);
+    }
+
+    /**
+     * Attempt to move in the specified direction and save/restore cells
+     * @param deltaX X-axis movement direction
+     * @param deltaY Y-axis movement direction
+     * @param gameBoard The game board
+     * @return true if movement was successful, false if blocked by a wall
+     */
+    private boolean tryMove(int deltaX, int deltaY, GameObject[][] gameBoard) {
+        int newX = getX() + deltaX;
+        int newY = getY() + deltaY;
+
+        // Check if the new position is within bounds
+        if (newX < 0 || newX >= gameBoard[0].length || newY < 0 || newY >= gameBoard.length) {
+            return false;
+        }
+
+        GameObject targetCell = gameBoard[newY][newX];
+
+        // Check if the new position is a wall and block movement if it is
+        if (targetCell != null && targetCell.getTypeId() == 6) { // Wall typeId is 6
+            return false;
+        }
+
+        // Save the current cell's content before moving
+        if (lastCellKey != null) {
+            String[] parts = lastCellKey.split(",");
+            int lastX = Integer.parseInt(parts[0]);
+            int lastY = Integer.parseInt(parts[1]);
+            gameBoard[lastY][lastX] = targetCell;
+        }
+
+        lastCellKey = getX() + "," + getY();
+
+        // Update Samurai's position
+        setX(newX);
+        setY(newY);
+        gameBoard[newY][newX] = this;
+
+        return true;
     }
 }

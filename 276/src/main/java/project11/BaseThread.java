@@ -1,8 +1,8 @@
 package project11;
 
 public class BaseThread implements Runnable {
-    private static final int TOTAL_CYCLE_TIME = 600; // Increase cycle time to slow down movement
-    private static final int INPUT_TIME = 250;
+    private static final int TOTAL_CYCLE_TIME = 1000; // Increase cycle time to slow down movement
+    private static final int INPUT_TIME = 300;
 
     private GameState gameState;
     private GamePanel gamePanel;
@@ -35,7 +35,7 @@ public class BaseThread implements Runnable {
             }
 
             // Move enemies only every few cycles to slow them down
-            if (enemyMoveCycle % 2 == 0) { // Move enemies every other cycle
+            if (enemyMoveCycle % 1 == 0) { // Move enemies every other cycle
                 moveEnemies();
             }
             enemyMoveCycle++;
