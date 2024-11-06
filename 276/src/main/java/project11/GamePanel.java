@@ -63,6 +63,9 @@ public class GamePanel extends JPanel {
         renderer.render(g, gameState.getGameObjects());
         g.setColor(Color.WHITE);
         g.drawString("Score: " + gameState.getScore(), 10, TILE_SIZE); // Score display
+        g.setColor(Color.CYAN);
         g.drawString("Items: " + gameState.getCollectedItems() + "/" + gameState.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, TILE_SIZE * 2); // Items display
+        g.setColor(Color.GREEN);
+        g.drawString("Tip: Use WASD to move, collect all keys and reach the chest to win!", 10, TILE_SIZE * (PLAY_ROWS + 2 * BORDER_TILES + DATA_TILES));
     }
 }

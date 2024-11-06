@@ -15,6 +15,9 @@ public class GameState {
     private int collectedItems = 0;
     private int bonusItem = 0;
     private final int totalItems = 3; // Assuming three mandatory items for the player to collect
+    // hold chest coordinates
+    private int chestX = 0;
+    private int chestY = 0;
 
     public GameState() {
         int width = GamePanel.getPlayColumns();
@@ -39,6 +42,11 @@ public class GameState {
                 GameObject obj = mazeGrid[y][x];
                 if (obj != null) {
                     gameBoard[y][x] = obj;
+                    if (obj.getTypeId() == 9) { // Store the chest position
+                        chestX = x;
+                        chestY = y;
+                        System.out.println("TESTESTESTS" + chestX + " " + chestY);
+                    }
                 }
             }
         }
@@ -79,7 +87,7 @@ public class GameState {
 
             if (typeId == 2) { // Hole
                 player.takeDamage(10);
-                System.out.println("Player stepped on a hole! Health: " + player.getScore());
+                System.out.println("Stepped on a hole! Health: " + player.getScore());
             } else if (typeId == 8) { // Mandatory Item
                 collectedItems++;
                 player.increaseScore(((MandatoryItem) targetObject).getScore());
@@ -101,12 +109,17 @@ public class GameState {
                     // gameBoard[newY][newX] = new End(player.getX(), player.getY(), false, 1);
                 }
             } else if (targetObject.isSolid()) {
-                System.out.println("Player encountered a solid object!");
+                System.out.println("Can't walk through walls!");
                 return; // Prevent moving into solid object
             }
         }
 
         gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);; // Clear player's current position
+        
+        if (collectedItems < totalItems) {
+            gameBoard[chestY][chestX] = new Chest(chestX, chestY, false, 9);
+        }
+
         player.setX(newX);
         player.setY(newY);
         gameBoard[newY][newX] = player; // Update player's new position

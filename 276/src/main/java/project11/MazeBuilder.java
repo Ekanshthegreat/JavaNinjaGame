@@ -5,8 +5,15 @@ import java.util.Random;
 public class MazeBuilder {
     private GameObject[][] maze;
     private GameObjectFactory factory;
-    private int rows = 10;
-    private int cols = 15;
+    private int rows = GamePanel.getPlayRows();
+    private int cols = GamePanel.getPlayColumns();
+
+    protected int getRows(){
+        return rows;
+    }
+    protected int getCols(){
+        return cols;
+    }
 
     private Random random = new Random();
     private boolean[][] visited;
@@ -25,8 +32,8 @@ public class MazeBuilder {
         // Initializes the maze with barriers, paths, items.
         generateBarriers();    
         generateHoles();
-        generateItems();
         generateEnd();
+        generateItems();
     }
 
     private GameObject[][] generateBarriers() {
