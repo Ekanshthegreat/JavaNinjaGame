@@ -32,47 +32,52 @@ public class Samurai extends Enemy {
     public void attackPlayer(Player player, GameState gameState) {
         player.takeDamage(DAMAGE);
         System.out.println("Samurai attacked player for " + DAMAGE + " damage!");
-
-        // Remove Samurai and replace with Ground
         gameState.removeEnemy(this);
-        gameState.setGround(this.getX(), this.getY());
     }
 
     /**
-     * Attempt to move towards the player, avoiding walls
+     * Attempt to move towards the player, avoiding walls and passing through other objects
      */
     public void moveTowardsPlayerAvoidingWalls(Player player, GameObject[][] gameBoard) {
         int targetX = player.getX();
         int targetY = player.getY();
         int oldX = this.getX();
         int oldY = this.getY();
-        
-        // Calculate initial direction towards the player
+
         int deltaX = Integer.compare(targetX, oldX);
         int deltaY = Integer.compare(targetY, oldY);
-        
-        // If the path towards the player is blocked, choose a new random direction
-        for (int attempts = 0; attempts < 4; attempts++) {
-            int newX = oldX + deltaX;
-            int newY = oldY + deltaY;
-            
-            // Check if the new position is within bounds and not blocked by a wall
-            if (newX >= 0 && newX < gameBoard[0].length && newY >= 0 && newY < gameBoard.length) {
-                GameObject targetCell = gameBoard[newY][newX];
-                if (targetCell == null || targetCell.getTypeId() == 1) { // Check if ground or empty
-                    setX(newX);
-                    setY(newY);
-                    return;
-                }
-            }
-            
-            // Randomly change direction if blocked
-            deltaX = random.nextInt(3) - 1; // -1, 0, or 1
-            deltaY = random.nextInt(3) - 1;
+
+        if (tryMove(deltaX, deltaY, gameBoard)) return;
+
+        int[][] alternateMoves = {
+            {deltaX, 0},
+            {0, deltaY},
+            {-deltaX, deltaY},
+            {deltaX, -deltaY}
+        };
+
+        for (int[] move : alternateMoves) {
+            if (tryMove(move[0], move[1], gameBoard)) return;
         }
-        
-        // Default to no movement if all attempts are blocked
-        setX(oldX);
-        setY(oldY);
+    }
+
+    private boolean tryMove(int deltaX, int deltaY, GameObject[][] gameBoard) {
+        int newX = getX() + deltaX;
+        int newY = getY() + deltaY;
+
+        if (newX < 0 || newX >= gameBoard[0].length || newY < 0 || newY >= gameBoard.length) {
+            return false;
+        }
+
+        GameObject targetCell = gameBoard[newY][newX];
+
+        // Check if the new position is passable (can pass through items, holes, but not walls)
+        if (targetCell == null || targetCell.getTypeId() == 1 || targetCell.getTypeId() == 2 || targetCell.getTypeId() == 3 || targetCell.getTypeId() == 8) {
+            setX(newX);
+            setY(newY);
+            return true;
+        }
+
+        return false; // Move is blocked by a wall
     }
 }
