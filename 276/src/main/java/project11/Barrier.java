@@ -15,7 +15,7 @@ public class Barrier extends GameObject {
     }
 
     // Render the Barrier using the provided graphics object and Renderer class
-    public void render(Graphics g, Renderer renderer, int tileSize) {
-        g.drawImage(renderer.getWallSprite(), x * tileSize, y * tileSize, tileSize, tileSize, null);
-    }
+    // public void render(Graphics g, Renderer renderer, int tileSize) {
+    //     g.drawImage(renderer.getWallSprite(), x * tileSize, y * tileSize, tileSize, tileSize, null);
+    // }
 }

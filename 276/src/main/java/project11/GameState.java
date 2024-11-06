@@ -14,7 +14,6 @@ public class GameState {
 
     private int collectedItems = 0;
     private final int totalItems = 3; // Assuming three mandatory items for the player to collect
-    private int score = 0;
 
     public GameState() {
         int width = GamePanel.getPlayColumns();
@@ -51,6 +50,7 @@ public class GameState {
         for (int i = 0; i < totalItems; i++) {
             placeObjectRandomly("mandatoryitem", maxX, maxY);
         }
+        
         placeObjectRandomly("bonusitem", maxX, maxY);
     
         for (int i = 0; i < 5; i++) {
@@ -88,29 +88,34 @@ public class GameState {
         if (left && newX > 0) newX--;
         if (right && newX < cellArray.getWidth() - 1) newX++;
         
+        // Interaction with objects
         Cell targetCell = cellArray.getCell(newX, newY);
         if (targetCell.isOccupied()) {
             GameObject obj = targetCell.getPrimaryObject();
-            
-            if (obj instanceof Hole) {
-                player.takeDamage(10); // Assuming Hole reduces health
-                System.out.println("Player stepped on a hole! Health: " + player.getHealth());
-            } else if (obj instanceof MandatoryItem) {
+    
+            // check object types
+            if (obj.typeId == 2) { // Hole
+                player.takeDamage(10);
+                System.out.println("Player stepped on a hole! Health: " + player.getScore());
+            } else if (obj.typeId == 8) { // Mandatory Item
                 collectedItems++;
-                score += ((MandatoryItem) obj).getScore();
+                player.increaseScore(((MandatoryItem) obj).getScore());
                 System.out.println("Collected item! Items collected: " + collectedItems + "/" + totalItems);
                 targetCell.removeGameObject(obj);
+            } else if (obj.isSolid()) {
+                System.out.println("Player encountered a solid object!");
+                return; // Don't move if a solid object (e.g., wall) is encountered
             }
         }
-
+    
         cellArray.clearGameObject(player.getX(), player.getY());
         player.setX(newX);
         player.setY(newY);
         cellArray.setGameObject(newX, newY, player);
     }
-
+    
     public int getScore() {
-        return score;
+        return player.getScore();
     }
 
     public int getCollectedItems() {
@@ -120,6 +125,15 @@ public class GameState {
     public int getTotalItems() {
         return totalItems;
     }
+
+    public void updateEnemies() {
+        // enemyGenerator.updateEnemies();
+        for (Enemy enemy : enemies) {
+            cellArray.clearGameObject(enemy.getX(), enemy.getY());
+            enemy.moveTowardsPlayer(player);
+            cellArray.setGameObject(enemy.getX(), enemy.getY(), enemy);
+        }
+    }    
 
     public GameObject[][] getGameObjects() {
         int height = cellArray.getHeight();
@@ -133,4 +147,5 @@ public class GameState {
         }
         return objects;
     }
+
 }

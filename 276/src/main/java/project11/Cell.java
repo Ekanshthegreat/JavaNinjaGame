@@ -17,20 +17,20 @@ public class Cell {
 
     public void addGameObject(GameObject obj) {
         gameObjects.add(obj);
-        if (primaryObject == null || !primaryObject.isSolid()) {
-            primaryObject = obj;
+        if (this.primaryObject == null || !this.primaryObject.isSolid()) {
+            this.primaryObject = obj;
         }
     }
 
     public void removeGameObject(GameObject obj) {
         gameObjects.remove(obj);
-        if (primaryObject == obj) {
-            primaryObject = gameObjects.isEmpty() ? null : gameObjects.get(0);
+        if (this.primaryObject == obj) {
+            this.primaryObject = gameObjects.isEmpty() ? null : gameObjects.get(0);
         }
     }
 
     public GameObject getPrimaryObject() {
-        return primaryObject;
+        return this.primaryObject;
     }
 
     public void setPrimaryObject(GameObject obj) {

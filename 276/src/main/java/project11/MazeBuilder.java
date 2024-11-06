@@ -5,8 +5,8 @@ import java.util.Random;
 public class MazeBuilder {
     private GameObject[][] maze;
     private GameObjectFactory factory;
-    private int rows = 15;
-    private int cols = 20;
+    private int rows = 10;
+    private int cols = 15;
 
     private Random random = new Random();
     private boolean[][] visited;

@@ -28,7 +28,7 @@ public class Renderer {
             spawnSprite = ImageIO.read(getClass().getResource("/project11/sprites/spawn.png"));
             wallSprite = ImageIO.read(getClass().getResource("/project11/sprites/Wall.png"));
             keySprite = ImageIO.read(getClass().getResource("/project11/sprites/Key.png"));
-            chestSprite = ImageIO.read(getClass().getResource("/project11/sprites/Chest.png"));
+            chestSprite = ImageIO.read(getClass().getResource("/project11/sprites/chest.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
