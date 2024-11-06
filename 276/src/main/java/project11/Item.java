@@ -6,7 +6,7 @@ public abstract class Item extends GameObject {
 
     // Constructor
     public Item(int x, int y, int score, boolean isSolid, int typeId) {
-        super(x, y, isSolid, 0); // Assuming typeId is not needed or can be set to a default value
+        super(x, y, isSolid, typeId); // Assuming typeId is not needed or can be set to a default value
         this.score = score;
         this.isSpawned = true; // Assume items are spawned upon creation
     }
