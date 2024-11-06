@@ -45,10 +45,13 @@ public class GameState {
     }
     private void saveOriginalCellContent(int x, int y, GameObject obj) {
         String key = x + "," + y;
-        if (!originalObjects.containsKey(key)) {
+        if (!originalObjects.containsKey(key) && !(obj instanceof Enemy)) {
             originalObjects.put(key, obj != null ? obj : gameObjectFactory.createObject("ground", x, y));
         }
     }
+    
+    
+    
     
     
 
@@ -126,7 +129,6 @@ public class GameState {
             String key = oldX + "," + oldY;
             if (originalObjects.containsKey(key)) {
                 gameBoard[oldY][oldX] = originalObjects.get(key);
-                originalObjects.remove(key);
             }
     
             // Move the enemy towards the player
@@ -138,13 +140,15 @@ public class GameState {
             int newX = enemy.getX();
             int newY = enemy.getY();
     
+            // Check if the new position has an enemy already
             if (isEnemyAt(newX, newY)) {
                 continue; // Skip if the new position already has another enemy
             }
     
-            // Save the original content only if it's passable and not an enemy
-            if (gameBoard[newY][newX] == null || isPassableObject(gameBoard[newY][newX])) {
-                saveOriginalCellContent(newX, newY, gameBoard[newY][newX]);
+            GameObject targetCell = gameBoard[newY][newX];
+            if (targetCell == null || isPassableObject(targetCell)) {
+                // Save the original content if it's a passable object (e.g., Hole, Mandatory Item, Bonus Item)
+                saveOriginalCellContent(newX, newY, targetCell);
                 gameBoard[newY][newX] = enemy;
             } else {
                 // Revert to the original position if movement is blocked
@@ -156,8 +160,17 @@ public class GameState {
     }
     
     
+    
+    
+    
+    
+    
     private boolean isPassableObject(GameObject obj) {
-        return obj.getTypeId() == 1 || obj.getTypeId() == 2 || obj.getTypeId() == 3 || obj.getTypeId() == 8;
+        return obj.getTypeId() == 1 || // Ground
+               obj.getTypeId() == 2 || // Hole
+               obj.getTypeId() == 3 || // Bonus Item
+               obj.getTypeId() == 8 || // Mandatory Item
+               obj.getTypeId() == 9;   // Chest
     }
     
 
