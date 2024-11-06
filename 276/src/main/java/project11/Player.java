@@ -1,7 +1,7 @@
 package project11;
 
 public class Player extends GameObject {
-    private int score = 100;
+    private int score = 50; // default score
 
     public Player(int x, int y, int typeId) {
         super(x, y, true, typeId);

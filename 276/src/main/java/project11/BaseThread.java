@@ -34,7 +34,7 @@ public class BaseThread implements Runnable {
             }
 
             // Move enemies accordint go the player's position
-            gameState.updateEnemies();
+            // gameState.updateEnemies();
 
             // Render the game state
             render();

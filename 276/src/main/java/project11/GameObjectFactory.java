@@ -11,7 +11,7 @@ public class GameObjectFactory {
                 return new Hole(x, y, 10, 2); // typeId 2 for Hole
             
             case "bonusitem":
-                return new BonusItem(x, y, 10, false, 3); // typeId 3 for Bonus Item (JumpingShoes)
+                return new BonusItem(x, y, 50, false, 3); // typeId 3 for Bonus Item (JumpingShoes)
         
             case "samurai":
                 return new Samurai(x, y, 10, 4); // typeId 4 for Samurai with initial damage
@@ -28,6 +28,8 @@ public class GameObjectFactory {
                 return new MandatoryItem(x, y, 10, false, 8); // typeId 8 for Mandatory Item (Key)
             
             // 9 chest
+            case "end":
+                return new End(x, y, false, 9);
             
             default:
                 throw new IllegalArgumentException("Unknown GameObject type: " + type);

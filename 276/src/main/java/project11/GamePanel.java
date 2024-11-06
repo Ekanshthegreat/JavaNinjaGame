@@ -3,6 +3,7 @@ package project11;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
@@ -62,6 +63,6 @@ public class GamePanel extends JPanel {
         renderer.render(g, gameState.getGameObjects());
         g.setColor(Color.WHITE);
         g.drawString("Score: " + gameState.getScore(), 10, TILE_SIZE); // Score display
-        g.drawString("Items: " + gameState.getCollectedItems() + "/" + gameState.getTotalItems(), 10, TILE_SIZE * 2); // Items display
+        g.drawString("Items: " + gameState.getCollectedItems() + "/" + gameState.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, TILE_SIZE * 2); // Items display
     }
 }

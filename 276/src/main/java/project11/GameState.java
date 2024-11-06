@@ -6,79 +6,62 @@ import java.util.Random;
 public class GameState {
     private Player player;
     private ArrayList<Enemy> enemies;
-    private CellArray cellArray;
+    private GameObject[][] gameBoard; // Directly store GameObjects in a 2D array
     private GameObjectFactory gameObjectFactory = new GameObjectFactory();
     private EnemyGenerator enemyGenerator;
     private MazeBuilder mazeBuilder;
     private Random random = new Random();
 
     private int collectedItems = 0;
+    private int bonusItem = 0;
     private final int totalItems = 3; // Assuming three mandatory items for the player to collect
 
     public GameState() {
         int width = GamePanel.getPlayColumns();
         int height = GamePanel.getPlayRows();
         this.player = new Player(0, height / 2, 5);
-        this.enemies = new ArrayList<Enemy>();
-        this.cellArray = new CellArray(width, height);
+        this.enemies = new ArrayList<>();
+        this.gameBoard = new GameObject[height][width];
         this.enemyGenerator = new EnemyGenerator(player);
         this.mazeBuilder = new MazeBuilder(gameObjectFactory);
 
         initializeMaze();
-        cellArray.setGameObject(0, height / 2, player);
+        gameBoard[height / 2][0] = player; // Place player at start position
         initializeItemsAndEnemies();
     }
 
     private void initializeMaze() {
-        GameObject[][] mazeGrid = new GameObject[cellArray.getHeight()][cellArray.getWidth()];
+        GameObject[][] mazeGrid = new GameObject[gameBoard.length][gameBoard[0].length];
         mazeBuilder.buildMaze(mazeGrid);
 
         for (int y = 0; y < mazeGrid.length; y++) {
             for (int x = 0; x < mazeGrid[y].length; x++) {
                 GameObject obj = mazeGrid[y][x];
                 if (obj != null) {
-                    cellArray.setGameObject(x, y, obj);
+                    gameBoard[y][x] = obj;
                 }
             }
         }
     }
 
     private void initializeItemsAndEnemies() {
-        int maxX = cellArray.getWidth();
-        int maxY = cellArray.getHeight();
-    
-        // this code doesnt even run
+        int maxX = gameBoard[0].length;
+        int maxY = gameBoard.length;
 
-        // for (int i = 0; i < totalItems; i++) {
-        //     placeObjectRandomly("mandatoryitem", maxX, maxY);
-        // }
-        
-        // placeObjectRandomly("bonusitem", maxX, maxY);
-    
-        // for (int i = 0; i < 5; i++) {
-        //     placeObjectRandomly("hole", maxX, maxY);
-        // }
-    
         for (int i = 0; i < 2; i++) {
             Enemy enemy = enemyGenerator.createEnemy();
             int x, y;
             do {
                 x = random.nextInt(maxX);
                 y = random.nextInt(maxY);
-            } while (cellArray.getCell(x, y).isOccupied());
-            cellArray.setGameObject(x, y, enemy);
+            } while (isOccupied(x, y));
+            gameBoard[y][x] = enemy;
+            enemies.add(enemy); // Add enemy to the list for movement tracking
         }
     }
 
-    private void placeObjectRandomly(String objectType, int maxX, int maxY) {
-        int x, y;
-        do {
-            x = random.nextInt(maxX);
-            y = random.nextInt(maxY);
-        } while (cellArray.getCell(x, y).isOccupied());
-
-        GameObject obj = gameObjectFactory.createObject(objectType, x, y);
-        // cellArray.setGameObject(x, y, obj); // dont need this, it makes double the amount of holes and they dont work properly
+    private boolean isOccupied(int x, int y) {
+        return gameBoard[y][x] != null && gameBoard[y][x].isSolid();
     }
 
     public void movePlayer(boolean up, boolean down, boolean left, boolean right) {
@@ -86,37 +69,42 @@ public class GameState {
         int newY = player.getY();
         
         if (up && newY > 0) newY--;
-        if (down && newY < cellArray.getHeight() - 1) newY++;
+        if (down && newY < gameBoard.length - 1) newY++;
         if (left && newX > 0) newX--;
-        if (right && newX < cellArray.getWidth() - 1) newX++;
+        if (right && newX < gameBoard[0].length - 1) newX++;
         
-        // Interaction with objects
-        Cell targetCell = cellArray.getCell(newX, newY);
-        if (targetCell.isOccupied()) {
-            GameObject obj = targetCell.getPrimaryObject();
-            System.out.println("type id=" + obj.getTypeId());
-    
-            // check object types
-            if (obj.typeId == 2) { // Hole
+        GameObject targetObject = gameBoard[newY][newX];
+        if (targetObject != null) {
+            int typeId = targetObject.getTypeId();
+            System.out.println("type id=" + typeId);
+
+            if (typeId == 2) { // Hole
                 player.takeDamage(10);
                 System.out.println("Player stepped on a hole! Health: " + player.getScore());
-            } else if (obj.typeId == 8) { // Mandatory Item
+            } else if (typeId == 8) { // Mandatory Item
                 collectedItems++;
-                player.increaseScore(((MandatoryItem) obj).getScore());
+                player.increaseScore(((MandatoryItem) targetObject).getScore());
                 System.out.println("Collected item! Items collected: " + collectedItems + "/" + totalItems);
-                targetCell.removeGameObject(obj);
-            } else if (obj.isSolid()) {
+                gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
+            } else if (typeId == 3) { // bonus item
+                bonusItem++;
+                player.increaseScore(((BonusItem) targetObject).getScore());
+                System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + totalItems);
+                gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
+            } else if (typeId == 9) { // chest
+                
+            } else if (targetObject.isSolid()) {
                 System.out.println("Player encountered a solid object!");
-                return; // Don't move if a solid object (e.g., wall) is encountered
+                return; // Prevent moving into solid object
             }
         }
-    
-        cellArray.clearGameObject(player.getX(), player.getY());
+
+        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);; // Clear player's current position
         player.setX(newX);
         player.setY(newY);
-        cellArray.setGameObject(newX, newY, player);
+        gameBoard[newY][newX] = player; // Update player's new position
     }
-    
+
     public int getScore() {
         return player.getScore();
     }
@@ -129,26 +117,33 @@ public class GameState {
         return totalItems;
     }
 
-    public void updateEnemies() {
-        // enemyGenerator.updateEnemies();
-        for (Enemy enemy : enemies) {
-            cellArray.clearGameObject(enemy.getX(), enemy.getY());
-            enemy.moveTowardsPlayer(player);
-            cellArray.setGameObject(enemy.getX(), enemy.getY(), enemy);
-        }
-    }    
-
-    public GameObject[][] getGameObjects() {
-        int height = cellArray.getHeight();
-        int width = cellArray.getWidth();
-        GameObject[][] objects = new GameObject[height][width];
-    
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                objects[y][x] = cellArray.getGameObject(x, y);
-            }
-        }
-        return objects;
+    public int getBonusItem(){
+        return bonusItem;
     }
 
+   public void updateEnemies() {
+    for (Enemy enemy : enemies) {
+        // Clear enemy's current position
+        gameBoard[enemy.getY()][enemy.getX()] = null;
+        
+        // Move the enemy towards the player
+        enemy.moveTowardsPlayer(player);
+
+        // Ensure the enemy's new position is within bounds
+        int newX = Math.max(0, Math.min(enemy.getX(), gameBoard[0].length - 1));
+        int newY = Math.max(0, Math.min(enemy.getY(), gameBoard.length - 1));
+
+        // Update the enemy's coordinates to stay within bounds
+        enemy.setX(newX);
+        enemy.setY(newY);
+
+        // Set the enemy's new position on the board
+        gameBoard[newY][newX] = enemy;
+    }
+}
+
+
+    public GameObject[][] getGameObjects() {
+        return gameBoard; // Return the entire board with GameObjects
+    }
 }

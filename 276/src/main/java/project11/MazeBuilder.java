@@ -11,6 +11,7 @@ public class MazeBuilder {
     private Random random = new Random();
     private boolean[][] visited;
 
+    private int maxBonusItems = 1;
     private int maxHoles = 10;
     private int maxKeys = 3;
 
@@ -21,9 +22,11 @@ public class MazeBuilder {
 
     public void buildMaze(GameObject[][] maze) {
         this.maze = maze;
-        generateBarriers();    // Initializes the maze with barriers and paths
+        // Initializes the maze with barriers, paths, items.
+        generateBarriers();    
         generateHoles();
         generateItems();
+        generateEnd();
     }
 
     private GameObject[][] generateBarriers() {
@@ -89,12 +92,18 @@ public class MazeBuilder {
 
     private void generateItems() {
         int keyCount = 0;
-        while (keyCount < maxKeys) {
+        int bonusItemCount = 0;
+        while (keyCount < maxKeys || bonusItemCount < maxBonusItems) {
             int x = random.nextInt(cols);
             int y = random.nextInt(rows);
             if (maze[y][x] != null && maze[y][x].getTypeId() == 1) { // Check for ground
-                maze[y][x] = factory.createObject("mandatoryitem", x, y);
-                keyCount++;
+                if (keyCount < maxKeys) {
+                    maze[y][x] = factory.createObject("mandatoryitem", x, y);
+                    keyCount++;
+                } else if (bonusItemCount < maxBonusItems) {
+                    maze[y][x] = factory.createObject("bonusitem", x, y);
+                    bonusItemCount++;
+                }
             }
         }
     }
@@ -104,11 +113,17 @@ public class MazeBuilder {
         while (holeCount < maxHoles) {
             int x = random.nextInt(cols);
             int y = random.nextInt(rows);
-            if (maze[y][x] != null && maze[y][x].getTypeId() == 6) { // Assuming barrier typeId is 6
+            if (maze[y][x] != null && maze[y][x].getTypeId() == 6) {
                 maze[y][x] = factory.createObject("hole", x, y);
                 holeCount++;
             }
         }
+    }
+
+    private void generateEnd() {
+        int x = cols - 1;
+        int y = rows/2;
+        maze[y][x] = factory.createObject("end", x, y);
     }
 
     
