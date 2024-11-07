@@ -1,8 +1,8 @@
 package project11;
 
 public class BaseThread implements Runnable {
-    private static final int TOTAL_CYCLE_TIME = 600; // Increase cycle time to slow down movement
-    private static final int INPUT_TIME = 250;
+    private static final int TOTAL_CYCLE_TIME = 1000; // Increase cycle time to slow down movement
+    private static final int INPUT_TIME = 150;
 
     private GameState gameState;
     private GamePanel gamePanel;
