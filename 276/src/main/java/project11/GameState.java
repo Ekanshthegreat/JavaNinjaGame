@@ -51,6 +51,45 @@ public class GameState {
     }
     
     
+    public void setDifficulty(String difficulty) {
+        switch (difficulty.toLowerCase()) {
+            case "easy":
+                updateSamuraiDamage(25);
+                break;
+            case "medium":
+                updateSamuraiDamage(35);
+                break;
+            case "hard":
+                updateSamuraiDamage(35);
+                spawnAdditionalSamurai(3);
+                break;
+        }
+    }
+    
+    private void updateSamuraiDamage(int damage) {
+        for (Enemy enemy : enemies) {
+            if (enemy instanceof Samurai) {
+                ((Samurai) enemy).setDamage(damage);
+            }
+        }
+    }
+    
+    private void spawnAdditionalSamurai(int count) {
+        for (int i = 0; i < count; i++) {
+            Enemy enemy = enemyGenerator.createEnemy();
+            int x, y;
+            do {
+                x = random.nextInt(gameBoard[0].length);
+                y = random.nextInt(gameBoard.length);
+            } while (isOccupied(x, y) || isEnemyAt(x, y));
+    
+            enemy.setX(x);
+            enemy.setY(y);
+            saveOriginalCellContent(x, y, gameBoard[y][x]);
+            gameBoard[y][x] = enemy;
+            enemies.add(enemy);
+        }
+    }
     
     
     
