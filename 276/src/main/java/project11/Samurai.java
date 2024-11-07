@@ -7,7 +7,7 @@ import java.util.Random;
  */
 public class Samurai extends Enemy {
 
-    private static final int DAMAGE = 20;
+    private static final int DAMAGE = 25;
     private Random random = new Random();
 
     /**
