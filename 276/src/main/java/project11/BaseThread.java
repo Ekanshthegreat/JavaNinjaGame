@@ -1,5 +1,8 @@
 package project11;
 
+/**
+ * Single thread to run game logic
+ */
 public class BaseThread implements Runnable {
     private static final int TOTAL_CYCLE_TIME = 1000; // Increase cycle time to slow down movement
     private static final int INPUT_TIME = 150;
@@ -10,6 +13,11 @@ public class BaseThread implements Runnable {
     private Thread thread;
     private int enemyMoveCycle = 0; // Track cycles to control enemy movement frequency
 
+    /**
+     * Constructor
+     * @param gamePanel GamePanel for drawing
+     * @param keyHandler KeyHandler for input
+     */
     public BaseThread(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.gameState = gamePanel.gameState;
@@ -18,6 +26,9 @@ public class BaseThread implements Runnable {
         this.thread.start();
     }
 
+    /**
+     * Run the game loop
+     */
     public void run() {
         while (thread != null) {
             long startTime = System.currentTimeMillis();
@@ -42,6 +53,7 @@ public class BaseThread implements Runnable {
 
             render();
 
+            // Finish TOTAL_CYCLE_TIME for consistent game speed
             elapsed = System.currentTimeMillis() - startTime;
             if (elapsed < TOTAL_CYCLE_TIME) {
                 try {
@@ -53,15 +65,24 @@ public class BaseThread implements Runnable {
         }
     }
 
+    /**
+     * Handle all input
+     */
     private void handleInput() {
         gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
         keyHandler.resetInput(); 
     }
 
+    /**
+     * Move all enemies
+     */
     private void moveEnemies() {
         gameState.updateEnemies();
     }
 
+    /**
+     * Render the game
+     */
     private void render() {
         gamePanel.render();
     }

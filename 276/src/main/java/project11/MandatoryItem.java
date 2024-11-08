@@ -17,7 +17,7 @@ public class MandatoryItem extends Item {
         super(x, y, score, solid, typeId); // Call the parent constructor
     }
 
-        /**
+    /**
      * Return if the object is solid
      * @return If the object is solid
      */

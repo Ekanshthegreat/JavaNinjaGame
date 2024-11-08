@@ -21,6 +21,7 @@ public class GamePanel extends JPanel {
     private boolean isGameStarted = false;
     private boolean difficultySelected = false;
 
+    // Getters for constants, only need to change constants here
     public static int getTileSize() {
         return TILE_SIZE;
     }
@@ -40,6 +41,11 @@ public class GamePanel extends JPanel {
     protected GameState gameState;
     private Renderer renderer;
 
+    /**
+     * Constructor for GamePanel
+     * @param gameState GameState object
+     * @param keyHandler KeyHandler object
+     */
     public GamePanel(GameState gameState, KeyHandler keyHandler) {
         this.gameState = gameState;
         this.renderer = new Renderer(TILE_SIZE);
@@ -114,11 +120,18 @@ public class GamePanel extends JPanel {
         return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
     }
 
+    /**
+     * Calls repaint() to update window
+     */
     public void render() {
         repaint();
     }
 
     @Override
+    /**
+     * Paint the game window
+     * @param g Graphics object
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (!isGameStarted || !difficultySelected) {
@@ -134,6 +147,10 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Draw the start screen
+     * @param g Graphics object
+     */
     private void drawStartScreen(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
@@ -155,6 +172,13 @@ public class GamePanel extends JPanel {
         drawButton(g, "Hard", (getWidth() / 2) + 50, getHeight() / 2 + 120);
     }
 
+    /**
+     * Draw a button
+     * @param g Graphics object
+     * @param label Button label
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
     private void drawButton(Graphics g, String label, int x, int y) {
         int buttonWidth = 100;
         int buttonHeight = 40;

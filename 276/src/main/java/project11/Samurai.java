@@ -23,6 +23,10 @@ public class Samurai extends Enemy {
     }
 
     @Override
+    /**
+     * Set difficulty of the game
+     * @param difficulty Difficulty of the game
+     */
     public void setDifficulty(int difficulty) {
         this.damage += difficulty;
     }
@@ -46,6 +50,8 @@ public class Samurai extends Enemy {
 
     /**
      * Attempt to move towards the player, avoiding walls and passing through other objects
+     * @param player Player object to move towards
+     * @param gameBoard Current game board
      */
     public void moveTowardsPlayerAvoidingWalls(Player player, GameObject[][] gameBoard) {
         int targetX = player.getX();
@@ -70,6 +76,13 @@ public class Samurai extends Enemy {
         }
     }
 
+    /**
+     * Attempt to move in a direction, if possible
+     * @param deltaX Change in X coordinate
+     * @param deltaY Change in Y coordinate
+     * @param gameBoard Current game board
+     * @return True if move was successful, false otherwise
+     */
     private boolean tryMove(int deltaX, int deltaY, GameObject[][] gameBoard) {
         int newX = getX() + deltaX;
         int newY = getY() + deltaY;

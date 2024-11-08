@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * GameState to hold current state of game, most of game logic is held here for GameObject[][] array
+ * GameState to hold current state of game, most of game logic is held here to manipulate GameObject[][] array
  */
 public class GameState {
     // Local Variables
@@ -43,6 +43,13 @@ public class GameState {
         gameBoard[height / 2][0] = player;
         initializeItemsAndEnemies();
     }
+
+    /**
+     * Save the original content of the cell before moving the enemy
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param obj GameObject to save
+     */
     private void saveOriginalCellContent(int x, int y, GameObject obj) {
         String key = x + "," + y;
         if (!originalObjects.containsKey(key) && !(obj instanceof Enemy)) {
@@ -50,7 +57,10 @@ public class GameState {
         }
     }
     
-    
+    /**
+     * Set the difficulty of the game
+     * @param difficulty String representing the difficulty level (easy, medium, hard)
+     */
     public void setDifficulty(String difficulty) {
         switch (difficulty.toLowerCase()) {
             case "easy":
@@ -66,6 +76,10 @@ public class GameState {
         }
     }
     
+    /**
+     * Update the damage of all Samurai enemies
+     * @param damage New damage value
+     */
     private void updateSamuraiDamage(int damage) {
         for (Enemy enemy : enemies) {
             if (enemy instanceof Samurai) {
@@ -74,6 +88,10 @@ public class GameState {
         }
     }
     
+    /**
+     * Spawn additional Samurai enemies
+     * @param count Number of Samurai enemies to spawn
+     */
     private void spawnAdditionalSamurai(int count) {
         for (int i = 0; i < count; i++) {
             Enemy enemy = enemyGenerator.createEnemy();
@@ -91,9 +109,6 @@ public class GameState {
         }
     }
     
-    
-    
-
     /**
      * Maze Constructor
      */
@@ -139,15 +154,25 @@ public class GameState {
         }
     }
 
+    /**
+     * Checks if gameBoard[x][y] is occupied
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return Boolean if occupied
+     */
     private boolean isOccupied(int x, int y) {
         return gameBoard[y][x] != null && gameBoard[y][x].isSolid();
     }
 
+    /**
+     * Checks if there is an enemy at gameBoard[x][y]
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return Boolean if enemy is at position
+     */
     private boolean isEnemyAt(int x, int y) {
         return gameBoard[y][x] instanceof Enemy;
     }
-
-
 
     /**
      * Update all enemy positions and handle player contact
@@ -185,7 +210,7 @@ public class GameState {
             }
     
             GameObject targetCell = gameBoard[newY][newX];
-            if (targetCell == null || isPassableObject(targetCell)) {
+            if (targetCell == null || !targetCell.isSolid()) {
                 // Save the original content if it's a passable object (e.g., Hole, Mandatory Item, Bonus Item)
                 saveOriginalCellContent(newX, newY, targetCell);
                 gameBoard[newY][newX] = enemy;
@@ -198,21 +223,11 @@ public class GameState {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    private boolean isPassableObject(GameObject obj) {
-        return obj.getTypeId() == 1 || // Ground
-               obj.getTypeId() == 2 || // Hole
-               obj.getTypeId() == 3 || // Bonus Item
-               obj.getTypeId() == 8 || // Mandatory Item
-               obj.getTypeId() == 9;   // Chest
-    }
-    
-
+    /**
+     * Check if the enemy is adjacent to the player
+     * @param enemy Enemy to check
+     * @return Boolean if enemy is adjacent to player
+     */
     private boolean isAdjacentToPlayer(Enemy enemy) {
         int enemyX = enemy.getX();
         int enemyY = enemy.getY();
@@ -224,7 +239,6 @@ public class GameState {
                (Math.abs(enemyY - playerY) == 1 && enemyX == playerX);
     }
     
-
     /**
      * Move Player function, deals with most object interactions
      * @param up Boolean for direction
@@ -296,6 +310,7 @@ public class GameState {
         gameBoard[newY][newX] = player;
     }
 
+    // Getters 
     public int getScore() {
         return player.getScore();
     }

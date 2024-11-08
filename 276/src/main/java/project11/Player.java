@@ -17,10 +17,18 @@ public class Player extends GameObject {
         super(x, y, true, typeId);
     }
 
+    /**
+     * Increase the score of the player
+     * @param amount Amount to increase score by
+     */
     public void increaseScore(int amount) {
         score += amount;
     }
 
+    /**
+     * Decrease the score of the player
+     * @param damage Amount of damage to take
+     */
     public void takeDamage(int damage) {
         score -= damage;
          // Ensure score doesn't drop below zero
@@ -29,6 +37,10 @@ public class Player extends GameObject {
         }
     }
 
+    /**
+     * Get the score of the player
+     * @return score
+     */
     public int getScore() {
         return score;
     }
