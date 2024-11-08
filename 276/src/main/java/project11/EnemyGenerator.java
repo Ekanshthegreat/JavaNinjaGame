@@ -11,6 +11,10 @@ public class EnemyGenerator {
     private Player player;
     private Random random;
 
+    /**
+     * Constructor
+     * @param player Player object
+     */
     public EnemyGenerator(Player player) {
         this.enemies = new ArrayList<>();
         this.player = player;

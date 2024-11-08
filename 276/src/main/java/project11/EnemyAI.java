@@ -6,6 +6,10 @@ package project11;
 public class EnemyAI {
     private Player player;
 
+    /**
+     * Constructor
+     * @param player Player object
+     */
     public EnemyAI(Player player) {
         this.player = player;
     }

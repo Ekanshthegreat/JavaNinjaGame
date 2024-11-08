@@ -225,6 +225,24 @@
     </pluginManagement>
     <plugins>
       <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>javadoc</goal>
+            </goals>
+            <configuration>
+              <show>protected</show>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <show>protected</show>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>3.4.0</version>
         <executions>

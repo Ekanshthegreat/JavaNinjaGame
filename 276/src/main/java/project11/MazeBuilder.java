@@ -80,6 +80,11 @@ public class MazeBuilder {
         return maze;
     }
 
+    /**
+     * Depth First Search algorithm to generate path
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
     private void dfs(int x, int y) {
         if (visited[x][y]) return;  // Stop recursion if the cell is already visited
 
@@ -100,10 +105,20 @@ public class MazeBuilder {
         }
     }
 
+    /**
+     * Check if the cell is valid
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return Boolean if the cell is valid
+     */
     private boolean isValid(int x, int y) {
         return x >= 0 && x < rows && y >= 0 && y < cols;
     }
 
+    /**
+     * Shuffle the array
+     * @param array 2D array of GameObjects
+     */
     private void shuffleArray(int[][] array) {
         for (int i = array.length - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);

@@ -5,6 +5,13 @@ package project11;
  */
 public class GameObjectFactory {
 
+    /**
+     * Create a GameObject of the specified type
+     * @param type Object type
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return GameObject of the specified type
+     */
     public GameObject createObject(String type, int x, int y) {
         switch (type) {
             case "ground":

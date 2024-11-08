@@ -4,6 +4,11 @@ package project11;
  * Main class to run the Game.
  */
 public class Main{
+
+    /**
+     * Main method to run the Game.
+     * @param args default arguments
+     */
     public static void main(String[] args) {
         System.out.println("Test!");
 

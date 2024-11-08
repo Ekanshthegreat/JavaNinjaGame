@@ -3,7 +3,6 @@ package project11;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 /**
@@ -76,10 +75,18 @@ public class Renderer {
         }
     }
 
+    /**
+     * Get the wall sprite
+     * @return wallSprite
+     */
     public Image getWallSprite() {
         return wallSprite;
     }
 
+    /**
+     * Get the ground sprite
+     * @return groundSprite
+     */
     public Image getGroundSprite() {
         return groundSprite;
     }
