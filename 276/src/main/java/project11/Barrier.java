@@ -3,6 +3,7 @@ package project11;
 /**
  * Barrier class to extend GameObject
  */
+
 public class Barrier extends GameObject {
     
     /**

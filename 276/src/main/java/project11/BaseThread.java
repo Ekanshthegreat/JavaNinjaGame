@@ -4,7 +4,7 @@ package project11;
  * Single thread to run game logic
  */
 public class BaseThread implements Runnable {
-    private static final int TOTAL_CYCLE_TIME = 1000; // Increase cycle time to slow down movement
+    private static final int TOTAL_CYCLE_TIME = 300; 
     private static final int INPUT_TIME = 150;
 
     private GameState gameState;
