@@ -47,16 +47,23 @@ public class GamePanel extends JPanel {
      * @param keyHandler KeyHandler object
      */
     public GamePanel(GameState gameState, KeyHandler keyHandler) {
-        this.gameState = gameState;
+        try{ // Check if gameState is NULL
+            this.gameState = gameState;
+        }catch (Exception e) {
+            throw new NullPointerException("GameState is null");
+        }
+        try{ // Check if keyHandler is NULL
+            this.addKeyListener(keyHandler);
+        } catch (Exception e){
+            throw new NullPointerException("KeyHandler is null");
+        }
         this.renderer = new Renderer(TILE_SIZE);
         int width = (PLAY_COLUMNS + 2 * BORDER_TILES) * TILE_SIZE;
         int height = (PLAY_ROWS + 2 * BORDER_TILES + DATA_TILES) * TILE_SIZE;
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
-        this.addKeyListener(keyHandler);
         this.setFocusable(true);
-
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -133,17 +140,21 @@ public class GamePanel extends JPanel {
      * @param g Graphics object
      */
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (!isGameStarted || !difficultySelected) {
-            drawStartScreen(g);
-        } else {
-            renderer.render(g, gameState.getGameObjects());
-            g.setColor(Color.WHITE);
-            g.drawString("Score: " + gameState.getScore(), 10, TILE_SIZE);
-            g.setColor(Color.CYAN);
-            g.drawString("Items: " + gameState.getCollectedItems() + "/" + gameState.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, TILE_SIZE * 2);
-            g.setColor(Color.GREEN);
-            g.drawString("Tip: Use WASD to move, collect all keys and reach the chest to win!", 10, TILE_SIZE * (PLAY_ROWS + 2 * BORDER_TILES + DATA_TILES));
+        try{ // Try to paint the game window
+            super.paintComponent(g);
+            if (!isGameStarted || !difficultySelected) {
+                drawStartScreen(g);
+            } else {
+                renderer.render(g, gameState.getGameObjects());
+                g.setColor(Color.WHITE);
+                g.drawString("Score: " + gameState.getScore(), 10, TILE_SIZE);
+                g.setColor(Color.CYAN);
+                g.drawString("Items: " + gameState.getCollectedItems() + "/" + gameState.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, TILE_SIZE * 2);
+                g.setColor(Color.GREEN);
+                g.drawString("Tip: Use WASD to move, collect all keys and reach the chest to win!", 10, TILE_SIZE * (PLAY_ROWS + 2 * BORDER_TILES + DATA_TILES));
+            }
+        } catch (Exception e){
+            throw new NullPointerException("Graphics object is null");
         }
     }
 
@@ -152,24 +163,29 @@ public class GamePanel extends JPanel {
      * @param g Graphics object
      */
     private void drawStartScreen(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
-
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 36));
-        g.drawString("Ninja Game", getWidth() / 2 - 100, getHeight() / 2 - 40);
-
-        g.setFont(new Font("Arial", Font.PLAIN, 24));
         int buttonWidth = 100;
         int buttonHeight = 40;
         int buttonX = (getWidth() - buttonWidth) / 2;
         int buttonY = (getHeight() - buttonHeight) / 2 + 50;
-        g.drawRect(buttonX, buttonY, buttonWidth, buttonHeight);
-        g.drawString("Play", buttonX + 25, buttonY + 28);
+        try{ // Try to draw the starting screen
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
 
-        drawButton(g, "Easy", (getWidth() / 2) - 150, getHeight() / 2 + 120);
-        drawButton(g, "Medium", (getWidth() / 2) - 50, getHeight() / 2 + 120);
-        drawButton(g, "Hard", (getWidth() / 2) + 50, getHeight() / 2 + 120);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 36));
+            g.drawString("Ninja Game", getWidth() / 2 - 100, getHeight() / 2 - 40);
+
+            g.setFont(new Font("Arial", Font.PLAIN, 24));
+            g.drawRect(buttonX, buttonY, buttonWidth, buttonHeight);
+            g.drawString("Play", buttonX + 25, buttonY + 28);
+
+            drawButton(g, "Easy", (getWidth() / 2) - 150, getHeight() / 2 + 120);
+            drawButton(g, "Medium", (getWidth() / 2) - 50, getHeight() / 2 + 120);
+            drawButton(g, "Hard", (getWidth() / 2) + 50, getHeight() / 2 + 120);
+        }catch (Exception e){
+            throw new NullPointerException("Graphics object is null");
+        }
+
     }
 
     /**
