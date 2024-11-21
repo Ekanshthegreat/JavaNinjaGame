@@ -48,8 +48,8 @@ public class Renderer {
      * @param gameObjects Current game objects to be drawn
      */
     public void render(Graphics g, GameObject[][] gameObjects) {
-        int xOffset = GamePanel.getBorderTiles() * tileSize;
-        int yOffset = GamePanel.getDataTiles() * tileSize + GamePanel.getBorderTiles() * tileSize;
+        int xOffset = Constants.getBorderTiles() * tileSize;
+        int yOffset = Constants.getDataTiles() * tileSize + Constants.getBorderTiles() * tileSize;
     
         for (int row = 0; row < gameObjects.length; row++) {
             for (int col = 0; col < gameObjects[row].length; col++) {

@@ -12,31 +12,9 @@ import javax.swing.JPanel;
  * GamePanel for creating a game window, extends JPanel
  */
 public class GamePanel extends JPanel {
-    private static final int TILE_SIZE = 32;
-    private static final int PLAY_COLUMNS = 15;
-    private static final int PLAY_ROWS = 10;
-    private static final int BORDER_TILES = 1;
-    private static final int DATA_TILES = 2;
 
     private boolean isGameStarted = false;
     private boolean difficultySelected = false;
-
-    // Getters for constants, only need to change constants here
-    public static int getTileSize() {
-        return TILE_SIZE;
-    }
-    public static int getPlayColumns() {
-        return PLAY_COLUMNS;
-    }
-    public static int getPlayRows() {
-        return PLAY_ROWS;
-    }
-    public static int getBorderTiles() {
-        return BORDER_TILES;
-    }
-    public static int getDataTiles() {
-        return DATA_TILES;
-    }
 
     protected GameState gameState;
     private Renderer renderer;
@@ -57,9 +35,9 @@ public class GamePanel extends JPanel {
         } catch (Exception e){
             throw new NullPointerException("KeyHandler is null");
         }
-        this.renderer = new Renderer(TILE_SIZE);
-        int width = (PLAY_COLUMNS + 2 * BORDER_TILES) * TILE_SIZE;
-        int height = (PLAY_ROWS + 2 * BORDER_TILES + DATA_TILES) * TILE_SIZE;
+        this.renderer = new Renderer(Constants.getTileSize());
+        int width = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles()) * Constants.getTileSize();
+        int height = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles() + Constants.getDataTiles()) * Constants.getTileSize();
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
@@ -77,19 +55,19 @@ public class GamePanel extends JPanel {
                     }
 
                     if (isEasyButtonClicked(mouseX, mouseY)) {
-                        gameState.setDifficulty("easy");
+                        gameState.setDifficulty(0);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
                         repaint();
                     } else if (isMediumButtonClicked(mouseX, mouseY)) {
-                        gameState.setDifficulty("medium");
+                        gameState.setDifficulty(1);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
                         repaint();
                     } else if (isHardButtonClicked(mouseX, mouseY)) {
-                        gameState.setDifficulty("hard");
+                        gameState.setDifficulty(2);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
@@ -147,11 +125,11 @@ public class GamePanel extends JPanel {
             } else {
                 renderer.render(g, gameState.getGameObjects());
                 g.setColor(Color.WHITE);
-                g.drawString("Score: " + gameState.getScore(), 10, TILE_SIZE);
+                g.drawString("Score: " + gameState.getScore(), 10, Constants.getTileSize());
                 g.setColor(Color.CYAN);
-                g.drawString("Items: " + gameState.getCollectedItems() + "/" + gameState.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, TILE_SIZE * 2);
+                g.drawString("Items: " + gameState.getCollectedItems() + "/" + Constants.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, Constants.getTileSize() * 2);
                 g.setColor(Color.GREEN);
-                g.drawString("Tip: Use WASD to move, collect all keys and reach the chest to win!", 10, TILE_SIZE * (PLAY_ROWS + 2 * BORDER_TILES + DATA_TILES));
+                g.drawString("Tip: Use WASD to move, collect all keys and reach the chest to win!", 10, Constants.getTileSize() * (Constants.getPlayRows() + 2 * Constants.getBorderTiles() + Constants.getDataTiles()));
             }
         } catch (Exception e){
             throw new NullPointerException("Graphics object is null");
