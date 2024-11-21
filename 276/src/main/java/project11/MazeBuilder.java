@@ -23,10 +23,6 @@ public class MazeBuilder {
     private Random random = new Random();
     private boolean[][] visited;
 
-    private int maxBonusItems = 1;
-    private int maxHoles = 10;
-    private int maxKeys = 3;
-
     /**
      * MazeBuilder constructor
      * @param factory GameFactory Object, for creating new objects
@@ -134,14 +130,14 @@ public class MazeBuilder {
     private void generateItems() {
         int keyCount = 0;
         int bonusItemCount = 0;
-        while (keyCount < maxKeys || bonusItemCount < maxBonusItems) {
+        while (keyCount < Constants.getTotalItems() || bonusItemCount < Constants.getTotalBonusItems()) {
             int x = random.nextInt(cols);
             int y = random.nextInt(rows);
             if (maze[y][x] != null && maze[y][x].getTypeId() == 1) { // Check for ground
-                if (keyCount < maxKeys) {
+                if (keyCount < Constants.getTotalItems()) {
                     maze[y][x] = factory.createObject(8, x, y);
                     keyCount++;
-                } else if (bonusItemCount < maxBonusItems) {
+                } else if (bonusItemCount < Constants.getTotalBonusItems()) {
                     maze[y][x] = factory.createObject(3, x, y);
                     bonusItemCount++;
                 }
@@ -154,7 +150,7 @@ public class MazeBuilder {
      */
     private void generateHoles() {
         int holeCount = 0;
-        while (holeCount < maxHoles) {
+        while (holeCount < Constants.getTotalHoles()) {
             int x = random.nextInt(cols);
             int y = random.nextInt(rows);
             if (maze[y][x] != null && maze[y][x].getTypeId() == 6) {

@@ -12,9 +12,9 @@ public class Barrier extends GameObject {
      * @param solid If the object is solid
      * @param typeId Holds barrier id
      */
-    public Barrier(int x, int y, boolean solid, int typeId) {
-        super(x, y, solid, typeId);
-        this.solid = true; // Barrier is solid by default
+    public Barrier(int x, int y) {
+        super(x, y, true, 6);
+        // this.solid = true; // Barrier is solid by default
     }
 
     /**

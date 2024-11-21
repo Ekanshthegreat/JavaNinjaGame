@@ -12,8 +12,8 @@ public class Ground extends GameObject {
      * @param solid If the object is solid
      * @param typeId Holds ground id
      */
-    public Ground(int x, int y, boolean solid, int typeId) {
-        super(x, y, solid, typeId);
+    public Ground(int x, int y) {
+        super(x, y, false, 1);
     }
 
     /**

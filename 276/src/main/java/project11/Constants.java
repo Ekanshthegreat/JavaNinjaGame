@@ -29,30 +29,45 @@ public class Constants {
     }
 
     // Damage constants
-    private int HOLE_DAMAGE = 10;
-    private int SAMURAI_DAMAGE = 10;
-
-    public int getHoleDamage() {
+    private static int HOLE_DAMAGE = 10;
+    private static int SAMURAI_DAMAGE = 10;
+    
+    public static int getHoleDamage() {
         return HOLE_DAMAGE;
     }
-    public void setHoleDamage(int damage) {
+    public static void setHoleDamage(int damage) {
         HOLE_DAMAGE = damage;
     }
-    public int getSamuraiDamage() {
+    public static int getSamuraiDamage() {
         return SAMURAI_DAMAGE;
     }
-    public void setSamuraiDamage(int damage) {
+    public static void setSamuraiDamage(int damage) {
         SAMURAI_DAMAGE = damage;
     }
 
     // Game constants
     private static int TOTAL_ITEMS = 3;
+    private static int ITEM_SCORE = 10;
+    private static int TOTAL_BONUS_ITEMS = 1;
+    private static int BONUS_SCORE = 50;
+    private static int TOTAL_HOLES = 10;
     private static int GAME_DIFFICULTY = 0;
     
     public static int getTotalItems() {
         return TOTAL_ITEMS;
     }
-    
+    public static int getItemScore() {
+        return ITEM_SCORE;
+    }
+    public static int getTotalBonusItems() {
+        return TOTAL_BONUS_ITEMS;
+    }
+    public static int getBonusScore() {
+        return BONUS_SCORE;
+    }
+    public static int getTotalHoles() {
+        return TOTAL_HOLES;
+    }
     public static int getGameDifficulty() {
         return GAME_DIFFICULTY;
     }

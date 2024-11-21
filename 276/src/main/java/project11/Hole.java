@@ -12,8 +12,8 @@ public class Hole extends Enemy{
      * @param solid If the object is solid
      * @param typeId Holds hole id
      */
-    public Hole(int x, int y, int damage, int typeId) {
-        super(x, y, damage, typeId); // Pass values to the superclass constructor
+    public Hole(int x, int y) {
+        super(x, y, Constants.getHoleDamage(), 2); // Pass values to the superclass constructor
     }
 
     /**

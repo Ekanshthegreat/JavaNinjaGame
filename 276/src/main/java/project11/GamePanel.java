@@ -35,7 +35,7 @@ public class GamePanel extends JPanel {
         } catch (Exception e){
             throw new NullPointerException("KeyHandler is null");
         }
-        this.renderer = new Renderer(Constants.getTileSize());
+        this.renderer = new Renderer();
         int width = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles()) * Constants.getTileSize();
         int height = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles() + Constants.getDataTiles()) * Constants.getTileSize();
         this.setPreferredSize(new Dimension(width, height));

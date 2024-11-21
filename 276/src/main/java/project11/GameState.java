@@ -32,7 +32,7 @@ public class GameState {
     public GameState() {
         int width = Constants.getPlayColumns();
         int height = Constants.getPlayRows();
-        this.player = new Player(0, height / 2, 5);
+        this.player = new Player(0, height / 2);
         this.enemies = new ArrayList<>();
         this.gameBoard = new GameObject[height][width];
         // this.enemyGenerator = new EnemyGenerator(player);
@@ -98,7 +98,7 @@ public class GameState {
                 x = random.nextInt(gameBoard[0].length);
                 y = random.nextInt(gameBoard.length);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
-            Enemy enemy = new Samurai(x, y, 35, 4);
+            Enemy enemy = new Samurai(x, y);
             
             enemy.setX(x);
             enemy.setY(y);
@@ -142,7 +142,7 @@ public class GameState {
                 x = random.nextInt(maxX);
                 y = random.nextInt(maxY);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
-            Enemy enemy = new Samurai(x, y, 35, 4);
+            Enemy enemy = new Samurai(x, y);
             
             saveOriginalCellContent(x, y, gameBoard[y][x]);
             gameBoard[y][x] = enemy;
@@ -266,12 +266,12 @@ public class GameState {
                 collectedItems++;
                 player.increaseScore(((MandatoryItem) targetObject).getScore());
                 System.out.println("Collected item! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
-                gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
+                gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
             } else if (typeId == 3) { // Bonus item
                 bonusItem++;
                 player.increaseScore(((BonusItem) targetObject).getScore());
                 System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
-                gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
+                gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
             } else if (typeId == 9) { // Chest/End
                 if (collectedItems >= Constants.getTotalItems()) {
                     System.out.println("Congratulations! You've collected all mandatory items and reached the chest.");
@@ -288,11 +288,11 @@ public class GameState {
         }
 
         // Clear player's current position
-        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);
+        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY());
 
         // Redraw Chest/End if player walked over with not enough keys
         if (collectedItems < Constants.getTotalItems()) {
-            gameBoard[chestY][chestX] = new End(chestX, chestY, false, 9);
+            gameBoard[chestY][chestX] = new End(chestX, chestY);
         }
 
         // Close game if score ever goes below 0
