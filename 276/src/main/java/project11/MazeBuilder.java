@@ -12,14 +12,6 @@ public class MazeBuilder {
     private int rows = Constants.getPlayRows();
     private int cols = Constants.getPlayColumns();
 
-    // Getters
-    protected int getRows(){
-        return rows;
-    }
-    protected int getCols(){
-        return cols;
-    }
-
     private Random random = new Random();
     private boolean[][] visited;
 
