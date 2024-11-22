@@ -12,14 +12,12 @@ public class Renderer {
     // Local Variables
     private Image groundSprite, holeSprite, jumpingShoesSprite, ninjaSprite, samuraiSprite, spawnSprite, wallSprite;
     private Image keySprite, chestSprite;
-    private int tileSize;
 
     /**
      * Load all sprites
      * @param tileSize Size of each Tile
      */
-    public Renderer(int tileSize) {
-        this.tileSize = tileSize;
+    public Renderer() {
         loadSprites();
     }
 
@@ -43,31 +41,42 @@ public class Renderer {
     }
 
     /**
+     * Draw a sprite on call
+     * @param g Graphics object
+     * @param image Image object
+     * @param x X Coordinate
+     * @param y Y Coordinate
+     */
+    public void drawSprite(Graphics g, Image image, int x ,int y){
+        g.drawImage(image, x, y, Constants.getTileSize(), Constants.getTileSize(),null);
+    }
+
+    /**
      * Draws all GameObjects on call
      * @param g Graphics object
      * @param gameObjects Current game objects to be drawn
      */
     public void render(Graphics g, GameObject[][] gameObjects) {
-        int xOffset = GamePanel.getBorderTiles() * tileSize;
-        int yOffset = GamePanel.getDataTiles() * tileSize + GamePanel.getBorderTiles() * tileSize;
+        int xOffset = Constants.getBorderTiles() * Constants.getTileSize();
+        int yOffset = Constants.getDataTiles() * Constants.getTileSize() + Constants.getBorderTiles() * Constants.getTileSize();
     
         for (int row = 0; row < gameObjects.length; row++) {
             for (int col = 0; col < gameObjects[row].length; col++) {
                 GameObject obj = gameObjects[row][col];
                 if (obj != null) {
-                    int x = col * tileSize + xOffset;
-                    int y = row * tileSize + yOffset;
+                    int x = col * Constants.getTileSize() + xOffset;
+                    int y = row * Constants.getTileSize() + yOffset;
 
                     switch (obj.getTypeId()) {
-                        case 1: g.drawImage(groundSprite, x, y, tileSize, tileSize, null); break;
-                        case 2: g.drawImage(holeSprite, x, y, tileSize, tileSize, null); break;
-                        case 3: g.drawImage(jumpingShoesSprite, x, y, tileSize, tileSize, null); break;
-                        case 4: g.drawImage(samuraiSprite, x, y, tileSize, tileSize, null); break;
-                        case 5: g.drawImage(ninjaSprite, x, y, tileSize, tileSize, null); break;
-                        case 6: g.drawImage(wallSprite, x, y, tileSize, tileSize, null); break;
-                        case 7: g.drawImage(spawnSprite, x, y, tileSize, tileSize, null); break;
-                        case 8: g.drawImage(keySprite, x, y, tileSize, tileSize, null); break;
-                        case 9: g.drawImage(chestSprite, x, y, tileSize, tileSize, null); break;
+                        case 1: drawSprite(g, groundSprite, x, y); break;
+                        case 2: drawSprite(g, holeSprite, x, y); break;
+                        case 3: drawSprite(g, jumpingShoesSprite, x, y); break;
+                        case 4: drawSprite(g, samuraiSprite, x, y); break;
+                        case 5: drawSprite(g, ninjaSprite, x, y); break;
+                        case 6: drawSprite(g, wallSprite, x, y); break;
+                        case 7: drawSprite(g, spawnSprite, x, y); break;
+                        case 8: drawSprite(g, keySprite, x, y); break;
+                        case 9: drawSprite(g, chestSprite, x, y); break;
                         default: break;
                     }
                 }

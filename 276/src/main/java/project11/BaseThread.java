@@ -4,7 +4,7 @@ package project11;
  * Single thread to run game logic
  */
 public class BaseThread implements Runnable {
-    private static final int TOTAL_CYCLE_TIME = 300; 
+    private static final int TOTAL_CYCLE_TIME = 1000; // Increase cycle time to slow down movement
     private static final int INPUT_TIME = 150;
 
     private GameState gameState;
@@ -19,9 +19,18 @@ public class BaseThread implements Runnable {
      * @param keyHandler KeyHandler for input
      */
     public BaseThread(GamePanel gamePanel, KeyHandler keyHandler) {
-        this.gamePanel = gamePanel;
-        this.gameState = gamePanel.gameState;
-        this.keyHandler = keyHandler;
+        try { // Check if gamePanel is null
+            this.gamePanel = gamePanel;
+            this.gameState = gamePanel.gameState;
+        } catch (Exception e) {
+            throw new NullPointerException("Game Panel is null");
+        }
+        try{ // Check if keyHandler is null
+            this.keyHandler = keyHandler;
+        } catch (Exception e) {
+            throw new NullPointerException("KeyHandler is null");
+        }
+
         this.thread = new Thread(this);
         this.thread.start();
     }

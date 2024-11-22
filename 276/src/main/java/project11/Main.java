@@ -14,10 +14,13 @@ public class Main{
 
         GameState gameState = new GameState();
         KeyHandler keyHandler = new KeyHandler();
-        GamePanel gamePanel = new GamePanel(gameState, keyHandler);
-
-        Window window = new Window(gamePanel);
-        BaseThread gameThread = new BaseThread(gamePanel, keyHandler);
+        try{ // Attempt to set up the game with variables
+            GamePanel gamePanel = new GamePanel(gameState, keyHandler);
+            Window window = new Window(gamePanel);
+            BaseThread gameThread = new BaseThread(gamePanel, keyHandler);
+        } catch (Exception e){
+            throw new NullPointerException("Either gameState or keyHandler are NULL");
+        }
 
     }
 }

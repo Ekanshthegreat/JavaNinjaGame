@@ -13,8 +13,8 @@ public class BonusItem extends Item {
      * @param isSolid If the object is solid
      * @param typeId Holds BonusItem id
      */
-    public BonusItem(int x, int y, int score, boolean isSolid, int typeId) {
-        super(x, y, score, isSolid, typeId);
+    public BonusItem(int x, int y) {
+        super(x, y, Constants.getBonusScore(), false, 3);
     }
 
     /**

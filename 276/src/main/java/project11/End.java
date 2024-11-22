@@ -12,8 +12,8 @@ public class End extends GameObject{
      * @param solid If the object is solid
      * @param typeId Holds end id
      */
-    public End(int x, int y, boolean solid, int typeId) {
-        super(x, y, solid, typeId);
+    public End(int x, int y) {
+        super(x, y, false, 9);
     }
 
     /**
