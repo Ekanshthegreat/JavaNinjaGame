@@ -13,8 +13,8 @@ public class Player extends GameObject {
      * @param y Y Coordinate of player
      * @param typeId Holds player id
      */
-    public Player(int x, int y, int typeId) {
-        super(x, y, true, typeId);
+    public Player(int x, int y) {
+        super(x, y, true, 5);
     }
 
     /**

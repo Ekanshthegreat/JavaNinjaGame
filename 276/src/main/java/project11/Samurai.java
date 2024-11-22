@@ -17,9 +17,9 @@ public class Samurai extends Enemy {
      * @param damage Initial damage value of the samurai
      * @param typeId Holds samurai id
      */
-    public Samurai(int x, int y, int damage, int typeId) {
-        super(x, y, damage, typeId);
-        this.damage = damage; // Set the initial damage
+    public Samurai(int x, int y) {
+        super(x, y, Constants.getSamuraiDamage(), 4);
+        // this.damage = damage; // Set the initial damage
     }
 
     @Override

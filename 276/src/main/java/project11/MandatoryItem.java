@@ -13,8 +13,8 @@ public class MandatoryItem extends Item {
      * @param solid If the object is solid
      * @param typeId Holds mandatory item id
      */
-    public MandatoryItem(int x, int y, int score, boolean solid, int typeId) {
-        super(x, y, score, solid, typeId); // Call the parent constructor
+    public MandatoryItem(int x, int y) {
+        super(x, y, Constants.getItemScore(), false, 8); // Call the parent constructor
     }
 
     /**

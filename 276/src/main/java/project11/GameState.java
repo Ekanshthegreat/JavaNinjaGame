@@ -14,13 +14,12 @@ public class GameState {
     private ArrayList<Enemy> enemies;
     private GameObject[][] gameBoard;
     private GameObjectFactory gameObjectFactory = new GameObjectFactory();
-    private EnemyGenerator enemyGenerator;
+    // private EnemyGenerator enemyGenerator;
     private MazeBuilder mazeBuilder;
     private Random random = new Random();
 
     private int collectedItems = 0;
     private int bonusItem = 0;
-    private final int totalItems = 3;
     private int chestX = 0;
     private int chestY = 0;
 
@@ -31,12 +30,12 @@ public class GameState {
      * GameState Constructor
      */
     public GameState() {
-        int width = GamePanel.getPlayColumns();
-        int height = GamePanel.getPlayRows();
-        this.player = new Player(0, height / 2, 5);
+        int width = Constants.getPlayColumns();
+        int height = Constants.getPlayRows();
+        this.player = new Player(0, height / 2);
         this.enemies = new ArrayList<>();
         this.gameBoard = new GameObject[height][width];
-        this.enemyGenerator = new EnemyGenerator(player);
+        // this.enemyGenerator = new EnemyGenerator(player);
         this.mazeBuilder = new MazeBuilder(gameObjectFactory);
 
         initializeMaze();
@@ -53,7 +52,7 @@ public class GameState {
     private void saveOriginalCellContent(int x, int y, GameObject obj) {
         String key = x + "," + y;
         if (!originalObjects.containsKey(key) && !(obj instanceof Enemy)) {
-            originalObjects.put(key, obj != null ? obj : gameObjectFactory.createObject("ground", x, y));
+            originalObjects.put(key, obj != null ? obj : gameObjectFactory.createObject(1, x, y));
         }
     }
     
@@ -61,15 +60,15 @@ public class GameState {
      * Set the difficulty of the game
      * @param difficulty String representing the difficulty level (easy, medium, hard)
      */
-    public void setDifficulty(String difficulty) {
-        switch (difficulty.toLowerCase()) {
-            case "easy":
+    public void setDifficulty(int difficulty) {
+        switch (difficulty) {
+            case 0:
                 updateSamuraiDamage(25);
                 break;
-            case "medium":
+            case 1:
                 updateSamuraiDamage(35);
                 break;
-            case "hard":
+            case 2:
                 updateSamuraiDamage(35);
                 spawnAdditionalSamurai(3);
                 break;
@@ -94,13 +93,13 @@ public class GameState {
      */
     private void spawnAdditionalSamurai(int count) {
         for (int i = 0; i < count; i++) {
-            Enemy enemy = enemyGenerator.createEnemy();
             int x, y;
             do {
                 x = random.nextInt(gameBoard[0].length);
                 y = random.nextInt(gameBoard.length);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
-    
+            Enemy enemy = new Samurai(x, y);
+            
             enemy.setX(x);
             enemy.setY(y);
             saveOriginalCellContent(x, y, gameBoard[y][x]);
@@ -138,15 +137,13 @@ public class GameState {
         int maxY = gameBoard.length;
 
         for (int i = 0; i < 2; i++) {
-            Enemy enemy = enemyGenerator.createEnemy();
             int x, y;
             do {
                 x = random.nextInt(maxX);
                 y = random.nextInt(maxY);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
+            Enemy enemy = new Samurai(x, y);
             
-            enemy.setX(x);
-            enemy.setY(y);
             saveOriginalCellContent(x, y, gameBoard[y][x]);
             gameBoard[y][x] = enemy;
             enemies.add(enemy);
@@ -178,7 +175,7 @@ public class GameState {
      * Update all enemy positions and handle player contact
      */
     public void updateEnemies() {
-        for (Enemy enemy : new ArrayList<>(enemies)) {
+        for (Enemy enemy : enemies) {
             // Check if the enemy is adjacent to the player
             if (isAdjacentToPlayer(enemy)) {
                 if (enemy instanceof Samurai) {
@@ -268,15 +265,15 @@ public class GameState {
             } else if (typeId == 8) { // Mandatory Item
                 collectedItems++;
                 player.increaseScore(((MandatoryItem) targetObject).getScore());
-                System.out.println("Collected item! Items collected: " + collectedItems + "/" + totalItems);
-                gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
+                System.out.println("Collected item! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
+                gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
             } else if (typeId == 3) { // Bonus item
                 bonusItem++;
                 player.increaseScore(((BonusItem) targetObject).getScore());
-                System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + totalItems);
-                gameBoard[newY][newX] = new Ground(player.getX(), player.getY(), false, 1); // Remove item after collecting
+                System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
+                gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
             } else if (typeId == 9) { // Chest/End
-                if (collectedItems >= totalItems) {
+                if (collectedItems >= Constants.getTotalItems()) {
                     System.out.println("Congratulations! You've collected all mandatory items and reached the chest.");
                     System.out.println("Final Score: " + player.getScore());
                     System.out.println("You win!");
@@ -291,11 +288,11 @@ public class GameState {
         }
 
         // Clear player's current position
-        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY(), false, 1);
+        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY());
 
         // Redraw Chest/End if player walked over with not enough keys
-        if (collectedItems < totalItems) {
-            gameBoard[chestY][chestX] = new End(chestX, chestY, false, 9);
+        if (collectedItems < Constants.getTotalItems()) {
+            gameBoard[chestY][chestX] = new End(chestX, chestY);
         }
 
         // Close game if score ever goes below 0
@@ -319,10 +316,6 @@ public class GameState {
         return collectedItems;
     }
 
-    public int getTotalItems() {
-        return totalItems;
-    }
-
     public int getBonusItem() {
         return bonusItem;
     }
@@ -337,6 +330,6 @@ public class GameState {
     }
 
     public void setGround(int x, int y) {
-        gameBoard[y][x] = gameObjectFactory.createObject("ground", x, y);
+        gameBoard[y][x] = gameObjectFactory.createObject(1, x, y);
     }
 }
