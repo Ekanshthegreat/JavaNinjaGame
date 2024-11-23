@@ -10,9 +10,9 @@ class HoleTest {
     void testHoleProperties() {
         Hole Hole = new Hole(0,0);
 
-        assertTrue(!Hole.isSolid(), "Hole should be solid");
+        assertTrue(Hole.isSolid(), "Hole should be solid");
         assertEquals(0, Hole.getX(), "X coordinate should be correct");
         assertEquals(0, Hole.getY(), "Y coordinate should be correct");
-        assertEquals(6, Hole.getTypeId(), "Type ID should be correct");
+        assertEquals(2, Hole.getTypeId(), "Type ID should be correct");
     }
 }

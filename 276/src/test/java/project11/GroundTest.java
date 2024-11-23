@@ -13,6 +13,6 @@ class GroundTest {
         assertTrue(!Ground.isSolid(), "Ground should be solid");
         assertEquals(0, Ground.getX(), "X coordinate should be correct");
         assertEquals(0, Ground.getY(), "Y coordinate should be correct");
-        assertEquals(6, Ground.getTypeId(), "Type ID should be correct");
+        assertEquals(1, Ground.getTypeId(), "Type ID should be correct");
     }
 }

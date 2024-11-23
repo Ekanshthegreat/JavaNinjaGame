@@ -13,6 +13,6 @@ class MandatoryItemTest {
         assertTrue(!MandatoryItem.isSolid(), "MandatoryItem should be solid");
         assertEquals(0, MandatoryItem.getX(), "X coordinate should be correct");
         assertEquals(0, MandatoryItem.getY(), "Y coordinate should be correct");
-        assertEquals(6, MandatoryItem.getTypeId(), "Type ID should be correct");
+        assertEquals(8, MandatoryItem.getTypeId(), "Type ID should be correct");
     }
 }
