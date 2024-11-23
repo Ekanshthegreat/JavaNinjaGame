@@ -59,12 +59,15 @@ public class GameState {
     public void setDifficulty(int difficulty) {
         switch (difficulty) {
             case 0:
+                Constants.setSamuraiDamage(25);
                 updateSamuraiDamage(25);
                 break;
             case 1:
+                Constants.setSamuraiDamage(35);
                 updateSamuraiDamage(35);
                 break;
             case 2:
+                Constants.setSamuraiDamage(35);
                 spawnAdditionalSamurai(3);
                 updateSamuraiDamage(35);
                 break;
@@ -387,9 +390,66 @@ public class GameState {
 
     /**
      * Test update samurai damage
+     * @param damage Damage value
      */
     public void testUpdateSamuraiDamage(int damage) {
         updateSamuraiDamage(damage);
     }
+
+    /**
+     * Test spawn additional samurai
+     * @param count Number of samurai to spawn
+     */
+    public void testSpawnAdditionalSamurai(int count) {
+        spawnAdditionalSamurai(count);
+    }
+
+    /**
+     * Test is adjacent to player
+     * @param enemy Enemy to check
+     * @return Boolean if enemy is adjacent to player
+     */
+    public boolean testIsAdjacentToPlayer(Enemy enemy) {
+        return isAdjacentToPlayer(enemy);
+    }
+
+    /**
+     * Test move player
+     * @param up Boolean for direction
+     * @param down Boolean for direction
+     * @param left Boolean for direction
+     * @param right Boolean for direction
+     */
+    public void testMovePlayer(boolean up, boolean down, boolean left, boolean right) {
+        movePlayer(up, down, left, right);
+    }
+
+    /**
+     * Test update enemies
+     */
+    public void testUpdateEnemies() {
+        updateEnemies();
+    }
+
+    /**
+     * Test is occupied
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return Boolean if occupied
+     */
+    public boolean testIsOccupied(int x, int y) {
+        return isOccupied(x, y);
+    }
+
+    /**
+     * Test is enemy at
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return Boolean if enemy is at position
+     */
+    public boolean testIsEnemyAt(int x, int y) {
+        return isEnemyAt(x, y);
+    }
+
     
 }
