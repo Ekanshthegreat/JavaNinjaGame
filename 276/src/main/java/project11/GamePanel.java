@@ -26,6 +26,9 @@ public class GamePanel extends JPanel {
      * GameState object
      */
     protected GameState gameState;
+    /**
+     * Renderer object
+     */
     private Renderer renderer;
 
     /**
@@ -89,38 +92,49 @@ public class GamePanel extends JPanel {
 
     /**
      * Check if a button is clicked
-     * @param mouseX Mouse X coordinate
-     * @param mouseY Mouse Y coordinate
+     * @param x Mouse X coordinate
+     * @param y Mouse Y coordinate
      * @param buttonType Type of button (e.g., Constants.PLAY_BUTTON, Constants.EASY_BUTTON)
      * @return True if the specified button is clicked, false otherwise
      */
-    private boolean isButtonClicked(int mouseX, int mouseY, int buttonType) {
+    public boolean isButtonClicked(int x, int y, int buttonType) {
         int buttonX = 0;
         int buttonY = 0;
-        
+        int buttonWidth = 0;
+        int buttonHeight = 0;
+
+        // Determine button properties based on the type
         switch (buttonType) {
             case Constants.PLAY_BUTTON:
-                buttonX = (getWidth() - Constants.getButtonWidth()) / 2;
-                buttonY = (getHeight() - Constants.getButtonHeight()) / 2 + 50;
+                buttonX = (getWidth() - 100) / 2;
+                buttonY = (getHeight() / 2) + 50;
+                buttonWidth = 100;
+                buttonHeight = 40;
                 break;
             case Constants.EASY_BUTTON:
                 buttonX = (getWidth() / 2) - 150;
-                buttonY = getHeight() / 2 + 120;
+                buttonY = (getHeight() / 2) + 120;
+                buttonWidth = 100;
+                buttonHeight = 40;
                 break;
             case Constants.MEDIUM_BUTTON:
-                buttonX = getWidth() / 2 - 50;
-                buttonY = getHeight() / 2 + 120;
+                buttonX = (getWidth() / 2) - 50;
+                buttonY = (getHeight() / 2) + 120;
+                buttonWidth = 100;
+                buttonHeight = 40;
                 break;
             case Constants.HARD_BUTTON:
-                buttonX = getWidth() / 2 + 50;
-                buttonY = getHeight() / 2 + 120;
+                buttonX = (getWidth() / 2) + 50;
+                buttonY = (getHeight() / 2) + 120;
+                buttonWidth = 100;
+                buttonHeight = 40;
                 break;
             default:
-                throw new IllegalArgumentException("Unknown button type: " + buttonType);
+                return false; // Invalid button type
         }
 
-        return mouseX >= buttonX && mouseX <= buttonX + Constants.getButtonWidth() &&
-           mouseY >= buttonY && mouseY <= buttonY + Constants.getButtonHeight();
+        // Check if the click is within the bounds of the button
+        return x >= buttonX && x <= buttonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight;
     }
 
 
@@ -193,6 +207,9 @@ public class GamePanel extends JPanel {
      * @param y y-coordinate
      */
     private void drawButton(Graphics g, String label, int x, int y) {
+        if(x < 0 || y < 0){
+            throw new IllegalArgumentException("Coordinates cannot be negative");
+        }
         int buttonWidth = 100;
         int buttonHeight = 40;
         g.drawRect(x, y, buttonWidth, buttonHeight);
@@ -203,9 +220,10 @@ public class GamePanel extends JPanel {
      * Test public function for testing
      * @param mouseX Mouse X coordinate
      * @param mouseY Mouse Y coordinate
+     * @param buttonType Button type
      * @return True if play button is clicked, false otherwise
      */
-    public boolean testIsPlayButtonClicked(int mouseX, int mouseY, int buttonType) {
+    public boolean testIsButtonClicked(int mouseX, int mouseY, int buttonType) {
         return isButtonClicked(mouseX, mouseY, buttonType);
     }
 

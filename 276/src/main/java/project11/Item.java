@@ -4,8 +4,14 @@ package project11;
  * Item class to extend GameObject
  */
 public abstract class Item extends GameObject {
-    protected int score; // Score associated with the item
-    protected boolean isSpawned; // Indicates if the item is spawned
+    /**
+     * Score associated with the item
+     */
+    protected int score;
+    /**
+     * Indicates if the item is spawned
+     */
+    protected boolean isSpawned;
 
     /**
      * Make a item which extends GameObject
@@ -47,6 +53,7 @@ public abstract class Item extends GameObject {
     }
     /*
      * Set the score of the item
+     * @param score New score value
      */
     public void setScore(int score) {
         this.score = score;

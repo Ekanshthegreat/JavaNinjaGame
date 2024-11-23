@@ -131,14 +131,30 @@ public class Constants {
         return GAME_DIFFICULTY;
     }
 
-    // Button constants
+    /**
+     * Button width
+     */
     private static final int BUTTON_WIDTH = 100;
+    /**
+     * Button height
+     */
     private static final int BUTTON_HEIGHT = 40;
 
-    // Button types
+    /**
+     * Play button
+     */
     public static final int PLAY_BUTTON = 0;
+    /**
+     * Easy button
+     */
     public static final int EASY_BUTTON = 1;
+    /**
+     * Medium button
+     */
     public static final int MEDIUM_BUTTON = 2;
+    /**
+     * Hard button
+     */
     public static final int HARD_BUTTON = 3;
 
     /**
