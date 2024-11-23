@@ -32,6 +32,9 @@ public class GameState {
         int width = Constants.getPlayColumns();
         int height = Constants.getPlayRows();
         this.player = new Player(0, height / 2);
+        int width = Constants.getPlayColumns();
+        int height = Constants.getPlayRows();
+        this.player = new Player(0, height / 2);
         this.enemies = new ArrayList<>();
         this.gameBoard = new GameObject[height][width];
         // this.enemyGenerator = new EnemyGenerator(player);
@@ -51,6 +54,7 @@ public class GameState {
     private void saveOriginalCellContent(int x, int y, GameObject obj) {
         String key = x + "," + y;
         if (!originalObjects.containsKey(key) && !(obj instanceof Enemy)) {
+            originalObjects.put(key, obj != null ? obj : gameObjectFactory.createObject(1, x, y));
             originalObjects.put(key, obj != null ? obj : gameObjectFactory.createObject(1, x, y));
         }
     }
@@ -99,6 +103,8 @@ public class GameState {
             } while (isOccupied(x, y) || isEnemyAt(x, y));
             Enemy enemy = new Samurai(x, y);
             
+            Enemy enemy = new Samurai(x, y);
+            
             enemy.setX(x);
             enemy.setY(y);
             saveOriginalCellContent(x, y, gameBoard[y][x]);
@@ -142,6 +148,7 @@ public class GameState {
                 y = random.nextInt(maxY);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
             Enemy enemy = new Samurai(x, y);
+            Enemy enemy = new Samurai(x, y);
             
             saveOriginalCellContent(x, y, gameBoard[y][x]);
             gameBoard[y][x] = enemy;
@@ -174,6 +181,7 @@ public class GameState {
      * Update all enemy positions and handle player contact
      */
     public void updateEnemies() {
+        for (Enemy enemy : enemies) {
         for (Enemy enemy : enemies) {
             // Check if the enemy is adjacent to the player
             if (isAdjacentToPlayer(enemy)) {
@@ -266,12 +274,17 @@ public class GameState {
                 player.increaseScore(((MandatoryItem) targetObject).getScore());
                 System.out.println("Collected item! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
                 gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
+                System.out.println("Collected item! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
+                gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
             } else if (typeId == 3) { // Bonus item
                 bonusItem++;
                 player.increaseScore(((BonusItem) targetObject).getScore());
                 System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
                 gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
+                System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
+                gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
             } else if (typeId == 9) { // Chest/End
+                if (collectedItems >= Constants.getTotalItems()) {
                 if (collectedItems >= Constants.getTotalItems()) {
                     System.out.println("Congratulations! You've collected all mandatory items and reached the chest.");
                     System.out.println("Final Score: " + player.getScore());
@@ -288,8 +301,11 @@ public class GameState {
 
         // Clear player's current position
         gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY());
+        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY());
 
         // Redraw Chest/End if player walked over with not enough keys
+        if (collectedItems < Constants.getTotalItems()) {
+            gameBoard[chestY][chestX] = new End(chestX, chestY);
         if (collectedItems < Constants.getTotalItems()) {
             gameBoard[chestY][chestX] = new End(chestX, chestY);
         }
@@ -350,6 +366,7 @@ public class GameState {
      * @param y Y coordinate
      */
     public void setGround(int x, int y) {
+        gameBoard[y][x] = gameObjectFactory.createObject(1, x, y);
         gameBoard[y][x] = gameObjectFactory.createObject(1, x, y);
     }
 }
