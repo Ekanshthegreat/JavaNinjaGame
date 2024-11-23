@@ -59,7 +59,7 @@ How to Test
 
 1.  Navigate to the project directory.
     
-2.  bashCopy codemvn test
+2.  mvn test
     
 
 ### Testing Details
@@ -71,7 +71,7 @@ How to Test
 
 ### Test Output
 
-*   yamlCopy codeTests run: , Failures: 0, Errors: 0, Skipped: 0
+*   codeTests run: , Failures: 0, Errors: 0, Skipped: 0
     
 *   **If any tests fail,** details will be shown in the console output.
     
@@ -81,9 +81,8 @@ Gameplay Instructions
 
 ### Start the Game:
 
-1.  Click the **Play** button to start.
     
-2.  Select a difficulty: Easy, Medium, or Hard.
+1.  Select a difficulty: Easy, Medium, or Hard.
     
 
 ### Controls:
