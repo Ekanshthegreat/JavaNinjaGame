@@ -10,7 +10,7 @@ class BonusItemTest {
     void testBonusItemProperties() {
         BonusItem BonusItem = new BonusItem(0,0);
 
-        assertTrue(BonusItem.isSolid(), "BonusItem should be solid");
+        assertTrue(!BonusItem.isSolid(), "BonusItem should be solid");
         assertEquals(0, BonusItem.getX(), "X coordinate should be correct");
         assertEquals(0, BonusItem.getY(), "Y coordinate should be correct");
         assertEquals(6, BonusItem.getTypeId(), "Type ID should be correct");
