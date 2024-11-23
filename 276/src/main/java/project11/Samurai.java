@@ -38,6 +38,14 @@ public class Samurai extends Enemy {
     }
 
     /**
+     * Get the damage value for the Samurai
+     * @return damage Damage value
+     */
+    public int getDamage() {
+        return damage;
+    }
+
+    /**
      * Attack the player with the damage
      * @param player Player object to attack
      * @param gameState Current game state

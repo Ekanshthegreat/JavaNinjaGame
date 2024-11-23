@@ -1,9 +1,6 @@
 package project11;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * GameState to hold current state of game, most of game logic is held here to manipulate GameObject[][] array
@@ -68,8 +65,8 @@ public class GameState {
                 updateSamuraiDamage(35);
                 break;
             case 2:
-                updateSamuraiDamage(35);
                 spawnAdditionalSamurai(3);
+                updateSamuraiDamage(35);
                 break;
         }
     }
@@ -91,21 +88,24 @@ public class GameState {
      * @param count Number of Samurai enemies to spawn
      */
     private void spawnAdditionalSamurai(int count) {
+        int samuraiDamage = Constants.getSamuraiDamage(); // Fetch the current damage value for Samurai
+        
         for (int i = 0; i < count; i++) {
             int x, y;
             do {
                 x = random.nextInt(gameBoard[0].length);
                 y = random.nextInt(gameBoard.length);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
-            Enemy enemy = new Samurai(x, y);
             
-            enemy.setX(x);
-            enemy.setY(y);
+            Samurai samurai = new Samurai(x, y);
+            samurai.setDamage(samuraiDamage); // Apply the correct damage value
+            
             saveOriginalCellContent(x, y, gameBoard[y][x]);
-            gameBoard[y][x] = enemy;
-            enemies.add(enemy);
+            gameBoard[y][x] = samurai;
+            enemies.add(samurai);
         }
     }
+    
     
     /**
      * Maze Constructor
@@ -141,11 +141,11 @@ public class GameState {
                 x = random.nextInt(maxX);
                 y = random.nextInt(maxY);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
-            Enemy enemy = new Samurai(x, y);
-            
+            Samurai samurai = new Samurai(x, y);
+            samurai.setDamage(samurai.getDamage());
             saveOriginalCellContent(x, y, gameBoard[y][x]);
-            gameBoard[y][x] = enemy;
-            enemies.add(enemy);
+            gameBoard[y][x] = samurai;
+            enemies.add(samurai);
             System.out.println("Placed enemy within bounds at (" + x + ", " + y + ")");
         }
     }
@@ -363,8 +363,21 @@ public class GameState {
         return originalObjects;
     }
 
+    /**
+     * Save the original cell content
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param obj GameObject to save
+     */
     public void testSaveOriginalCellContent(int x, int y, GameObject obj) {
         saveOriginalCellContent(x, y, obj);
     }
 
+    /**
+     * Get the list of enemies
+     * @return List of enemies
+     */
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
 }
