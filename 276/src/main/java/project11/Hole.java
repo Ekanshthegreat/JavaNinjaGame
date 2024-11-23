@@ -14,12 +14,4 @@ public class Hole extends Enemy{
         super(x, y, Constants.getHoleDamage(), 2);
     }
 
-    /**
-     * Set the difficulty of the hole
-     */
-    @Override
-    public void setDifficulty(int difficulty) {
-        this.damage = damage * difficulty;
-    }
-    
 }

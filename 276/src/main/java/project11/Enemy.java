@@ -18,12 +18,6 @@ public abstract class Enemy extends GameObject {
         super(x, y, true, typeId);
         this.damage = damage;
     }
-
-    /**
-     * Abstract method to set the difficulty of the enemy
-     * @param difficulty Difficulty 
-     */
-    public abstract void setDifficulty(int difficulty);
     
     /**
      * Get X value

@@ -8,7 +8,6 @@ import java.util.Random;
 public class Samurai extends Enemy {
 
     private int damage; // Changed from static final to instance variable
-    private Random random = new Random();
 
     /**
      * Make a Samurai which extends Enemy
@@ -18,15 +17,6 @@ public class Samurai extends Enemy {
     public Samurai(int x, int y) {
         super(x, y, Constants.getSamuraiDamage(), 4);
         // this.damage = damage; // Set the initial damage
-    }
-
-    @Override
-    /**
-     * Set difficulty of the game
-     * @param difficulty Difficulty of the game
-     */
-    public void setDifficulty(int difficulty) {
-        this.damage += difficulty;
     }
 
     /**
