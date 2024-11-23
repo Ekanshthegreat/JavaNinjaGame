@@ -14,8 +14,6 @@ public class Samurai extends Enemy {
      * Make a Samurai which extends Enemy
      * @param x X Coordinate of samurai
      * @param y Y Coordinate of samurai
-     * @param damage Initial damage value of the samurai
-     * @param typeId Holds samurai id
      */
     public Samurai(int x, int y) {
         super(x, y, Constants.getSamuraiDamage(), 4);
@@ -40,7 +38,17 @@ public class Samurai extends Enemy {
     }
 
     /**
-     * Attack the player, deal damage, and remove the Samurai from the game
+     * Get the damage value for the Samurai
+     * @return damage Damage value
+     */
+    public int getDamage() {
+        return damage;
+    }
+
+    /**
+     * Attack the player with the damage
+     * @param player Player object to attack
+     * @param gameState Current game state
      */
     public void attackPlayer(Player player, GameState gameState) {
         player.takeDamage(damage);

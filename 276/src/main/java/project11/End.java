@@ -9,8 +9,6 @@ public class End extends GameObject{
      * Make a end which extends GameObject
      * @param x X Coordinate of end
      * @param y Y Coordinate of end
-     * @param solid If the object is solid
-     * @param typeId Holds end id
      */
     public End(int x, int y) {
         super(x, y, false, 9);

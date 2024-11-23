@@ -9,9 +9,6 @@ public class BonusItem extends Item {
      * Make a bonus item which extends Item
      * @param x X Coordinate of item
      * @param y Y Coordinate of item
-     * @param score How much the item is worth in points
-     * @param isSolid If the object is solid
-     * @param typeId Holds BonusItem id
      */
     public BonusItem(int x, int y) {
         super(x, y, Constants.getBonusScore(), false, 3);
