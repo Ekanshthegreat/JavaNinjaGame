@@ -66,6 +66,10 @@ public class Samurai extends Enemy {
         }
     }
 
+    private boolean validXY(int x, int y, GameObject[][] gameBoard) {
+        return x >= 0 && x < gameBoard[0].length && y >= 0 && y < gameBoard.length;
+    }
+
     /**
      * Attempt to move in a direction, if possible
      * @param deltaX Change in X coordinate
@@ -77,14 +81,14 @@ public class Samurai extends Enemy {
         int newX = getX() + deltaX;
         int newY = getY() + deltaY;
 
-        if (newX < 0 || newX >= gameBoard[0].length || newY < 0 || newY >= gameBoard.length) {
+        if(!validXY(newX, newY, gameBoard))  {
             return false;
         }
 
         GameObject targetCell = gameBoard[newY][newX];
 
         // Check if the new position is passable (can pass through items, holes, but not walls)
-        if (targetCell == null || targetCell.getTypeId() == 1 || targetCell.getTypeId() == 2 || targetCell.getTypeId() == 3 || targetCell.getTypeId() == 8) {
+        if (!targetCell.isSolid()) {
             setX(newX);
             setY(newY);
             return true;
