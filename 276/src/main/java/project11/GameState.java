@@ -174,7 +174,10 @@ public class GameState {
      * Update all enemy positions and handle player contact
      */
     public void updateEnemies() {
-        for (Enemy enemy : enemies) {
+        // Create a copy of the enemies list to avoid ConcurrentModificationException
+        List<Enemy> enemiesCopy = new ArrayList<>(enemies);
+
+        for (Enemy enemy : enemiesCopy) {
             // Check if the enemy is adjacent to the player
             if (isAdjacentToPlayer(enemy)) {
                 if (enemy instanceof Samurai) {
@@ -182,7 +185,7 @@ public class GameState {
                 }
                 continue; // Skip further movement if the enemy attacked the player
             }
-    
+
             // Restore the original content of the cell before moving the enemy
             int oldX = enemy.getX();
             int oldY = enemy.getY();
@@ -190,21 +193,21 @@ public class GameState {
             if (originalObjects.containsKey(key)) {
                 gameBoard[oldY][oldX] = originalObjects.get(key);
             }
-    
+
             // Move the enemy towards the player
             if (enemy instanceof Samurai) {
                 ((Samurai) enemy).moveTowardsPlayerAvoidingWalls(player, gameBoard);
             }
-    
+
             // Ensure enemy's new position is valid and update the game board
             int newX = enemy.getX();
             int newY = enemy.getY();
-    
+
             // Check if the new position has an enemy already
             if (isEnemyAt(newX, newY)) {
                 continue; // Skip if the new position already has another enemy
             }
-    
+
             GameObject targetCell = gameBoard[newY][newX];
             if (targetCell == null || !targetCell.isSolid()) {
                 // Save the original content if it's a passable object (e.g., Hole, Mandatory Item, Bonus Item)
@@ -218,6 +221,7 @@ public class GameState {
             }
         }
     }
+
     
     /**
      * Check if the enemy is adjacent to the player
