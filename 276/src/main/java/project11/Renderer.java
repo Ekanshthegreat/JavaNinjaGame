@@ -11,8 +11,8 @@ import javax.imageio.ImageIO;
  */
 public class Renderer {
     // Local Variables
-    private Image groundSprite, holeSprite, jumpingShoesSprite, ninjaSprite, samuraiSprite, spawnSprite, wallSprite;
-    private Image keySprite, chestSprite;
+    protected Image groundSprite, holeSprite, jumpingShoesSprite, ninjaSprite, samuraiSprite, spawnSprite, wallSprite;
+    protected Image keySprite, chestSprite;
 
     /**
      * Load all sprites
@@ -24,7 +24,7 @@ public class Renderer {
     /**
      * Load all sprites from 'sprite' folder
      */
-    private void loadSprites() {
+    protected void loadSprites() {
         try {
             groundSprite = ImageIO.read(getClass().getResource("/project11/sprites/Ground.png"));
             holeSprite = ImageIO.read(getClass().getResource("/project11/sprites/Hole.png"));

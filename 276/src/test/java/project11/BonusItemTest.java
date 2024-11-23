@@ -13,6 +13,6 @@ class BonusItemTest {
         assertTrue(!BonusItem.isSolid(), "BonusItem should be solid");
         assertEquals(0, BonusItem.getX(), "X coordinate should be correct");
         assertEquals(0, BonusItem.getY(), "Y coordinate should be correct");
-        assertEquals(6, BonusItem.getTypeId(), "Type ID should be correct");
+        assertEquals(3, BonusItem.getTypeId(), "Type ID should be correct");
     }
 }

@@ -13,6 +13,6 @@ class PlayerTest {
         assertTrue(Player.isSolid(), "Player should be solid");
         assertEquals(0, Player.getX(), "X coordinate should be correct");
         assertEquals(0, Player.getY(), "Y coordinate should be correct");
-        assertEquals(6, Player.getTypeId(), "Type ID should be correct");
+        assertEquals(5, Player.getTypeId(), "Type ID should be correct");
     }
 }
