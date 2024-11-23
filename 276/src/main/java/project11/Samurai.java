@@ -14,8 +14,6 @@ public class Samurai extends Enemy {
      * Make a Samurai which extends Enemy
      * @param x X Coordinate of samurai
      * @param y Y Coordinate of samurai
-     * @param damage Initial damage value of the samurai
-     * @param typeId Holds samurai id
      */
     public Samurai(int x, int y) {
         super(x, y, Constants.getSamuraiDamage(), 4);

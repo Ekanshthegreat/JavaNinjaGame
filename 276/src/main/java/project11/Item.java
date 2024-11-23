@@ -16,7 +16,7 @@ public abstract class Item extends GameObject {
      * @param typeId Holds item id
      */
     public Item(int x, int y, int score, boolean solid, int typeId) {
-        super(x, y, solid, typeId); // Assuming typeId is not needed or can be set to a default value
+        super(x, y, solid, typeId);
         this.score = score;
         this.isSpawned = true; // Assume items are spawned upon creation
     }

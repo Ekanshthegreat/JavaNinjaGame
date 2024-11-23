@@ -78,6 +78,12 @@ public class GamePanel extends JPanel {
         });
     }
 
+    /**
+     * Check if the play button is clicked
+     * @param mouseX Mouse X coordinate
+     * @param mouseY Mouse Y coordinate
+     * @return True if play button is clicked, false otherwise
+     */
     private boolean isPlayButtonClicked(int mouseX, int mouseY) {
         int buttonWidth = 100;
         int buttonHeight = 40;
@@ -87,18 +93,36 @@ public class GamePanel extends JPanel {
                mouseY >= buttonY && mouseY <= buttonY + buttonHeight;
     }
 
+    /**
+     * Check if the easy button is clicked
+     * @param mouseX Mouse X coordinate
+     * @param mouseY Mouse Y coordinate
+     * @return True if easy button is clicked, false otherwise
+     */
     private boolean isEasyButtonClicked(int mouseX, int mouseY) {
         int buttonX = (getWidth() / 2) - 150;
         int buttonY = getHeight() / 2 + 120;
         return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
     }
 
+    /**
+     * Check if the medium button is clicked
+     * @param mouseX Mouse X coordinate
+     * @param mouseY Mouse Y coordinate
+     * @return True if medium button is clicked, false otherwise
+     */
     private boolean isMediumButtonClicked(int mouseX, int mouseY) {
         int buttonX = getWidth() / 2 - 50;
         int buttonY = getHeight() / 2 + 120;
         return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
     }
 
+    /**
+     * Check if the hard button is clicked
+     * @param mouseX Mouse X coordinate
+     * @param mouseY Mouse Y coordinate
+     * @return True if hard button is clicked, false otherwise
+     */
     private boolean isHardButtonClicked(int mouseX, int mouseY) {
         int buttonX = getWidth() / 2 + 50;
         int buttonY = getHeight() / 2 + 120;
@@ -179,4 +203,15 @@ public class GamePanel extends JPanel {
         g.drawRect(x, y, buttonWidth, buttonHeight);
         g.drawString(label, x + 15, y + 28);
     }
+
+    /**
+     * Test public function for testing
+     * @param mouseX Mouse X coordinate
+     * @param mouseY Mouse Y coordinate
+     * @return True if play button is clicked, false otherwise
+     */
+    public boolean testIsPlayButtonClicked(int mouseX, int mouseY) {
+        return isPlayButtonClicked(mouseX, mouseY);
+    }
+
 }

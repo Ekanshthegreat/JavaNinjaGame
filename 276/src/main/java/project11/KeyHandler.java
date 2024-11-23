@@ -49,6 +49,9 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_D) right = false;
     }
 
+    /**
+     * Not used
+     */
     public void keyTyped(KeyEvent e) {
         // Not used
     }

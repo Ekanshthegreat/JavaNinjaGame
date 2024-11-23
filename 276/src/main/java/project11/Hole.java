@@ -9,11 +9,9 @@ public class Hole extends Enemy{
      * Make a hole which extends enemy
      * @param x X Coordinate of hole
      * @param y Y Coordinate of hole
-     * @param solid If the object is solid
-     * @param typeId Holds hole id
      */
     public Hole(int x, int y) {
-        super(x, y, Constants.getHoleDamage(), 2); // Pass values to the superclass constructor
+        super(x, y, Constants.getHoleDamage(), 2);
     }
 
     /**
@@ -22,7 +20,7 @@ public class Hole extends Enemy{
      */
     @Override
     public void setDifficulty(int difficulty) {
-        this.damage = damage * difficulty; // Adjust damage based on difficulty
+        this.damage = damage * difficulty;
     }
     
 }

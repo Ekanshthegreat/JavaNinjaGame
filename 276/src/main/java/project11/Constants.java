@@ -12,6 +12,7 @@ public class Constants {
     private static final int BORDER_TILES = 1;
     private static final int DATA_TILES = 2;
 
+    // Getters
     public static int getTileSize() {
         return TILE_SIZE;
     }
@@ -32,6 +33,7 @@ public class Constants {
     private static int HOLE_DAMAGE = 10;
     private static int SAMURAI_DAMAGE = 10;
     
+    // Getters and Setters
     public static int getHoleDamage() {
         return HOLE_DAMAGE;
     }
@@ -53,6 +55,7 @@ public class Constants {
     private static int TOTAL_HOLES = 10;
     private static int GAME_DIFFICULTY = 0;
     
+    // Getters
     public static int getTotalItems() {
         return TOTAL_ITEMS;
     }
@@ -72,7 +75,4 @@ public class Constants {
         return GAME_DIFFICULTY;
     }
     
-
-    
-
 }

@@ -14,7 +14,6 @@ public class GameState {
     private ArrayList<Enemy> enemies;
     private GameObject[][] gameBoard;
     private GameObjectFactory gameObjectFactory = new GameObjectFactory();
-    // private EnemyGenerator enemyGenerator;
     private MazeBuilder mazeBuilder;
     private Random random = new Random();
 
@@ -311,24 +310,30 @@ public class GameState {
     public int getScore() {
         return player.getScore();
     }
-
     public int getCollectedItems() {
         return collectedItems;
     }
-
     public int getBonusItem() {
         return bonusItem;
     }
-
     public GameObject[][] getGameObjects() {
         return gameBoard;
     }
 
+    /**
+     * Remove an enemy from the game
+     * @param enemy Enemy to remove
+     */
     public void removeEnemy(Enemy enemy) {
         enemies.remove(enemy);
         setGround(enemy.getX(), enemy.getY());
     }
 
+    /**
+     * Set the ground at a specific position
+     * @param x X coordinate
+     * @param y Y coordinate
+     */
     public void setGround(int x, int y) {
         gameBoard[y][x] = gameObjectFactory.createObject(1, x, y);
     }

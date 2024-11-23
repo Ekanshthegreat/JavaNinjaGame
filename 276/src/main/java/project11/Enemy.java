@@ -11,7 +11,7 @@ public abstract class Enemy extends GameObject {
      * Make an enemy which extends GameObject
      * @param x X Coordinate of Enemy
      * @param y Y Coordinate of Enemy
-     * @param solid If the object is solid
+     * @param damage Damage value
      * @param typeId Holds enemy id
      */
     public Enemy(int x, int y, int damage, int typeId) {
@@ -19,6 +19,10 @@ public abstract class Enemy extends GameObject {
         this.damage = damage;
     }
 
+    /**
+     * Abstract method to set the difficulty of the enemy
+     * @param difficulty Difficulty 
+     */
     public abstract void setDifficulty(int difficulty);
     
     // Public getters and setters
