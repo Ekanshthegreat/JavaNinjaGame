@@ -451,5 +451,11 @@ public class GameState {
         return isEnemyAt(x, y);
     }
 
-    
+    /**
+     * Test get player function
+     * @return Player object
+     */
+    public Player getPlayer() {
+        return player;
+    }
 }
