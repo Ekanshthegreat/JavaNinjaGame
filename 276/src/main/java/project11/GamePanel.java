@@ -58,24 +58,24 @@ public class GamePanel extends JPanel {
                     int mouseX = e.getX();
                     int mouseY = e.getY();
 
-                    if (isPlayButtonClicked(mouseX, mouseY)) {
+                    if (isButtonClicked(mouseX, mouseY, Constants.PLAY_BUTTON)) {
                         isGameStarted = true;
                         repaint();
                     }
 
-                    if (isEasyButtonClicked(mouseX, mouseY)) {
+                    if (isButtonClicked(mouseX, mouseY, Constants.EASY_BUTTON)) {
                         gameState.setDifficulty(0);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
                         repaint();
-                    } else if (isMediumButtonClicked(mouseX, mouseY)) {
+                    } else if (isButtonClicked(mouseX, mouseY, Constants.MEDIUM_BUTTON)) {
                         gameState.setDifficulty(1);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
                         repaint();
-                    } else if (isHardButtonClicked(mouseX, mouseY)) {
+                    } else if (isButtonClicked(mouseX, mouseY, Constants.HARD_BUTTON)) {
                         gameState.setDifficulty(2);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
@@ -88,55 +88,41 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * Check if the play button is clicked
+     * Check if a button is clicked
      * @param mouseX Mouse X coordinate
      * @param mouseY Mouse Y coordinate
-     * @return True if play button is clicked, false otherwise
+     * @param buttonType Type of button (e.g., Constants.PLAY_BUTTON, Constants.EASY_BUTTON)
+     * @return True if the specified button is clicked, false otherwise
      */
-    private boolean isPlayButtonClicked(int mouseX, int mouseY) {
-        int buttonWidth = 100;
-        int buttonHeight = 40;
-        int buttonX = (getWidth() - buttonWidth) / 2;
-        int buttonY = (getHeight() - buttonHeight) / 2 + 50;
-        return mouseX >= buttonX && mouseX <= buttonX + buttonWidth &&
-               mouseY >= buttonY && mouseY <= buttonY + buttonHeight;
+    private boolean isButtonClicked(int mouseX, int mouseY, int buttonType) {
+        int buttonX = 0;
+        int buttonY = 0;
+        
+        switch (buttonType) {
+            case Constants.PLAY_BUTTON:
+                buttonX = (getWidth() - Constants.getButtonWidth()) / 2;
+                buttonY = (getHeight() - Constants.getButtonHeight()) / 2 + 50;
+                break;
+            case Constants.EASY_BUTTON:
+                buttonX = (getWidth() / 2) - 150;
+                buttonY = getHeight() / 2 + 120;
+                break;
+            case Constants.MEDIUM_BUTTON:
+                buttonX = getWidth() / 2 - 50;
+                buttonY = getHeight() / 2 + 120;
+                break;
+            case Constants.HARD_BUTTON:
+                buttonX = getWidth() / 2 + 50;
+                buttonY = getHeight() / 2 + 120;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown button type: " + buttonType);
+        }
+
+        return mouseX >= buttonX && mouseX <= buttonX + Constants.getButtonWidth() &&
+           mouseY >= buttonY && mouseY <= buttonY + Constants.getButtonHeight();
     }
 
-    /**
-     * Check if the easy button is clicked
-     * @param mouseX Mouse X coordinate
-     * @param mouseY Mouse Y coordinate
-     * @return True if easy button is clicked, false otherwise
-     */
-    private boolean isEasyButtonClicked(int mouseX, int mouseY) {
-        int buttonX = (getWidth() / 2) - 150;
-        int buttonY = getHeight() / 2 + 120;
-        return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
-    }
-
-    /**
-     * Check if the medium button is clicked
-     * @param mouseX Mouse X coordinate
-     * @param mouseY Mouse Y coordinate
-     * @return True if medium button is clicked, false otherwise
-     */
-    private boolean isMediumButtonClicked(int mouseX, int mouseY) {
-        int buttonX = getWidth() / 2 - 50;
-        int buttonY = getHeight() / 2 + 120;
-        return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
-    }
-
-    /**
-     * Check if the hard button is clicked
-     * @param mouseX Mouse X coordinate
-     * @param mouseY Mouse Y coordinate
-     * @return True if hard button is clicked, false otherwise
-     */
-    private boolean isHardButtonClicked(int mouseX, int mouseY) {
-        int buttonX = getWidth() / 2 + 50;
-        int buttonY = getHeight() / 2 + 120;
-        return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
-    }
 
     /**
      * Calls repaint() to update window
@@ -219,8 +205,8 @@ public class GamePanel extends JPanel {
      * @param mouseY Mouse Y coordinate
      * @return True if play button is clicked, false otherwise
      */
-    public boolean testIsPlayButtonClicked(int mouseX, int mouseY) {
-        return isPlayButtonClicked(mouseX, mouseY);
+    public boolean testIsPlayButtonClicked(int mouseX, int mouseY, int buttonType) {
+        return isButtonClicked(mouseX, mouseY, buttonType);
     }
 
 }

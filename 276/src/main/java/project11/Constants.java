@@ -130,5 +130,32 @@ public class Constants {
     public static int getGameDifficulty() {
         return GAME_DIFFICULTY;
     }
+
+    // Button constants
+    private static final int BUTTON_WIDTH = 100;
+    private static final int BUTTON_HEIGHT = 40;
+
+    // Button types
+    public static final int PLAY_BUTTON = 0;
+    public static final int EASY_BUTTON = 1;
+    public static final int MEDIUM_BUTTON = 2;
+    public static final int HARD_BUTTON = 3;
+
+    /**
+     * Get button width
+     * @return BUTTON_WIDTH
+     */
+    public static int getButtonWidth() {
+        return BUTTON_WIDTH;
+    }
+
+    /**
+     * Get button height
+     * @return BUTTON_HEIGHT
+     */
+    public static int getButtonHeight() {
+        return BUTTON_HEIGHT;
+    }
+
     
 }
