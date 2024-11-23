@@ -4,10 +4,21 @@ package project11;
  * Abstract GameObject class, used by all types of objects
  */
 public abstract class GameObject {
-    // Local variables
+    /**
+     * X coordinates of the object
+     */
     protected int x;
+    /**
+     * Y coordinates of the object
+     */
     protected int y;
+    /**
+     * If the object is solid
+     */
     protected boolean solid;
+    /**
+     * Holds the type of the object
+     */
     protected int typeId;
 
     /**
@@ -33,19 +44,38 @@ public abstract class GameObject {
     }
 
 
-    // Public Getters
+    /**
+     * Get the type of the object
+     * @return typeId
+     */
     public int getTypeId() {
         return typeId;
     }
+    /**
+     * Get X value
+     * @return x X value
+     */
     public int getX() {
         return x;
     }
+    /**
+     * Get Y value
+     * @return y Y value
+     */
     public int getY() {
         return y;
     }
+    /**
+     * Set X value
+     * @param x X value
+     */
     public void setX(int x) {
         this.x = x;
     }
+    /**
+     * Set Y value
+     * @param y Y value
+     */
     public void setY(int y) {
         this.y = y;
     }

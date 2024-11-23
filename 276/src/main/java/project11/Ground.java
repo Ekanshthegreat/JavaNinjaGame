@@ -9,8 +9,6 @@ public class Ground extends GameObject {
      * Make a ground which extends GameObject
      * @param x X Coordinate of ground
      * @param y Y Coordinate of ground
-     * @param solid If the object is solid
-     * @param typeId Holds ground id
      */
     public Ground(int x, int y) {
         super(x, y, false, 1);

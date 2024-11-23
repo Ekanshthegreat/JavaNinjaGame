@@ -1,9 +1,6 @@
 package project11;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * GameState to hold current state of game, most of game logic is held here to manipulate GameObject[][] array
@@ -14,7 +11,6 @@ public class GameState {
     private ArrayList<Enemy> enemies;
     private GameObject[][] gameBoard;
     private GameObjectFactory gameObjectFactory = new GameObjectFactory();
-    // private EnemyGenerator enemyGenerator;
     private MazeBuilder mazeBuilder;
     private Random random = new Random();
 
@@ -63,14 +59,17 @@ public class GameState {
     public void setDifficulty(int difficulty) {
         switch (difficulty) {
             case 0:
+                Constants.setSamuraiDamage(25);
                 updateSamuraiDamage(25);
                 break;
             case 1:
+                Constants.setSamuraiDamage(35);
                 updateSamuraiDamage(35);
                 break;
             case 2:
-                updateSamuraiDamage(35);
+                Constants.setSamuraiDamage(35);
                 spawnAdditionalSamurai(3);
+                updateSamuraiDamage(35);
                 break;
         }
     }
@@ -92,21 +91,24 @@ public class GameState {
      * @param count Number of Samurai enemies to spawn
      */
     private void spawnAdditionalSamurai(int count) {
+        int samuraiDamage = Constants.getSamuraiDamage(); // Fetch the current damage value for Samurai
+        
         for (int i = 0; i < count; i++) {
             int x, y;
             do {
                 x = random.nextInt(gameBoard[0].length);
                 y = random.nextInt(gameBoard.length);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
-            Enemy enemy = new Samurai(x, y);
             
-            enemy.setX(x);
-            enemy.setY(y);
+            Samurai samurai = new Samurai(x, y);
+            samurai.setDamage(samuraiDamage); // Apply the correct damage value
+            
             saveOriginalCellContent(x, y, gameBoard[y][x]);
-            gameBoard[y][x] = enemy;
-            enemies.add(enemy);
+            gameBoard[y][x] = samurai;
+            enemies.add(samurai);
         }
     }
+    
     
     /**
      * Maze Constructor
@@ -142,11 +144,11 @@ public class GameState {
                 x = random.nextInt(maxX);
                 y = random.nextInt(maxY);
             } while (isOccupied(x, y) || isEnemyAt(x, y));
-            Enemy enemy = new Samurai(x, y);
-            
+            Samurai samurai = new Samurai(x, y);
+            samurai.setDamage(samurai.getDamage());
             saveOriginalCellContent(x, y, gameBoard[y][x]);
-            gameBoard[y][x] = enemy;
-            enemies.add(enemy);
+            gameBoard[y][x] = samurai;
+            enemies.add(samurai);
             System.out.println("Placed enemy within bounds at (" + x + ", " + y + ")");
         }
     }
@@ -175,7 +177,10 @@ public class GameState {
      * Update all enemy positions and handle player contact
      */
     public void updateEnemies() {
-        for (Enemy enemy : enemies) {
+        // Create a copy of the enemies list to avoid ConcurrentModificationException
+        List<Enemy> enemiesCopy = new ArrayList<>(enemies);
+
+        for (Enemy enemy : enemiesCopy) {
             // Check if the enemy is adjacent to the player
             if (isAdjacentToPlayer(enemy)) {
                 if (enemy instanceof Samurai) {
@@ -183,7 +188,7 @@ public class GameState {
                 }
                 continue; // Skip further movement if the enemy attacked the player
             }
-    
+
             // Restore the original content of the cell before moving the enemy
             int oldX = enemy.getX();
             int oldY = enemy.getY();
@@ -191,21 +196,21 @@ public class GameState {
             if (originalObjects.containsKey(key)) {
                 gameBoard[oldY][oldX] = originalObjects.get(key);
             }
-    
+
             // Move the enemy towards the player
             if (enemy instanceof Samurai) {
                 ((Samurai) enemy).moveTowardsPlayerAvoidingWalls(player, gameBoard);
             }
-    
+
             // Ensure enemy's new position is valid and update the game board
             int newX = enemy.getX();
             int newY = enemy.getY();
-    
+
             // Check if the new position has an enemy already
             if (isEnemyAt(newX, newY)) {
                 continue; // Skip if the new position already has another enemy
             }
-    
+
             GameObject targetCell = gameBoard[newY][newX];
             if (targetCell == null || !targetCell.isSolid()) {
                 // Save the original content if it's a passable object (e.g., Hole, Mandatory Item, Bonus Item)
@@ -219,6 +224,7 @@ public class GameState {
             }
         }
     }
+
     
     /**
      * Check if the enemy is adjacent to the player
@@ -307,29 +313,149 @@ public class GameState {
         gameBoard[newY][newX] = player;
     }
 
-    // Getters 
+    /**
+     * Get the player object
+     * @return Player object
+     */
     public int getScore() {
         return player.getScore();
     }
-
+    /**
+     * Get the number of collected items
+     * @return Number of collected items
+     */
     public int getCollectedItems() {
         return collectedItems;
     }
-
+    /**
+     * Get the number of bonus items collected
+     * @return Number of bonus items collected
+     */
     public int getBonusItem() {
         return bonusItem;
     }
-
+    /**
+     * Get the game board
+     * @return GameObject[][] gameBoard
+     */
     public GameObject[][] getGameObjects() {
         return gameBoard;
     }
 
+    /**
+     * Remove an enemy from the game
+     * @param enemy Enemy to remove
+     */
     public void removeEnemy(Enemy enemy) {
         enemies.remove(enemy);
         setGround(enemy.getX(), enemy.getY());
     }
 
+    /**
+     * Set the ground at a specific position
+     * @param x X coordinate
+     * @param y Y coordinate
+     */
     public void setGround(int x, int y) {
         gameBoard[y][x] = gameObjectFactory.createObject(1, x, y);
+    }
+
+    // Test functions
+
+    /**
+     * Get the objects
+     * @return Objects
+     */
+    public Map<String, GameObject> getOriginalObjects() {
+        return originalObjects;
+    }
+
+    /**
+     * Save the original cell content
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param obj GameObject to save
+     */
+    public void testSaveOriginalCellContent(int x, int y, GameObject obj) {
+        saveOriginalCellContent(x, y, obj);
+    }
+
+    /**
+     * Get the list of enemies
+     * @return List of enemies
+     */
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    /**
+     * Test update samurai damage
+     * @param damage Damage value
+     */
+    public void testUpdateSamuraiDamage(int damage) {
+        updateSamuraiDamage(damage);
+    }
+
+    /**
+     * Test spawn additional samurai
+     * @param count Number of samurai to spawn
+     */
+    public void testSpawnAdditionalSamurai(int count) {
+        spawnAdditionalSamurai(count);
+    }
+
+    /**
+     * Test is adjacent to player
+     * @param enemy Enemy to check
+     * @return Boolean if enemy is adjacent to player
+     */
+    public boolean testIsAdjacentToPlayer(Enemy enemy) {
+        return isAdjacentToPlayer(enemy);
+    }
+
+    /**
+     * Test move player
+     * @param up Boolean for direction
+     * @param down Boolean for direction
+     * @param left Boolean for direction
+     * @param right Boolean for direction
+     */
+    public void testMovePlayer(boolean up, boolean down, boolean left, boolean right) {
+        movePlayer(up, down, left, right);
+    }
+
+    /**
+     * Test update enemies
+     */
+    public void testUpdateEnemies() {
+        updateEnemies();
+    }
+
+    /**
+     * Test is occupied
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return Boolean if occupied
+     */
+    public boolean testIsOccupied(int x, int y) {
+        return isOccupied(x, y);
+    }
+
+    /**
+     * Test is enemy at
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return Boolean if enemy is at position
+     */
+    public boolean testIsEnemyAt(int x, int y) {
+        return isEnemyAt(x, y);
+    }
+
+    /**
+     * Test get player function
+     * @return Player object
+     */
+    public Player getPlayer() {
+        return player;
     }
 }

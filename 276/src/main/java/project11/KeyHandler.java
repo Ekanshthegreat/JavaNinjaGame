@@ -7,8 +7,22 @@ import java.awt.event.KeyListener;
  * Handles key input for the game
  */
 public class KeyHandler implements KeyListener {
-    // Local variables
-    public boolean up, down, left, right;
+    /*
+     * Up key
+     */
+    public boolean up;
+    /*
+     * Down key
+     */
+    public boolean down;
+    /*
+     * Left key
+     */
+    public boolean left;
+    /*
+     * Right key
+     */
+    public boolean right;
 
     /**
      * Reset input before new input
@@ -49,6 +63,9 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_D) right = false;
     }
 
+    /**
+     * Not used
+     */
     public void keyTyped(KeyEvent e) {
         // Not used
     }

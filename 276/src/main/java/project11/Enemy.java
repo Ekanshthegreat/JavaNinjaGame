@@ -4,14 +4,16 @@ package project11;
  * Enemy class to extend GameObject
  */
 public abstract class Enemy extends GameObject {
-    // How much damage the enemy does
+    /**
+     * Damage value
+     */
     protected int damage;
 
     /**
      * Make an enemy which extends GameObject
      * @param x X Coordinate of Enemy
      * @param y Y Coordinate of Enemy
-     * @param solid If the object is solid
+     * @param damage Damage value
      * @param typeId Holds enemy id
      */
     public Enemy(int x, int y, int damage, int typeId) {
@@ -19,21 +21,44 @@ public abstract class Enemy extends GameObject {
         this.damage = damage;
     }
 
+    /**
+     * Abstract method to set the difficulty of the enemy
+     * @param difficulty Difficulty 
+     */
     public abstract void setDifficulty(int difficulty);
     
-    // Public getters and setters
+    /**
+     * Get X value
+     * @return x X value
+     */
     public int getX() {
         return x;
     }
+    /**
+     * Get Y value
+     * @return y Y value
+     */
     public int getY() {
         return y;
     }
+    /**
+     * Set X value
+     * @param x X value
+     */
     public void setX(int x) {
         this.x = x;
     }
+    /**
+     * Set Y value
+     * @param y Y value
+     */
     public void setY(int y) {
         this.y = y;
     }
+    /**
+     * Get damage value
+     * @return damage Damage value
+     */
     public int getDamage() {
         return damage;
     }
