@@ -7,7 +7,9 @@ import java.awt.event.KeyListener;
  * Handles key input for the game
  */
 public class KeyHandler implements KeyListener {
-    // Local variables
+    /*
+     * Booleans for each key
+     */
     public boolean up, down, left, right;
 
     /**

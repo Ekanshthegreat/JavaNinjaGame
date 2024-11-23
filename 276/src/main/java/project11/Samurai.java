@@ -38,7 +38,9 @@ public class Samurai extends Enemy {
     }
 
     /**
-     * Attack the player, deal damage, and remove the Samurai from the game
+     * Attack the player with the damage
+     * @param player Player object to attack
+     * @param gameState Current game state
      */
     public void attackPlayer(Player player, GameState gameState) {
         player.takeDamage(damage);

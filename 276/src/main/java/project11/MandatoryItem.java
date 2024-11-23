@@ -15,8 +15,7 @@ public class MandatoryItem extends Item {
     }
 
     /**
-     * Return if the object is solid
-     * @return If the object is solid
+     * On pickup method
      */
     @Override
     public void onPickup() {

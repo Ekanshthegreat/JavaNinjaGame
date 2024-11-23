@@ -15,8 +15,7 @@ public class Hole extends Enemy{
     }
 
     /**
-     * Return if the object is solid
-     * @return If the object is solid
+     * Set the difficulty of the hole
      */
     @Override
     public void setDifficulty(int difficulty) {

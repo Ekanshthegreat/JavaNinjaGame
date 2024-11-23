@@ -306,16 +306,31 @@ public class GameState {
         gameBoard[newY][newX] = player;
     }
 
-    // Getters 
+    /**
+     * Get the player object
+     * @return Player object
+     */
     public int getScore() {
         return player.getScore();
     }
+    /**
+     * Get the number of collected items
+     * @return Number of collected items
+     */
     public int getCollectedItems() {
         return collectedItems;
     }
+    /**
+     * Get the number of bonus items collected
+     * @return Number of bonus items collected
+     */
     public int getBonusItem() {
         return bonusItem;
     }
+    /**
+     * Get the game board
+     * @return GameObject[][] gameBoard
+     */
     public GameObject[][] getGameObjects() {
         return gameBoard;
     }

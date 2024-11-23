@@ -21,23 +21,39 @@ public abstract class Item extends GameObject {
         this.isSpawned = true; // Assume items are spawned upon creation
     }
 
-    // Getters
+    /*
+     * Get the X coordinate of the item
+     */
     public int getX() {
         return x;
     }
+    /*
+     * Get the Y coordinate of the item
+     */
     public int getY() {
         return y;
     }
+    /*
+     * Get the score of the item
+     */
     public int getScore() {
         return score;
     }
+    /*
+     * Get if the item is spawned
+     */
     public boolean isSpawned() {
         return isSpawned;
     }
+    /*
+     * Set the score of the item
+     */
     public void setScore(int score) {
         this.score = score;
     }
 
-    // Abstract method to be implemented by subclasses
+    /**
+     * Method to pick up the item
+     */
     public abstract void onPickup();
 }

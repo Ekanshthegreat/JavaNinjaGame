@@ -13,9 +13,18 @@ import javax.swing.JPanel;
  */
 public class GamePanel extends JPanel {
 
+    /**
+     * Is the game started
+     */
     private boolean isGameStarted = false;
+    /**
+     * Is the difficulty selected
+     */
     private boolean difficultySelected = false;
 
+    /*
+     * GameState object
+     */
     protected GameState gameState;
     private Renderer renderer;
 

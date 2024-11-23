@@ -15,7 +15,6 @@ public class Renderer {
 
     /**
      * Load all sprites
-     * @param tileSize Size of each Tile
      */
     public Renderer() {
         loadSprites();

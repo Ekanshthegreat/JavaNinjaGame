@@ -25,19 +25,38 @@ public abstract class Enemy extends GameObject {
      */
     public abstract void setDifficulty(int difficulty);
     
-    // Public getters and setters
+    /**
+     * Get X value
+     * @return x X value
+     */
     public int getX() {
         return x;
     }
+    /**
+     * Get Y value
+     * @return y Y value
+     */
     public int getY() {
         return y;
     }
+    /**
+     * Set X value
+     * @param x X value
+     */
     public void setX(int x) {
         this.x = x;
     }
+    /**
+     * Set Y value
+     * @param y Y value
+     */
     public void setY(int y) {
         this.y = y;
     }
+    /**
+     * Get damage value
+     * @return damage Damage value
+     */
     public int getDamage() {
         return damage;
     }
