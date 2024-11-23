@@ -5,6 +5,8 @@
 
 ---
 
+
+
 ## How to Build and Run
 
 ### Prerequisites
@@ -57,7 +59,7 @@ How to Test
 
 ### Running Tests
 
-1.  Navigate to the project directory.
+1.  Navigate to the project directory. ( Should be /276)
     
 2.  mvn test
     
