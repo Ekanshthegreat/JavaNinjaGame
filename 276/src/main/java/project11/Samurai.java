@@ -66,7 +66,7 @@ public class Samurai extends Enemy {
         }
     }
 
-    private boolean validXY(int x, int y, GameObject[][] gameBoard) {
+    private boolean coordinatesInBounds(int x, int y, GameObject[][] gameBoard) {
         return x >= 0 && x < gameBoard[0].length && y >= 0 && y < gameBoard.length;
     }
 
@@ -81,7 +81,7 @@ public class Samurai extends Enemy {
         int newX = getX() + deltaX;
         int newY = getY() + deltaY;
 
-        if(!validXY(newX, newY, gameBoard))  {
+        if(!coordinatesInBounds(newX, newY, gameBoard))  {
             return false;
         }
 
