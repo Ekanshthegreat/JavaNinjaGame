@@ -384,4 +384,12 @@ public class GameState {
     public List<Enemy> getEnemies() {
         return enemies;
     }
+
+    /**
+     * Test update samurai damage
+     */
+    public void testUpdateSamuraiDamage(int damage) {
+        updateSamuraiDamage(damage);
+    }
+    
 }
