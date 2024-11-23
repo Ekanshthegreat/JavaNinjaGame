@@ -8,9 +8,21 @@ import java.awt.event.KeyListener;
  */
 public class KeyHandler implements KeyListener {
     /*
-     * Booleans for each key
+     * Up key
      */
-    public boolean up, down, left, right;
+    public boolean up;
+    /*
+     * Down key
+     */
+    public boolean down;
+    /*
+     * Left key
+     */
+    public boolean left;
+    /*
+     * Right key
+     */
+    public boolean right;
 
     /**
      * Reset input before new input

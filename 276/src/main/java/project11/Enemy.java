@@ -4,7 +4,9 @@ package project11;
  * Enemy class to extend GameObject
  */
 public abstract class Enemy extends GameObject {
-    // How much damage the enemy does
+    /**
+     * Damage value
+     */
     protected int damage;
 
     /**
