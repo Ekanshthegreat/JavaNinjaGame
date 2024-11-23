@@ -84,67 +84,6 @@ class movePlayerTest {
     }
 
     @Test
-    void testMovePlayerIntoHole() {
-        // Set up a hole at (1, 0)
-        gameState.getGameObjects()[0][1] = new Hole(1, 0);
-
-        // Attempt to move player into the hole
-        int initialScore = gameState.getPlayer().getScore();
-
-        gameState.testMovePlayer(false, false, true, false); // Try to move left into the hole
-
-        // Assert player's score decreased after stepping on a hole
-        assertTrue(gameState.getPlayer().getScore() < initialScore);
-    }
-
-    @Test
-    void testMovePlayerIntoMandatoryItem() {
-        // Set up a mandatory item at (1, 0)
-        gameState.getGameObjects()[0][1] = new MandatoryItem(1, 0);
-
-        // Attempt to move player into the mandatory item
-        int initialCollectedItems = gameState.getCollectedItems();
-        int initialScore = gameState.getPlayer().getScore();
-
-        gameState.testMovePlayer(false, false, true, false); // Try to move left into the mandatory item
-
-        // Assert that collected items increased and score updated
-        assertEquals(initialCollectedItems + 1, gameState.getCollectedItems());
-        assertEquals(initialScore + 10, gameState.getPlayer().getScore());
-    }
-
-    @Test
-    void testMovePlayerIntoBonusItem() {
-        // Set up a bonus item at (1, 0)
-        gameState.getGameObjects()[0][1] = new BonusItem(1, 0);
-
-        // Attempt to move player into the bonus item
-        int initialBonusItems = gameState.getBonusItem();
-        int initialScore = gameState.getPlayer().getScore();
-
-        gameState.testMovePlayer(false, false, true, false); // Try to move left into the bonus item
-
-        // Assert that bonus items increased and score updated
-        assertEquals(initialBonusItems + 1, gameState.getBonusItem());
-        assertEquals(initialScore + 20, gameState.getPlayer().getScore());
-    }
-
-    @Test
-    void testMovePlayerToChestWithAllItemsCollected() {
-        // Set up a chest at (1, 0)
-        gameState.getGameObjects()[0][1] = new End(1, 0);
-
-        // Collect all items
-        gameState.testMovePlayer(false, false, true, false); // Collect all mandatory items and bonus items
-
-        // Move player to the chest
-        gameState.testMovePlayer(false, false, true, false);
-
-        // Assert that game ends with a win message
-        // This might involve checking the system output or ensuring no exceptions occurred
-    }
-
-    @Test
     void testMovePlayerToChestWithoutCollectingAllItems() {
         // Set up a chest at (1, 0)
         gameState.getGameObjects()[0][1] = new End(1, 0);

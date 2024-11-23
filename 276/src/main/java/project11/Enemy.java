@@ -67,21 +67,28 @@ public abstract class Enemy extends GameObject {
      * Moves the enemy towards the player depending on the players position and obstacle collision
      * @param player Player object
      */
-    public void moveTowardsPlayer(Player player) {
-        int playerX = player.getX();
-        int playerY = player.getY();
+public void moveTowardsPlayer(Player player) {
+    int playerX = player.getX();
+    int playerY = player.getY();
 
-        // Move enemy towards player
-        if (this.x < playerX) {
+    int deltaX = playerX - this.x;
+    int deltaY = playerY - this.y;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Try horizontal movement first
+        if (deltaX > 0) {
             this.x++; // Move right
-        } else if (this.x > playerX) {
+        } else {
             this.x--; // Move left
         }
-
-        if (this.y < playerY) {
+    } else {
+        // Try vertical movement
+        if (deltaY > 0) {
             this.y++; // Move down
-        } else if (this.y > playerY) {
+        } else {
             this.y--; // Move up
         }
     }
+}
+
 }
