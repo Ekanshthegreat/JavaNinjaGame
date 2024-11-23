@@ -8,6 +8,7 @@ import java.util.Random;
 public class Samurai extends Enemy {
 
     private int damage; // Changed from static final to instance variable
+    private Random random = new Random();
 
     /**
      * Make a Samurai which extends Enemy
@@ -17,6 +18,15 @@ public class Samurai extends Enemy {
     public Samurai(int x, int y) {
         super(x, y, Constants.getSamuraiDamage(), 4);
         // this.damage = damage; // Set the initial damage
+    }
+
+    @Override
+    /**
+     * Set difficulty of the game
+     * @param difficulty Difficulty of the game
+     */
+    public void setDifficulty(int difficulty) {
+        this.damage += difficulty;
     }
 
     /**
@@ -74,10 +84,6 @@ public class Samurai extends Enemy {
         }
     }
 
-    private boolean coordinatesInBounds(int x, int y, GameObject[][] gameBoard) {
-        return x >= 0 && x < gameBoard[0].length && y >= 0 && y < gameBoard.length;
-    }
-
     /**
      * Attempt to move in a direction, if possible
      * @param deltaX Change in X coordinate
@@ -89,14 +95,14 @@ public class Samurai extends Enemy {
         int newX = getX() + deltaX;
         int newY = getY() + deltaY;
 
-        if(!coordinatesInBounds(newX, newY, gameBoard))  {
+        if (newX < 0 || newX >= gameBoard[0].length || newY < 0 || newY >= gameBoard.length) {
             return false;
         }
 
         GameObject targetCell = gameBoard[newY][newX];
 
         // Check if the new position is passable (can pass through items, holes, but not walls)
-        if (!targetCell.isSolid()) {
+        if (targetCell == null || targetCell.getTypeId() == 1 || targetCell.getTypeId() == 2 || targetCell.getTypeId() == 3 || targetCell.getTypeId() == 8) {
             setX(newX);
             setY(newY);
             return true;

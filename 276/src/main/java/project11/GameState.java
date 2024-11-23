@@ -1,6 +1,10 @@
 package project11;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * GameState to hold current state of game, most of game logic is held here to manipulate GameObject[][] array
@@ -29,9 +33,6 @@ public class GameState {
         int width = Constants.getPlayColumns();
         int height = Constants.getPlayRows();
         this.player = new Player(0, height / 2);
-        int width = Constants.getPlayColumns();
-        int height = Constants.getPlayRows();
-        this.player = new Player(0, height / 2);
         this.enemies = new ArrayList<>();
         this.gameBoard = new GameObject[height][width];
         // this.enemyGenerator = new EnemyGenerator(player);
@@ -51,7 +52,6 @@ public class GameState {
     private void saveOriginalCellContent(int x, int y, GameObject obj) {
         String key = x + "," + y;
         if (!originalObjects.containsKey(key) && !(obj instanceof Enemy)) {
-            originalObjects.put(key, obj != null ? obj : gameObjectFactory.createObject(1, x, y));
             originalObjects.put(key, obj != null ? obj : gameObjectFactory.createObject(1, x, y));
         }
     }
@@ -277,17 +277,12 @@ public class GameState {
                 player.increaseScore(((MandatoryItem) targetObject).getScore());
                 System.out.println("Collected item! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
                 gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
-                System.out.println("Collected item! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
-                gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
             } else if (typeId == 3) { // Bonus item
                 bonusItem++;
                 player.increaseScore(((BonusItem) targetObject).getScore());
                 System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
                 gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
-                System.out.println("COLLECTED BONUS ITEM!! Items collected: " + collectedItems + "/" + Constants.getTotalItems());
-                gameBoard[newY][newX] = new Ground(player.getX(), player.getY()); // Remove item after collecting
             } else if (typeId == 9) { // Chest/End
-                if (collectedItems >= Constants.getTotalItems()) {
                 if (collectedItems >= Constants.getTotalItems()) {
                     System.out.println("Congratulations! You've collected all mandatory items and reached the chest.");
                     System.out.println("Final Score: " + player.getScore());
@@ -304,11 +299,8 @@ public class GameState {
 
         // Clear player's current position
         gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY());
-        gameBoard[player.getY()][player.getX()] = new Ground(player.getX(), player.getY());
 
         // Redraw Chest/End if player walked over with not enough keys
-        if (collectedItems < Constants.getTotalItems()) {
-            gameBoard[chestY][chestX] = new End(chestX, chestY);
         if (collectedItems < Constants.getTotalItems()) {
             gameBoard[chestY][chestX] = new End(chestX, chestY);
         }
@@ -370,106 +362,6 @@ public class GameState {
      */
     public void setGround(int x, int y) {
         gameBoard[y][x] = gameObjectFactory.createObject(1, x, y);
-        gameBoard[y][x] = gameObjectFactory.createObject(1, x, y);
-    }
-
-    // Test functions
-
-    /**
-     * Get the objects
-     * @return Objects
-     */
-    public Map<String, GameObject> getOriginalObjects() {
-        return originalObjects;
-    }
-
-    /**
-     * Save the original cell content
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param obj GameObject to save
-     */
-    public void testSaveOriginalCellContent(int x, int y, GameObject obj) {
-        saveOriginalCellContent(x, y, obj);
-    }
-
-    /**
-     * Get the list of enemies
-     * @return List of enemies
-     */
-    public List<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    /**
-     * Test update samurai damage
-     * @param damage Damage value
-     */
-    public void testUpdateSamuraiDamage(int damage) {
-        updateSamuraiDamage(damage);
-    }
-
-    /**
-     * Test spawn additional samurai
-     * @param count Number of samurai to spawn
-     */
-    public void testSpawnAdditionalSamurai(int count) {
-        spawnAdditionalSamurai(count);
-    }
-
-    /**
-     * Test is adjacent to player
-     * @param enemy Enemy to check
-     * @return Boolean if enemy is adjacent to player
-     */
-    public boolean testIsAdjacentToPlayer(Enemy enemy) {
-        return isAdjacentToPlayer(enemy);
-    }
-
-    /**
-     * Test move player
-     * @param up Boolean for direction
-     * @param down Boolean for direction
-     * @param left Boolean for direction
-     * @param right Boolean for direction
-     */
-    public void testMovePlayer(boolean up, boolean down, boolean left, boolean right) {
-        movePlayer(up, down, left, right);
-    }
-
-    /**
-     * Test update enemies
-     */
-    public void testUpdateEnemies() {
-        updateEnemies();
-    }
-
-    /**
-     * Test is occupied
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return Boolean if occupied
-     */
-    public boolean testIsOccupied(int x, int y) {
-        return isOccupied(x, y);
-    }
-
-    /**
-     * Test is enemy at
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return Boolean if enemy is at position
-     */
-    public boolean testIsEnemyAt(int x, int y) {
-        return isEnemyAt(x, y);
-    }
-
-    /**
-     * Test get player function
-     * @return Player object
-     */
-    public Player getPlayer() {
-        return player;
     }
 
     // Test functions

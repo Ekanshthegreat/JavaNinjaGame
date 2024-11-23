@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JPanel;
 
 /**
@@ -50,19 +51,6 @@ public class GamePanel extends JPanel {
         this.renderer = new Renderer();
         int width = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles()) * Constants.getTileSize();
         int height = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles() + Constants.getDataTiles()) * Constants.getTileSize();
-        try{ // Check if gameState is NULL
-            this.gameState = gameState;
-        }catch (Exception e) {
-            throw new NullPointerException("GameState is null");
-        }
-        try{ // Check if keyHandler is NULL
-            this.addKeyListener(keyHandler);
-        } catch (Exception e){
-            throw new NullPointerException("KeyHandler is null");
-        }
-        this.renderer = new Renderer();
-        int width = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles()) * Constants.getTileSize();
-        int height = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles() + Constants.getDataTiles()) * Constants.getTileSize();
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
@@ -81,20 +69,17 @@ public class GamePanel extends JPanel {
 
                     if (isButtonClicked(mouseX, mouseY, Constants.EASY_BUTTON)) {
                         gameState.setDifficulty(0);
-                        gameState.setDifficulty(0);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
                         repaint();
                     } else if (isButtonClicked(mouseX, mouseY, Constants.MEDIUM_BUTTON)) {
                         gameState.setDifficulty(1);
-                        gameState.setDifficulty(1);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
                         repaint();
                     } else if (isButtonClicked(mouseX, mouseY, Constants.HARD_BUTTON)) {
-                        gameState.setDifficulty(2);
                         gameState.setDifficulty(2);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
@@ -182,21 +167,6 @@ public class GamePanel extends JPanel {
             }
         } catch (Exception e){
             throw new NullPointerException("Graphics object is null");
-        try{ // Try to paint the game window
-            super.paintComponent(g);
-            if (!isGameStarted || !difficultySelected) {
-                drawStartScreen(g);
-            } else {
-                renderer.render(g, gameState.getGameObjects());
-                g.setColor(Color.WHITE);
-                g.drawString("Score: " + gameState.getScore(), 10, Constants.getTileSize());
-                g.setColor(Color.CYAN);
-                g.drawString("Items: " + gameState.getCollectedItems() + "/" + Constants.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, Constants.getTileSize() * 2);
-                g.setColor(Color.GREEN);
-                g.drawString("Tip: Use WASD to move, collect all keys and reach the chest to win!", 10, Constants.getTileSize() * (Constants.getPlayRows() + 2 * Constants.getBorderTiles() + Constants.getDataTiles()));
-            }
-        } catch (Exception e){
-            throw new NullPointerException("Graphics object is null");
         }
     }
 
@@ -212,17 +182,7 @@ public class GamePanel extends JPanel {
         try{ // Try to draw the starting screen
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
-        int buttonWidth = 100;
-        int buttonHeight = 40;
-        int buttonX = (getWidth() - buttonWidth) / 2;
-        int buttonY = (getHeight() - buttonHeight) / 2 + 50;
-        try{ // Try to draw the starting screen
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, getWidth(), getHeight());
 
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 36));
-            g.drawString("Ninja Game", getWidth() / 2 - 100, getHeight() / 2 - 40);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 36));
             g.drawString("Ninja Game", getWidth() / 2 - 100, getHeight() / 2 - 40);
@@ -230,16 +190,6 @@ public class GamePanel extends JPanel {
             g.setFont(new Font("Arial", Font.PLAIN, 24));
             g.drawRect(buttonX, buttonY, buttonWidth, buttonHeight);
             g.drawString("Play", buttonX + 25, buttonY + 28);
-            g.setFont(new Font("Arial", Font.PLAIN, 24));
-            g.drawRect(buttonX, buttonY, buttonWidth, buttonHeight);
-            g.drawString("Play", buttonX + 25, buttonY + 28);
-
-            drawButton(g, "Easy", (getWidth() / 2) - 150, getHeight() / 2 + 120);
-            drawButton(g, "Medium", (getWidth() / 2) - 50, getHeight() / 2 + 120);
-            drawButton(g, "Hard", (getWidth() / 2) + 50, getHeight() / 2 + 120);
-        }catch (Exception e){
-            throw new NullPointerException("Graphics object is null");
-        }
 
             drawButton(g, "Easy", (getWidth() / 2) - 150, getHeight() / 2 + 120);
             drawButton(g, "Medium", (getWidth() / 2) - 50, getHeight() / 2 + 120);

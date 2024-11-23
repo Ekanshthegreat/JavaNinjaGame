@@ -3,6 +3,7 @@ package project11;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -56,6 +57,9 @@ public class Renderer {
      * @param gameObjects Current game objects to be drawn
      */
     public void render(Graphics g, GameObject[][] gameObjects) {
+        if (gameObjects == null) {
+            throw new NullPointerException("GameObjects is null");
+        }
         int xOffset = Constants.getBorderTiles() * Constants.getTileSize();
         int yOffset = Constants.getDataTiles() * Constants.getTileSize() + Constants.getBorderTiles() * Constants.getTileSize();
     
@@ -83,6 +87,8 @@ public class Renderer {
         }
     }
 
+    // Test functions
+
     /**
      * Get the wall sprite
      * @return wallSprite
@@ -90,7 +96,6 @@ public class Renderer {
     public Image getWallSprite() {
         return wallSprite;
     }
-
     /**
      * Get the ground sprite
      * @return groundSprite
@@ -98,4 +103,54 @@ public class Renderer {
     public Image getGroundSprite() {
         return groundSprite;
     }
+    /**
+     * Get the hole sprite
+     * @return holeSprite
+     */
+    public Image getHoleSprite() {
+        return holeSprite;
+    }
+    /**
+     * Get the jumping shoes sprite
+     * @return jumpingShoesSprite
+     */
+    public Image getJumpingShoesSprite() {
+        return jumpingShoesSprite;
+    }
+    /**
+     * Get the ninja sprite
+     * @return ninjaSprite
+     */
+    public Image getNinjaSprite() {
+        return ninjaSprite;
+    }
+    /**
+     * Get the samurai sprite
+     * @return samuraiSprite
+     */
+    public Image getSamuraiSprite() {
+        return samuraiSprite;
+    }
+    /**
+     * Get the spawn sprite
+     * @return spawnSprite
+     */
+    public Image getSpawnSprite() {
+        return spawnSprite;
+    }
+    /**
+     * Get the key sprite
+     * @return keySprite
+     */
+    public Image getKeySprite() {
+        return keySprite;
+    }
+    /**
+     * Get the chest sprite
+     * @return chestSprite
+     */
+    public Image getChestSprite() {
+        return chestSprite;
+    }
+
 }
