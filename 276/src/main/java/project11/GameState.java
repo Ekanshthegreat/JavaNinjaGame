@@ -352,4 +352,19 @@ public class GameState {
     public void setGround(int x, int y) {
         gameBoard[y][x] = gameObjectFactory.createObject(1, x, y);
     }
+
+    // Test functions
+
+    /**
+     * Get the objects
+     * @return Objects
+     */
+    public Map<String, GameObject> getOriginalObjects() {
+        return originalObjects;
+    }
+
+    public void testSaveOriginalCellContent(int x, int y, GameObject obj) {
+        saveOriginalCellContent(x, y, obj);
+    }
+
 }
