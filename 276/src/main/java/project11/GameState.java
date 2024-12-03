@@ -63,17 +63,17 @@ public class GameState {
     public void setDifficulty(int difficulty) {
         switch (difficulty) {
             case 0:
-                Constants.setSamuraiDamage(25);
-                updateSamuraiDamage(25);
+                Constants.setSamuraiDamage(100);
+                updateSamuraiDamage(100);
                 break;
             case 1:
-                Constants.setSamuraiDamage(35);
-                updateSamuraiDamage(35);
+                Constants.setSamuraiDamage(100);
+                updateSamuraiDamage(100);
                 break;
             case 2:
-                Constants.setSamuraiDamage(35);
+                Constants.setSamuraiDamage(100);
                 spawnAdditionalSamurai(3);
-                updateSamuraiDamage(35);
+                updateSamuraiDamage(100);
                 break;
         }
     }
