@@ -51,7 +51,7 @@ public class Constants {
 
     // Damage constants
     private static int HOLE_DAMAGE = 10;
-    private static int SAMURAI_DAMAGE = 10;
+    private static int SAMURAI_DAMAGE = 100;
     /**
      * Hole damage getter
      * @return HOLE_DAMAGE
