@@ -69,7 +69,7 @@ public class BaseThread implements Runnable {
      * Handle all input
      */
     private void handleInput() {
-        gameState.movePlayer(keyHandler.up, keyHandler.down, keyHandler.left, keyHandler.right);
+        gameState.movePlayer(keyHandler);
         keyHandler.resetInput(); 
     }
 

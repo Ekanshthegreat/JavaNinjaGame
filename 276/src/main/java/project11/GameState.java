@@ -41,7 +41,7 @@ public class GameState {
 
         initializeMaze();
         gameBoard[height / 2][0] = player;
-        initializeItemsAndEnemies();
+        spawnSamurai(2);
     }
 
     /**
@@ -71,7 +71,7 @@ public class GameState {
                 break;
             case "hard":
                 updateSamuraiDamage(35);
-                spawnAdditionalSamurai(3);
+                spawnSamurai(3);
                 break;
         }
     }
@@ -92,7 +92,7 @@ public class GameState {
      * Spawn additional Samurai enemies
      * @param count Number of Samurai enemies to spawn
      */
-    private void spawnAdditionalSamurai(int count) {
+    private void spawnSamurai(int count) {
         for (int i = 0; i < count; i++) {
             Enemy enemy = enemyGenerator.createEnemy();
             int x, y;
@@ -130,29 +130,6 @@ public class GameState {
         }
     }
 
-    /**
-     * Items and Enemies Constructor
-     */
-    private void initializeItemsAndEnemies() {
-        int maxX = gameBoard[0].length;
-        int maxY = gameBoard.length;
-
-        for (int i = 0; i < 2; i++) {
-            Enemy enemy = enemyGenerator.createEnemy();
-            int x, y;
-            do {
-                x = random.nextInt(maxX);
-                y = random.nextInt(maxY);
-            } while (isOccupied(x, y) || isEnemyAt(x, y));
-            
-            enemy.setX(x);
-            enemy.setY(y);
-            saveOriginalCellContent(x, y, gameBoard[y][x]);
-            gameBoard[y][x] = enemy;
-            enemies.add(enemy);
-            System.out.println("Placed enemy within bounds at (" + x + ", " + y + ")");
-        }
-    }
 
     /**
      * Checks if gameBoard[x][y] is occupied
@@ -238,7 +215,7 @@ public class GameState {
         return (Math.abs(enemyX - playerX) == 1 && enemyY == playerY) ||
                (Math.abs(enemyY - playerY) == 1 && enemyX == playerX);
     }
-    
+
     /**
      * Move Player function, deals with most object interactions
      * @param up Boolean for direction
@@ -246,16 +223,16 @@ public class GameState {
      * @param left Boolean for direction
      * @param right Boolean for direction
      */
-    public void movePlayer(boolean up, boolean down, boolean left, boolean right) {
+    public void movePlayer(KeyHandler keyhandler) {
         // Current position
         int newX = player.getX();
         int newY = player.getY();
 
         // Update new position
-        if (up && newY > 0) newY--;
-        if (down && newY < gameBoard.length - 1) newY++;
-        if (left && newX > 0) newX--;
-        if (right && newX < gameBoard[0].length - 1) newX++;
+        if (keyhandler.up && newY > 0) newY--;
+        if (keyhandler.down && newY < gameBoard.length - 1) newY++;
+        if (keyhandler.left && newX > 0) newX--;
+        if (keyhandler.right && newX < gameBoard[0].length - 1) newX++;
 
         // Check interactions with objects at the new position
         GameObject targetObject = gameBoard[newY][newX];
