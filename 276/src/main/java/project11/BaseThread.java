@@ -4,8 +4,8 @@ package project11;
  * Single thread to run game logic
  */
 public class BaseThread implements Runnable {
-    private static final int TOTAL_CYCLE_TIME = 300; 
-    private static final int INPUT_TIME = 150;
+    private static final int TOTAL_CYCLE_TIME = 500; // Increase cycle time to slow down movement
+    private static final int INPUT_TIME = 250;
 
     private GameState gameState;
     private GamePanel gamePanel;
@@ -19,9 +19,18 @@ public class BaseThread implements Runnable {
      * @param keyHandler KeyHandler for input
      */
     public BaseThread(GamePanel gamePanel, KeyHandler keyHandler) {
-        this.gamePanel = gamePanel;
-        this.gameState = gamePanel.gameState;
-        this.keyHandler = keyHandler;
+        try { // Check if gamePanel is null
+            this.gamePanel = gamePanel;
+            this.gameState = gamePanel.gameState;
+        } catch (Exception e) {
+            throw new NullPointerException("Game Panel is null");
+        }
+        try{ // Check if keyHandler is null
+            this.keyHandler = keyHandler;
+        } catch (Exception e) {
+            throw new NullPointerException("KeyHandler is null");
+        }
+
         this.thread = new Thread(this);
         this.thread.start();
     }
@@ -37,13 +46,7 @@ public class BaseThread implements Runnable {
 
             // Wait until the input phase is over
             long elapsed = System.currentTimeMillis() - startTime;
-            if (elapsed < INPUT_TIME) {
-                try {
-                    Thread.sleep(INPUT_TIME - elapsed);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            sleep(elapsed, INPUT_TIME);
 
             // Move enemies only every few cycles to slow them down
             if (enemyMoveCycle % 2 == 0) { // Move enemies every other cycle
@@ -55,12 +58,21 @@ public class BaseThread implements Runnable {
 
             // Finish TOTAL_CYCLE_TIME for consistent game speed
             elapsed = System.currentTimeMillis() - startTime;
-            if (elapsed < TOTAL_CYCLE_TIME) {
-                try {
-                    Thread.sleep(TOTAL_CYCLE_TIME - elapsed);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            sleep(elapsed, TOTAL_CYCLE_TIME);
+        }
+    }
+
+    /**
+     * Sleep function
+     * @param elapsedTime Current time elapsed
+     * @param cycleTime Cycle time to sleep until
+     */
+    private void sleep(long elapsedTime, int cycleTime) {
+        if (elapsedTime < cycleTime) {
+            try {
+                Thread.sleep(cycleTime - elapsedTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

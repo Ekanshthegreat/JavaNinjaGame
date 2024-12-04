@@ -6,39 +6,30 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JPanel;
 
 /**
  * GamePanel for creating a game window, extends JPanel
  */
 public class GamePanel extends JPanel {
-    private static final int TILE_SIZE = 32;
-    private static final int PLAY_COLUMNS = 15;
-    private static final int PLAY_ROWS = 10;
-    private static final int BORDER_TILES = 1;
-    private static final int DATA_TILES = 2;
 
+    /**
+     * Is the game started
+     */
     private boolean isGameStarted = false;
+    /**
+     * Is the difficulty selected
+     */
     private boolean difficultySelected = false;
 
-    // Getters for constants, only need to change constants here
-    public static int getTileSize() {
-        return TILE_SIZE;
-    }
-    public static int getPlayColumns() {
-        return PLAY_COLUMNS;
-    }
-    public static int getPlayRows() {
-        return PLAY_ROWS;
-    }
-    public static int getBorderTiles() {
-        return BORDER_TILES;
-    }
-    public static int getDataTiles() {
-        return DATA_TILES;
-    }
-
+    /*
+     * GameState object
+     */
     protected GameState gameState;
+    /**
+     * Renderer object
+     */
     private Renderer renderer;
 
     /**
@@ -47,16 +38,23 @@ public class GamePanel extends JPanel {
      * @param keyHandler KeyHandler object
      */
     public GamePanel(GameState gameState, KeyHandler keyHandler) {
-        this.gameState = gameState;
-        this.renderer = new Renderer(TILE_SIZE);
-        int width = (PLAY_COLUMNS + 2 * BORDER_TILES) * TILE_SIZE;
-        int height = (PLAY_ROWS + 2 * BORDER_TILES + DATA_TILES) * TILE_SIZE;
+        try{ // Check if gameState is NULL
+            this.gameState = gameState;
+        }catch (Exception e) {
+            throw new NullPointerException("GameState is null");
+        }
+        try{ // Check if keyHandler is NULL
+            this.addKeyListener(keyHandler);
+        } catch (Exception e){
+            throw new NullPointerException("KeyHandler is null");
+        }
+        this.renderer = new Renderer();
+        int width = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles()) * Constants.getTileSize();
+        int height = (Constants.getPlayColumns() + 2 * Constants.getBorderTiles() + Constants.getDataTiles()) * Constants.getTileSize();
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
-        this.addKeyListener(keyHandler);
         this.setFocusable(true);
-
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -64,25 +62,25 @@ public class GamePanel extends JPanel {
                     int mouseX = e.getX();
                     int mouseY = e.getY();
 
-                    if (isPlayButtonClicked(mouseX, mouseY)) {
+                    if (isButtonClicked(mouseX, mouseY, Constants.PLAY_BUTTON)) {
                         isGameStarted = true;
                         repaint();
                     }
 
-                    if (isEasyButtonClicked(mouseX, mouseY)) {
-                        gameState.setDifficulty("easy");
+                    if (isButtonClicked(mouseX, mouseY, Constants.EASY_BUTTON)) {
+                        gameState.setDifficulty(0);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
                         repaint();
-                    } else if (isMediumButtonClicked(mouseX, mouseY)) {
-                        gameState.setDifficulty("medium");
+                    } else if (isButtonClicked(mouseX, mouseY, Constants.MEDIUM_BUTTON)) {
+                        gameState.setDifficulty(1);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
                         repaint();
-                    } else if (isHardButtonClicked(mouseX, mouseY)) {
-                        gameState.setDifficulty("hard");
+                    } else if (isButtonClicked(mouseX, mouseY, Constants.HARD_BUTTON)) {
+                        gameState.setDifficulty(2);
                         difficultySelected = true;
                         isGameStarted = true; // Start game after difficulty is selected
                         requestFocusInWindow(); // Focus to enable key events
@@ -93,32 +91,53 @@ public class GamePanel extends JPanel {
         });
     }
 
-    private boolean isPlayButtonClicked(int mouseX, int mouseY) {
-        int buttonWidth = 100;
-        int buttonHeight = 40;
-        int buttonX = (getWidth() - buttonWidth) / 2;
-        int buttonY = (getHeight() - buttonHeight) / 2 + 50;
-        return mouseX >= buttonX && mouseX <= buttonX + buttonWidth &&
-               mouseY >= buttonY && mouseY <= buttonY + buttonHeight;
+    /**
+     * Check if a button is clicked
+     * @param x Mouse X coordinate
+     * @param y Mouse Y coordinate
+     * @param buttonType Type of button (e.g., Constants.PLAY_BUTTON, Constants.EASY_BUTTON)
+     * @return True if the specified button is clicked, false otherwise
+     */
+    public boolean isButtonClicked(int x, int y, int buttonType) {
+        int buttonX = 0;
+        int buttonY = 0;
+        int buttonWidth = 0;
+        int buttonHeight = 0;
+
+        // Determine button properties based on the type
+        switch (buttonType) {
+            case Constants.PLAY_BUTTON:
+                buttonX = (getWidth() - 100) / 2;
+                buttonY = (getHeight() / 2) + 50;
+                buttonWidth = 100;
+                buttonHeight = 40;
+                break;
+            case Constants.EASY_BUTTON:
+                buttonX = (getWidth() / 2) - 150;
+                buttonY = (getHeight() / 2) + 120;
+                buttonWidth = 100;
+                buttonHeight = 40;
+                break;
+            case Constants.MEDIUM_BUTTON:
+                buttonX = (getWidth() / 2) - 50;
+                buttonY = (getHeight() / 2) + 120;
+                buttonWidth = 100;
+                buttonHeight = 40;
+                break;
+            case Constants.HARD_BUTTON:
+                buttonX = (getWidth() / 2) + 50;
+                buttonY = (getHeight() / 2) + 120;
+                buttonWidth = 100;
+                buttonHeight = 40;
+                break;
+            default:
+                return false; // Invalid button type
+        }
+
+        // Check if the click is within the bounds of the button
+        return x >= buttonX && x <= buttonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight;
     }
 
-    private boolean isEasyButtonClicked(int mouseX, int mouseY) {
-        int buttonX = (getWidth() / 2) - 150;
-        int buttonY = getHeight() / 2 + 120;
-        return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
-    }
-
-    private boolean isMediumButtonClicked(int mouseX, int mouseY) {
-        int buttonX = getWidth() / 2 - 50;
-        int buttonY = getHeight() / 2 + 120;
-        return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
-    }
-
-    private boolean isHardButtonClicked(int mouseX, int mouseY) {
-        int buttonX = getWidth() / 2 + 50;
-        int buttonY = getHeight() / 2 + 120;
-        return mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40;
-    }
 
     /**
      * Calls repaint() to update window
@@ -133,17 +152,21 @@ public class GamePanel extends JPanel {
      * @param g Graphics object
      */
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (!isGameStarted || !difficultySelected) {
-            drawStartScreen(g);
-        } else {
-            renderer.render(g, gameState.getGameObjects());
-            g.setColor(Color.WHITE);
-            g.drawString("Score: " + gameState.getScore(), 10, TILE_SIZE);
-            g.setColor(Color.CYAN);
-            g.drawString("Items: " + gameState.getCollectedItems() + "/" + gameState.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, TILE_SIZE * 2);
-            g.setColor(Color.GREEN);
-            g.drawString("Tip: Use WASD to move, collect all keys and reach the chest to win!", 10, TILE_SIZE * (PLAY_ROWS + 2 * BORDER_TILES + DATA_TILES));
+        try{ // Try to paint the game window
+            super.paintComponent(g);
+            if (!isGameStarted || !difficultySelected) {
+                drawStartScreen(g);
+            } else {
+                renderer.render(g, gameState.getGameObjects());
+                g.setColor(Color.WHITE);
+                g.drawString("Score: " + gameState.getScore(), 10, Constants.getTileSize());
+                g.setColor(Color.CYAN);
+                g.drawString("Items: " + gameState.getCollectedItems() + "/" + Constants.getTotalItems() + "    Bonus Item: " + gameState.getBonusItem(), 10, Constants.getTileSize() * 2);
+                g.setColor(Color.GREEN);
+                g.drawString("Tip: Use WASD to move, collect all keys and reach the chest to win!", 10, Constants.getTileSize() * (Constants.getPlayRows() + 2 * Constants.getBorderTiles() + Constants.getDataTiles()));
+            }
+        } catch (Exception e){
+            throw new NullPointerException("Graphics object is null");
         }
     }
 
@@ -152,24 +175,29 @@ public class GamePanel extends JPanel {
      * @param g Graphics object
      */
     private void drawStartScreen(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
-
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 36));
-        g.drawString("Ninja Game", getWidth() / 2 - 100, getHeight() / 2 - 40);
-
-        g.setFont(new Font("Arial", Font.PLAIN, 24));
         int buttonWidth = 100;
         int buttonHeight = 40;
         int buttonX = (getWidth() - buttonWidth) / 2;
         int buttonY = (getHeight() - buttonHeight) / 2 + 50;
-        g.drawRect(buttonX, buttonY, buttonWidth, buttonHeight);
-        g.drawString("Play", buttonX + 25, buttonY + 28);
+        try{ // Try to draw the starting screen
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
 
-        drawButton(g, "Easy", (getWidth() / 2) - 150, getHeight() / 2 + 120);
-        drawButton(g, "Medium", (getWidth() / 2) - 50, getHeight() / 2 + 120);
-        drawButton(g, "Hard", (getWidth() / 2) + 50, getHeight() / 2 + 120);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 36));
+            g.drawString("Ninja Game", getWidth() / 2 - 100, getHeight() / 2 - 40);
+
+            g.setFont(new Font("Arial", Font.PLAIN, 24));
+            g.drawRect(buttonX, buttonY, buttonWidth, buttonHeight);
+            g.drawString("Play", buttonX + 25, buttonY + 28);
+
+            drawButton(g, "Easy", (getWidth() / 2) - 150, getHeight() / 2 + 120);
+            drawButton(g, "Medium", (getWidth() / 2) - 50, getHeight() / 2 + 120);
+            drawButton(g, "Hard", (getWidth() / 2) + 50, getHeight() / 2 + 120);
+        }catch (Exception e){
+            throw new NullPointerException("Graphics object is null");
+        }
+
     }
 
     /**
@@ -180,9 +208,24 @@ public class GamePanel extends JPanel {
      * @param y y-coordinate
      */
     private void drawButton(Graphics g, String label, int x, int y) {
+        if(x < 0 || y < 0){
+            throw new IllegalArgumentException("Coordinates cannot be negative");
+        }
         int buttonWidth = 100;
         int buttonHeight = 40;
         g.drawRect(x, y, buttonWidth, buttonHeight);
         g.drawString(label, x + 15, y + 28);
     }
+
+    /**
+     * Test public function for testing
+     * @param mouseX Mouse X coordinate
+     * @param mouseY Mouse Y coordinate
+     * @param buttonType Button type
+     * @return True if play button is clicked, false otherwise
+     */
+    public boolean testIsButtonClicked(int mouseX, int mouseY, int buttonType) {
+        return isButtonClicked(mouseX, mouseY, buttonType);
+    }
+
 }

@@ -9,20 +9,17 @@ public class Hole extends Enemy{
      * Make a hole which extends enemy
      * @param x X Coordinate of hole
      * @param y Y Coordinate of hole
-     * @param solid If the object is solid
-     * @param typeId Holds hole id
      */
-    public Hole(int x, int y, int damage, int typeId) {
-        super(x, y, damage, typeId); // Pass values to the superclass constructor
+    public Hole(int x, int y) {
+        super(x, y, Constants.getHoleDamage(), 2);
     }
 
     /**
-     * Return if the object is solid
-     * @return If the object is solid
+     * Set the difficulty of the hole
      */
     @Override
     public void setDifficulty(int difficulty) {
-        this.damage = damage * difficulty; // Adjust damage based on difficulty
+        this.damage = damage * difficulty;
     }
     
 }
