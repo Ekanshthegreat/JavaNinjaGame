@@ -41,11 +41,7 @@ mvn compile
 
 mvn clean package
 The generated JAR file will be located in the target/ directory with the name 276-1.0-SNAPSHOT.jar.
-4. Generate Javadocs (Optional):
-
-mvn javadoc:javadoc -DadditionalJOptions=-Xdoclint:none
-The generated Javadocs will be located in the target/site/apidocs/ directory.
-Steps to Run
+and the JavaDocs will be in docs/
 1. Using an IDE:
 Open your IDE (e.g., IntelliJ IDEA, Eclipse).
 Navigate to the src/main/java/project11/Main.java file.
