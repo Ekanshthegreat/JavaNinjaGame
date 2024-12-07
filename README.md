@@ -28,32 +28,28 @@
 
 ---
 
-### Steps to Build
-1. Clone or download the repository:
-   ```bash
-   git clone <repository-url>
-   cd <project-folder>
-   1.  bashCopy codemvn compile
-    
-2.  bashCopy codemvn package
-    
+Steps to Build
+1. Clone or Download the Repository:
+bash
+Copy code
+git clone https://github.sfu.ca/hsa237/CMPT276F24_group11
+cd 276
+2. Compile the Project:
 
-### Steps to Run
+mvn compile
+3. Package the Project into a JAR File:
 
-#### Using an IDE:
-
-1.  Open your IDE (e.g., IntelliJ IDEA, Eclipse).
-    
-2.  Navigate to the src/main/java/project11/Main.java file.
-    
-3.  Press the **Run** button or execute the file.
-    
-
-#### Using the Packaged JAR:
-
-1.  bashCopy codejava -jar target/.jar
-    
-
+mvn clean package
+The generated JAR file will be located in the target/ directory with the name 276-1.0-SNAPSHOT.jar.
+and the JavaDocs will be in docs/
+1. Using an IDE:
+Open your IDE (e.g., IntelliJ IDEA, Eclipse).
+Navigate to the src/main/java/project11/Main.java file.
+Press the Run button or execute the file.
+2. Using the Packaged JAR:
+bash
+Copy code
+java -jar target/276-1.0-SNAPSHOT.jar
 How to Test
 -----------
 

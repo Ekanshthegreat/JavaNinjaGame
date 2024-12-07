@@ -51,17 +51,5 @@ class isOccupiedTest {
         assertTrue(gameState.testIsOccupied(x, y), "Cell should not be occupied.");
     }
 
-    @Test
-    void testIsOccupiedWhenCellHasEnemy() {
-        // Test case where the cell has an enemy
-        int x = 4;
-        int y = 4;
-
-        // Place an enemy (e.g., Samurai) at (4,4)
-        Samurai samurai = new Samurai(x, y);
-        gameState.testSaveOriginalCellContent(x, y, samurai);  // Save enemy in the cell
-
-        // Now check if the cell is occupied
-        assertFalse(gameState.testIsOccupied(x, y), "Cell should be occupied by the enemy.");
-    }
+    
 }

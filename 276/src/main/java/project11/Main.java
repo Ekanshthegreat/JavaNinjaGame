@@ -7,6 +7,7 @@ public class Main{
 
     /**
      * Main method to run the Game.
+     
      * @param args default arguments
      */
     public static void main(String[] args) {
