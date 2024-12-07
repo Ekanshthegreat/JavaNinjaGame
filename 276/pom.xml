@@ -64,23 +64,38 @@
 
   <build>
     <plugins>
-        <!-- Javadoc Plugin -->
-        <plugin>
+    <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.5.0</version>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>javadoc</goal>
-                    </goals>
-                </execution>
-            </executions>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.4.2</version>
             <configuration>
-                <show>protected</show>
+                <archive>
+                    <manifest>
+                        <mainClass>project11.Main</mainClass> <!-- Fully qualified Main class -->
+                    </manifest>
+                </archive>
             </configuration>
         </plugin>
+        <!-- Javadoc Plugin -->
+        <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <version>3.5.0</version>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>javadoc</goal>
+            </goals>
+            <configuration>
+                <show>protected</show>
+                <additionalJOptions>-Xdoclint:none</additionalJOptions>
+                <quiet>true</quiet>
+                <skip>true</skip> <!-- This skips Javadoc generation -->
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
     </plugins>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
