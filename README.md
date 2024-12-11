@@ -32,8 +32,8 @@ Steps to Build
 1. Clone or Download the Repository:
 bash
 Copy code
-git clone https://github.sfu.ca/hsa237/CMPT276F24_group11
-cd 276
+git clone https://github.sfu.ca/hsa237/CMPT276F24_group11](https://github.com/Ekanshthegreat/JavaNinjaGame.git
+cd JavaNinjaGame
 2. Compile the Project:
 
 mvn compile
